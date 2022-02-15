@@ -63,11 +63,11 @@ function UploadPicture() {
                 {(songLoading) && <p>Loading...</p>}
             </form>
             <div>Or Drag File into Drop Zone!</div>
-            <DropZone
+            {/* <DropZone
                 setDropFile={setDropFile}
                 dropFile={dropFile}
                 handleSubmit={handleSubmit}
-            />
+            /> */}
         </>
     )
 }

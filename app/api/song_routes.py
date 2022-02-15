@@ -2,13 +2,17 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import db, Song
 from app.s3_helpers import (
-    upload_file_to_s3, allowed_file, get_unique_filename)
+    remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
 
 song_routes = Blueprint('songs', __name__)
 
+@song_routes.route("")
+def get_all_songs():
+    songs = Song.query.all()
+    return { "songs": [song.to_dict() for song in songs] }
+
 @song_routes.route("", methods=["POST"])
 def add_songs():
-    print("request.files received in backend route", request.files)
     if "song" not in request.files:
         return { "errors": "audio file required"}, 400
 
@@ -30,6 +34,10 @@ def add_songs():
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     new_song = Song(title="title", artist="artist", url=url)
-    db.session.add(new_song)
-    db.session.commit()
-    return {"url": url}
+    if new_song:
+        db.session.add(new_song)
+        db.session.commit()
+        return {"url": url}
+    else:
+        remove_file_from_s3(url.rsplit('/')[-1])
+        return { "message": "There was an error uploading your file"}

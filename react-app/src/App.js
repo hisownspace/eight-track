@@ -7,7 +7,7 @@ import NavBar from './components/NavBar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
-import UploadPicture from './components/UploadPicture'
+import DropZone from './components/DropZone'
 import { authenticate } from './store/session';
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
           <h1>My Home Page</h1>
         </ProtectedRoute>
         <Route path='/upload'>
-          <UploadPicture />
+          <DropZone />
         </Route>
       </Switch>
     </BrowserRouter>
