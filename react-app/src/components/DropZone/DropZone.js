@@ -17,7 +17,7 @@ function DropZone({ setDropFile, dropFile, handleSubmit }) {
   if (dropFile) {
     return (
     <div>
-      <div class="drop_zone_submit"
+      <div className="drop_zone_submit"
         onDragOver={dragHandler}
         onDrop={dropHandler}
         onClick={handleSubmit}>
@@ -29,7 +29,7 @@ function DropZone({ setDropFile, dropFile, handleSubmit }) {
   } else {
     return (
       <div>
-        <div class="drop_zone"
+        <div className="drop_zone"
           onDragOver={dragHandler}
           onDrop={dropHandler}>
           <p>{"Drag a file into this Drop Zone ..."}</p>
