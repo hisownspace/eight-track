@@ -24,10 +24,10 @@ function DropZone() {
   const [songLoading, setSongLoading] = useState(false);
   const [errors, setErrors] = useState([])
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //* add controlled components to form
     const formData = new FormData();
     formData.append("song", dropFile);
     formData.append("length", length);
@@ -38,70 +38,50 @@ function DropZone() {
     formData.append("description", description);
     formData.append("publicSong", publicSong);
     
-    // aws uploads can be a bit slow—displaying
-    // some sort of loading message is a good idea
+    //* aws uploads can be a bit slow—displaying
+    //* some sort of loading message is a good idea
     setSongLoading(true);
-    console.log(formData)
-
+    
+    //*  send file and db data to action creator
     const res = await fetch('/api/songs/', {
         method: "POST",
         body: formData,
     })
-    
-    // aws uploads can be a bit slow—displaying
-    // some sort of loading message is a good idea
-    setSongLoading(true);
-    console.log(formData)
+    console.log(res);
+  }
 
-    // const res = dispatch(addOneSong(formData));
-    // if (res) {
-    //   history.push(`/songs/${res.id}`);
-    // }
-    // const res = await fetch('/api/songs', {
-    //     method: "POST",
-    //     body: formData,
-    // });
-    // if (res.ok) {
-    //     await res.json();
-    //     setSongLoading(false);
-    //     history.push("/songs");
-    // }
-    // else {
-    //     setSongLoading(false);
-    //     const error = await res.json();
-    //     setErrors(error);
-    // }
-}
-
+  //* clears drop file and reloads drop zone
   const handleCancel = (e) => {
     e.preventDefault();
     setDropFile("")
   };
 
+  //* when file is dragged into the dropzone, the file is set 
+  //*as the source of the audio element to access the metadata
   const dropHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const file = e.dataTransfer?.files[0];
+    const file = e.dataTransfer.files[0];
     setDropFile(file);
-
-    console.log("drop file set:", file)
 
     let reader = new FileReader();
     reader.onload = function (e) {
       setAudioSource(e.target.result)
     };
 
-    console.log('drop file set')
-
     reader.readAsDataURL(e.dataTransfer?.files[0]);
   };
 
+
+  //* runs when audio tag metadata is loaded
+  //* and gets the song length in seconds
   const getDuration = (e) => {
     const duration = e.target.duration;
-    console.log(duration);
+    console.log(e.target);
     setLength(duration);
   };
 
+  //* ensures drop functionality
   const dragHandler = e => {
     e.preventDefault();
     e.stopPropagation();
@@ -153,6 +133,7 @@ function DropZone() {
               onChange={e => setPublicSong(e.target.value)}
             />
           </div>
+          {/! uncomment and configure when genre store is ready !/}
           {/* <div className='form_content'>
             <label htmlFor="Genre">Genre</label>
             <select
