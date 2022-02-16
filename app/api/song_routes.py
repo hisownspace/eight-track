@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
-from app.models import db, Song
+from app.models import db, Song, User, Genre
 from app.s3_helpers import (
     remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
 
@@ -8,9 +8,9 @@ song_routes = Blueprint('api/songs', __name__)
 
 @song_routes.route("/")
 def get_all_songs():
-    songs = Song.query.all()
+    songs = Song.query.join(User).join(Genre).all()
     if songs:
-        return {"songs": [song.to_dict() for song in songs]}
+        return { "songs": [song.to_dict() for song in songs] }
     else:
         return { "errors": "unknown error" }
 
@@ -52,7 +52,13 @@ def add_songs():
         db.session.add(new_song)
         db.session.commit()
         print(new_song.id)
-        return {"songId": new_song.id}
+        # new_song = new_song.join(User).join(Genre)
+        song = Song.query.filter_by(id=new_song.id).join(User).join(Genre).all()
+        print("song_info")
+        print(new_song)
+        return { "song": new_song.to_dict() }
     except Exception as e:
+        print("removing file from S3")
         remove_file_from_s3(url.rsplit('/')[-1])
-        return e, 400
+        print(e)
+        return {"errors": e}, 400

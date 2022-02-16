@@ -27,7 +27,7 @@ function DropZone() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //* add controlled components to form
+    //* add controlled inputs to form
     const formData = new FormData();
     formData.append("song", dropFile);
     formData.append("length", length);
@@ -43,11 +43,19 @@ function DropZone() {
     setSongLoading(true);
     
     //*  send file and db data to action creator
-    const res = await fetch('/api/songs/', {
-        method: "POST",
-        body: formData,
-    })
-    console.log(res);
+    // const res = await fetch('/api/songs/', {
+    //     method: "POST",
+    //     body: formData,
+    // }).then(resBody => resBody.json())
+
+    const res = await dispatch(addOneSong(formData))
+    if (res.errors) {
+      console.log(res.errors);
+    } else {
+      history.push(`/songs/${res.song.id}`)
+    }
+    // await dispatch(addOneSong(formData))
+    //   .then(res => history.push(`/songs/${res.song.id}`))
   }
 
   //* clears drop file and reloads drop zone
@@ -129,10 +137,10 @@ function DropZone() {
               type="checkbox"
               name="public"
               checked={publicSong}
-              onChange={e => setPublicSong(e.target.value)}
+              onChange={e => setPublicSong(!publicSong)}
             />
           </div>
-          {/! uncomment and configure when genre store is ready !/}
+          {/* uncomment and configure when genre store is ready */}
           {/* <div className='form_content'>
             <label htmlFor="Genre">Genre</label>
             <select
@@ -149,6 +157,7 @@ function DropZone() {
           <button type="submit" className="add-product-button">Add Product</button>
           <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
         </form>
+        {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
       </div>
       <audio src={audioSource} onLoadedMetadata={getDuration}></audio>
     </div>)
@@ -159,7 +168,6 @@ function DropZone() {
           onDragOver={dragHandler}
           onDrop={dropHandler}>
           <p>{"Drag a file into this Drop Zone ..."}</p>
-          {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
         </div>
       </div>
     );

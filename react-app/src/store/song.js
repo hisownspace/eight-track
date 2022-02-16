@@ -66,12 +66,8 @@ export const getAllSongs = () => async (dispatch) => {
 // }
 
 export const addOneSong = (songDetails) => async (dispatch) => {
-    console.log(songDetails)
     const res = await fetch('/api/songs/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
         body: songDetails
     });
 
@@ -80,11 +76,14 @@ export const addOneSong = (songDetails) => async (dispatch) => {
         dispatch(addSong(song))
         return song;
     } else if (res.status < 500) {
+        console.log("res status < 500")
         const data = await res.json();
         if (data.errors) {
+            console.log("res.data has errors")
           return data.errors;
         }
       } else {
+        console.log("an error occurred")
         return {"errors": "An error occurred. Please try again."}
       }
 }
