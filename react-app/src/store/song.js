@@ -70,20 +70,16 @@ export const addOneSong = (songDetails) => async (dispatch) => {
         method: 'POST',
         body: songDetails
     });
-
     if (res.ok) {
         const song = await res.json();
         dispatch(addSong(song))
         return song;
     } else if (res.status < 500) {
-        console.log("res status < 500")
-        const data = await res.json();
+        const data = await res.json()
         if (data.errors) {
-            console.log("res.data has errors")
-          return data.errors;
+            return data;
         }
       } else {
-        console.log("an error occurred")
         return {"errors": "An error occurred. Please try again."}
       }
 }

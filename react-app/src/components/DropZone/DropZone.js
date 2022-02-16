@@ -26,36 +26,40 @@ function DropZone() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //* add controlled inputs to form
-    const formData = new FormData();
-    formData.append("song", dropFile);
-    formData.append("length", length);
-    formData.append("title", title);
-    formData.append("artist", artist);
-    formData.append("genreId", genreId);
-    formData.append("userId", userId);
-    formData.append("description", description);
-    formData.append("publicSong", publicSong);
-    
-    //* aws uploads can be a bit slow—displaying
-    //* some sort of loading message is a good idea
-    setSongLoading(true);
-    
-    //*  send file and db data to action creator
-    // const res = await fetch('/api/songs/', {
-    //     method: "POST",
-    //     body: formData,
-    // }).then(resBody => resBody.json())
-
-    const res = await dispatch(addOneSong(formData))
-    if (res.errors) {
-      console.log(res.errors);
-    } else {
-      history.push(`/songs/${res.song.id}`)
+    setErrors([]);
+    const validatorErrors = [];
+    if (title === "") {
+      validatorErrors.push("Title field must not be empty!")
     }
-    // await dispatch(addOneSong(formData))
-    //   .then(res => history.push(`/songs/${res.song.id}`))
+    if (artist === "") {
+      validatorErrors.push("Artist field must not be empty!")
+    };
+    if (errors.length) {
+      setErrors(validatorErrors);
+    } else {
+      //* add controlled inputs to form
+      const formData = new FormData();
+      formData.append("song", dropFile);
+      formData.append("length", length);
+      formData.append("title", title);
+      formData.append("artist", artist);
+      formData.append("genreId", genreId);
+      formData.append("description", description);
+      formData.append("publicSong", publicSong);
+      
+      //* aws uploads can be a bit slow—displaying
+      //* some sort of loading message is a good idea
+      setSongLoading(true);
+      
+      //*  send file and db data to action creator
+      const res = await dispatch(addOneSong(formData))
+      setSongLoading(false);
+      if (res.errors) {
+        setErrors([res.errors])
+      } else {
+        history.push(`/songs/${res.song.id}`)
+      }
+    }
   }
 
   //* clears drop file and reloads drop zone
@@ -94,54 +98,65 @@ function DropZone() {
     e.stopPropagation();
   };
 
-  if (dropFile) {
-    return (
+if (!dropFile) {
+  return (
     <div>
-      <div className="drop_zone_submit">
-        <span>{dropFile.name}</span>
-        <form onSubmit={handleSubmit}>
-          <div className='form-content'>
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Title"
-              autoComplete="off"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
+
+      <div className="drop_zone"
+        onDragOver={dragHandler}
+        onDrop={dropHandler}>
+        <p>{"Drag a file into this Drop Zone ..."}</p>
+      </div>
+    </div>
+  );
+  } else {
+    return (
+      <div>
+        <div className="drop_zone_submit">
+          <span>{dropFile.name}</span>
+          <form onSubmit={handleSubmit}>
+            <div className='form-content'>
+              <label htmlFor="title">Title</label>
+              <input
+                type="text"
+                name="title"
+                placeholder="Title"
+                autoComplete="off"
+                value={title}
+                onChange={e => setTitle(e.target.value)}
               />
-          </div>
-          <div className='form-content'>
-            <label htmlFor="artist">Artist</label>
-            <input
-              type="text"
-              name="artist"
-              placeholder="Artist"
-              autoComplete="off"
-              value={artist}
-              onChange={e => setArtist(e.target.value)}
+            </div>
+            <div className='form-content'>
+              <label htmlFor="artist">Artist</label>
+              <input
+                type="text"
+                name="artist"
+                placeholder="Artist"
+                autoComplete="off"
+                value={artist}
+                onChange={e => setArtist(e.target.value)}
               />
-          </div>
-          <div className='form-content'>
-            <input
-              type="text"
-              name="description"
-              placeholder="Description"
-              autoComplete="off"
-              value={description}
-              onChange={e => setDescription(e.target.value)}
+            </div>
+            <div className='form-content'>
+              <input
+                type="text"
+                name="description"
+                placeholder="Description"
+                autoComplete="off"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
               />
-          </div>
-          <div className='form-content'>
-            <input
-              type="checkbox"
-              name="public"
-              checked={publicSong}
-              onChange={e => setPublicSong(!publicSong)}
-            />
-          </div>
-          {/* uncomment and configure when genre store is ready */}
-          {/* <div className='form_content'>
+            </div>
+            <div className='form-content'>
+              <input
+                type="checkbox"
+                name="public"
+                checked={publicSong}
+                onChange={e => setPublicSong(!publicSong)}
+              />
+            </div>
+            {/* uncomment and configure when genre store is ready */}
+            {/* <div className='form_content'>
             <label htmlFor="Genre">Genre</label>
             <select
               required
@@ -154,24 +169,21 @@ function DropZone() {
               ))}
             </select>
           </div> */}
-          <button type="submit" className="add-product-button">Add Product</button>
-          <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
-        </form>
-        {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
-      </div>
-      <audio src={audioSource} onLoadedMetadata={getDuration}></audio>
-    </div>)
-  } else {
-    return (
-      <div>
-        <div className="drop_zone"
-          onDragOver={dragHandler}
-          onDrop={dropHandler}>
-          <p>{"Drag a file into this Drop Zone ..."}</p>
+            <button type="submit" className="add-product-button">Add Product</button>
+            <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
+          </form>
+          {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
+          <div className='upload-errors'>
+            <ul>
+              {errors.map((error, idx) => {
+                return <li key={idx}>{error}</li>
+              })}
+            </ul>
+          </div>
         </div>
-      </div>
-    );
-  }
+        <audio src={audioSource} onLoadedMetadata={getDuration}></audio>
+      </div>)
+}
 }
 
 export default DropZone;

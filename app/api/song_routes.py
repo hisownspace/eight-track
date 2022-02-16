@@ -1,8 +1,12 @@
-from flask import Blueprint, jsonify, request
-from flask_login import login_required
+from flask import Blueprint, json, request, Response
+from flask_login import login_required, current_user
 from app.models import db, Song, User, Genre
 from app.s3_helpers import (
-    remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
+                        remove_file_from_s3,
+                        upload_file_to_s3,
+                        allowed_file,
+                        get_unique_filename
+                        )
 
 song_routes = Blueprint('api/songs', __name__)
 
@@ -17,7 +21,7 @@ def get_all_songs():
 @song_routes.route("/", methods=["POST"])
 def add_songs():
     if "song" not in request.files:
-        return { "errors": "audio file required"}, 400
+        return { "errors": "audio file required"}
 
     song = request.files["song"]
 
@@ -35,30 +39,34 @@ def add_songs():
         return upload, 400
 
     columns = request.form.to_dict()
-    print(columns)
+    print("COLUMNS", columns)
     url = upload["url"]
     # flask_login allows us to get the current user from the request
-    new_song = Song(
-                genreId=columns["genreId"],
-                userId=columns["userId"],
-                url=url,
-                title=columns["title"],
-                artist=columns["artist"],
-                length=columns["length"],
-                description=columns["description"],
-                public=(True if columns["publicSong"] == "true" else False)
-                )
     try:
+        new_song = Song(
+                    genre_id=columns["genreId"],
+                    user_id=int(current_user.id),
+                    url=url,
+                    title=columns["title"],
+                    artist=columns["artist"],
+                    length=columns["length"],
+                    description=columns["description"],
+                    public=(True\
+                        if columns["publicSong"] == "true"\
+                            else False)
+                )
         db.session.add(new_song)
         db.session.commit()
         print(new_song.id)
-        # new_song = new_song.join(User).join(Genre)
-        song = Song.query.filter_by(id=new_song.id).join(User).join(Genre).all()
+        song = Song.query.filter_by(id=new_song.id)\
+            .join(User).join(Genre).all()
         print("song_info")
         print(new_song)
-        return { "song": new_song.to_dict() }
+        return Response(response=json.dumps(song=new_song.to_dict()),
+                        status=201)
     except Exception as e:
         print("removing file from S3")
         remove_file_from_s3(url.rsplit('/')[-1])
-        print(e)
-        return {"errors": e}, 400
+        print(json.dumps(str(e)))
+        return Response(response=json.dumps({"errors": str(e)}),
+                        status=400)

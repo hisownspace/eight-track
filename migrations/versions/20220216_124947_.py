@@ -1,8 +1,8 @@
-"""create comments, genres, songs, users tables
+"""empty message
 
-Revision ID: 9dc76e4d69d2
+Revision ID: c0c6edacaad6
 Revises: 
-Create Date: 2022-02-16 08:42:59.708469
+Create Date: 2022-02-16 12:49:47.226663
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9dc76e4d69d2'
+revision = 'c0c6edacaad6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,50 +21,50 @@ def upgrade():
     op.create_table('genres',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
-    sa.Column('hashedPassword', sa.String(length=255), nullable=False),
-    sa.Column('displayName', sa.String(length=50), nullable=True),
-    sa.Column('imageUrl', sa.String(length=255), nullable=True),
-    sa.Column('headerUrl', sa.String(length=255), nullable=True),
+    sa.Column('hashed_password', sa.String(length=255), nullable=False),
+    sa.Column('display_name', sa.String(length=50), nullable=True),
+    sa.Column('image_url', sa.String(length=255), nullable=True),
+    sa.Column('header_url', sa.String(length=255), nullable=True),
     sa.Column('bio', sa.String(length=1000), nullable=True),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
     op.create_table('songs',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('genreId', sa.Integer(), nullable=False),
-    sa.Column('userId', sa.Integer(), nullable=False),
+    sa.Column('genre_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('url', sa.String(), nullable=False),
-    sa.Column('title', sa.String(), nullable=True),
-    sa.Column('artist', sa.String(), nullable=True),
+    sa.Column('title', sa.String(), nullable=False),
+    sa.Column('artist', sa.String(), nullable=False),
     sa.Column('length', sa.Numeric(precision=4, scale=1), nullable=False),
     sa.Column('description', sa.String(length=1000), nullable=True),
     sa.Column('public', sa.Boolean(), nullable=False),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['genreId'], ['genres.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['genre_id'], ['genres.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('songId', sa.Integer(), nullable=True),
-    sa.Column('userId', sa.Integer(), nullable=True),
+    sa.Column('song_id', sa.Integer(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('content', sa.String(length=1000), nullable=True),
-    sa.Column('createdAt', sa.DateTime(), nullable=False),
-    sa.Column('updatedAt', sa.DateTime(), nullable=False),
-    sa.ForeignKeyConstraint(['songId'], ['songs.id'], ),
-    sa.ForeignKeyConstraint(['userId'], ['users.id'], ),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
+    sa.ForeignKeyConstraint(['song_id'], ['songs.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
