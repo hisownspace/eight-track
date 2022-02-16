@@ -17,6 +17,7 @@ function UploadPicture() {
         e.preventDefault();
         const formData = new FormData();
         formData.append("song", song);
+        formData.append("length", song);
         
         // aws uploads can be a bit slow—displaying
         // some sort of loading message is a good idea
