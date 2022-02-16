@@ -1,10 +1,21 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import db, Song, User, Genre
+from app.forms import SongEditForm
 from app.s3_helpers import (
     remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
 
 song_routes = Blueprint('api/songs', __name__)
+
+def validation_errors_to_error_messages(validation_errors):
+    """
+    Simple function that turns the WTForms validation errors into a simple list
+    """
+    errorMessages = []
+    for field in validation_errors:
+        for error in validation_errors[field]:
+            errorMessages.append(f'{field} : {error}')
+    return errorMessages
 
 @song_routes.route("/")
 def get_all_songs():
@@ -67,10 +78,24 @@ def add_songs():
         return {"errors": e}, 400
 
 
-@song_routes.route("/<int:id>", methods= ["POST"])
+@song_routes.route("/<int:id>", methods=["DELETE"])
 def delete_song(id):
     song = Song.query.get(id)
     remove_file_from_s3(song.url.rsplit('/')[-1])
     db.session.delete(song)
     db.session.commit()
     return "Delete successful!"
+
+
+@song_routes.route("/<int:id>", methods=["PUT"])
+def update_song(id):
+    form = SongEditForm()
+    if form.validate_on_submit:
+        song_to_edit = Song.query.get(id)
+        song_to_edit.title = form.data["title"]
+        song_to_edit.description = form.data["description"]
+        song_to_edit.image_url = form.data["image_url"]
+        db.session.add(song_to_edit)
+        db.session.commit()
+        return song_to_edit.to_dict()
+    return {'errors': validation_errors_to_error_messages(form.errors)}, 401

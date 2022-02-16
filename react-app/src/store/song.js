@@ -46,12 +46,12 @@ export const getAllSongs = () => async (dispatch) => {
     }
 }
 
-// export const getTopProducts = () => async (dispatch) => {
-//     const res = await fetch('api/products/top/');
+// export const getTopSongs = () => async (dispatch) => {
+//     const res = await fetch('api/songs/top/');
 //     if (res.ok) {
-//         const productsObj = await res.json();
-//         dispatch(getProducts(productsObj.products));
-//         return productsObj.products
+//         const songsObj = await res.json();
+//         dispatch(getSongs(songsObj.songs));
+//         return songsObj.songs
 //     }
 // }
 
@@ -89,35 +89,35 @@ export const addOneSong = (songDetails) => async (dispatch) => {
       }
 }
 
-// export const updateOneProduct = (product, productId) => async dispatch => {
-//     const res = await fetch(`/api/products/edit/${productId}`, {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(product)
-//     });
+export const updateOneSong = (song, songId) => async dispatch => {
+    const res = await fetch(`/api/songs/edit/${songId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(song)
+    });
 
-//     if (res.ok) {
-//         const data = await res.json();
-//         dispatch(addProduct(data))
-//         return null;
-//     } else if (res.status < 500) {
-//         const data = await res.json();
-//         if (data.errors) {
-//           return data.errors;
-//         }
-//       } else {
-//         return ['An error occurred. Please try again.']
-//       }
-// }
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(addSong(data))
+        return null;
+    } else if (res.status < 500) {
+        const data = await res.json();
+        if (data.errors) {
+          return data.errors;
+        }
+      } else {
+        return ['An error occurred. Please try again.']
+      }
+}
 
 export const deleteOneSong = songId => async dispatch => {
     const res = await fetch(`/api/songs/${songId}`, {
         method: 'DELETE'
     })
     if (res.ok) {
-        await dispatch(deleteSong(+songId));
+        await dispatch(deleteSong(songId));
         return res
     }
 }
@@ -145,7 +145,7 @@ export default function songReducer(state = initialState, action) {
             newState = {...state};
             newState.songs[action.song.id] = action.song;
             return newState;
-        case DELETE_PRODUCT:
+        case DELETE_SONG:
             newState = {...state};
             delete newState.songs[action.id]
             return newState;
