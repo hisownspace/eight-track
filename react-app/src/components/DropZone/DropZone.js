@@ -9,7 +9,7 @@ function DropZone() {
   const history = useHistory();
   const dispatch = useDispatch();
   
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
   const [dropFile, setDropFile] = useState("");
   const [length, setLength] = useState(0);
@@ -17,46 +17,67 @@ function DropZone() {
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
   const [description, setDescription] = useState("");
-  const [genreId, setGenreId] = useState(1)
+  const [genreId, setGenreId] = useState(1);
   const [userId, setUserId] = useState(2);
-  const [publicSong, setPublicSong] = useState(true)
+  const [publicSong, setPublicSong] = useState(true);
 
   const [songLoading, setSongLoading] = useState(false);
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //* add controlled inputs to form
-    const formData = new FormData();
-    formData.append("song", dropFile);
-    formData.append("length", length);
-    formData.append("title", title);
-    formData.append("artist", artist);
-    formData.append("genreId", genreId);
-    formData.append("userId", userId);
-    formData.append("description", description);
-    formData.append("publicSong", publicSong);
-    
-    //* aws uploads can be a bit slow—displaying
-    //* some sort of loading message is a good idea
-    setSongLoading(true);
-    
-    //*  send file and db data to action creator
-    // const res = await fetch('/api/songs/', {
-    //     method: "POST",
-    //     body: formData,
-    // }).then(resBody => resBody.json())
+    const formErrors = [];
 
-    const res = await dispatch(addOneSong(formData))
-    if (res.errors) {
-      console.log(res.errors);
-    } else {
-      history.push(`/songs/${res.song.id}`)
+    if (!artist) {
+      formErrors.push("Please fill out artist field!")
     }
-    // await dispatch(addOneSong(formData))
-    //   .then(res => history.push(`/songs/${res.song.id}`))
+    if (!title) {
+      formErrors.push("Please fill out title field!")
+    }
+    if (formErrors.length > 0) {
+      setErrors(formErrors)
+      setSubmitted(true);
+    } else {
+      //* add controlled inputs to form
+      const formData = new FormData();
+      formData.append("song", dropFile);
+      formData.append("length", length);
+      formData.append("title", title);
+      formData.append("artist", artist);
+      formData.append("genreId", genreId);
+      formData.append("userId", userId);
+      formData.append("description", description);
+      formData.append("publicSong", publicSong);
+      
+      //* aws uploads can be a bit slow—displaying
+      //* some sort of loading message is a good idea
+      setSongLoading(true);
+  
+      const res = await dispatch(addOneSong(formData))
+      if (res.errors) {
+        console.log(res.errors);
+      } else {
+        history.push(`/songs/${res.song.id}`)
+      }
+    }
   }
+
+  useEffect(() => {
+    setErrors([])
+    const formErrors = [];
+
+    if (!artist && submitted) {
+      formErrors.push("Please fill out artist field!")
+    }
+    if (!title && submitted) {
+      formErrors.push("Please fill out title field!")
+    }
+    if (formErrors.length > 0) {
+      setErrors(formErrors)
+    } 
+  }, [artist, title]);
 
   //* clears drop file and reloads drop zone
   const handleCancel = (e) => {
@@ -69,6 +90,7 @@ function DropZone() {
   const dropHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
     const file = e.dataTransfer.files[0];
     setDropFile(file);
 
@@ -98,6 +120,13 @@ function DropZone() {
     return (
     <div>
       <div className="drop_zone_submit">
+      <div className='upload-errors'>
+          <ul>
+          {errors.map((error, idx) => {
+            return <li key={idx}>{error}</li>
+          })}
+          </ul>
+        </div>
         <span>{dropFile.name}</span>
         <form onSubmit={handleSubmit}>
           <div className='form-content'>
