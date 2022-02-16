@@ -14,6 +14,15 @@ def get_all_songs():
     else:
         return { "errors": "unknown error" }
 
+@song_routes.route("/<int:id>/")
+def get_one_song(id):
+    print("hyello")
+    song = Song.query.get(id)
+    if song:
+        return song.to_dict()
+    else:
+        return { "errors": "unkown error" }
+
 @song_routes.route("/", methods=["POST"])
 def add_songs():
     if "song" not in request.files:
@@ -51,14 +60,17 @@ def add_songs():
     try:
         db.session.add(new_song)
         db.session.commit()
-        print(new_song.id)
-        # new_song = new_song.join(User).join(Genre)
         song = Song.query.filter_by(id=new_song.id).join(User).join(Genre).all()
-        print("song_info")
-        print(new_song)
         return { "song": new_song.to_dict() }
     except Exception as e:
-        print("removing file from S3")
         remove_file_from_s3(url.rsplit('/')[-1])
-        print(e)
         return {"errors": e}, 400
+
+
+@song_routes.route("/<int:id>", methods= ["POST"])
+def delete_song(id):
+    song = Song.query.get(id)
+    remove_file_from_s3(song.url.rsplit('/')[-1])
+    db.session.delete(song)
+    db.session.commit()
+    return "Delete successful!"

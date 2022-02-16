@@ -7,7 +7,8 @@ import NavBar from './components/NavBar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
-import DropZone from './components/DropZone'
+import DropZone from './components/DropZone';
+import SongDetail from "./components/SongDetail";
 import { authenticate } from './store/session';
 
 function App() {
@@ -46,6 +47,9 @@ function App() {
         </ProtectedRoute>
         <Route path='/upload'>
           <DropZone />
+        </Route>
+        <Route path='/songs/:id'>
+          <SongDetail />
         </Route>
       </Switch>
     </BrowserRouter>

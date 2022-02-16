@@ -56,14 +56,15 @@ export const getAllSongs = () => async (dispatch) => {
 // }
 
 
-// export const getOneProduct = (productId) => async (dispatch) => {
-//     const res = await fetch(`/api/products/${productId}/`);
-//     if (res.ok) {
-//         const product = await res.json();
-//         dispatch(getProduct(product));
-//         return product
-//     }
-// }
+export const getOneSong = (songId) => async (dispatch) => {
+    const res = await fetch(`/api/songs/${songId}/`);
+    if (res.ok) {
+        const song = await res.json();
+        console.log(song);
+        dispatch(getSong(song));
+        return song
+    }
+}
 
 export const addOneSong = (songDetails) => async (dispatch) => {
     const res = await fetch('/api/songs/', {
@@ -111,45 +112,43 @@ export const addOneSong = (songDetails) => async (dispatch) => {
 //       }
 // }
 
-// export const deleteOneProduct = productId => async dispatch => {
-//     const res = await fetch(`/api/products/delete/${productId}`, {
-//         method: 'DELETE',
-//         headers: {
-//           'Content-Type': 'application/json'
-//         },
-//     })
-//     if (res.ok) {
-//         await dispatch(deleteProduct(+productId));
-//         // return res
-//         return 'HOLY MONKEE SUITS!'
-//     }
-// }
+export const deleteOneSong = songId => async dispatch => {
+    const res = await fetch(`/api/songs/${songId}`, {
+        method: 'DELETE'
+    })
+    if (res.ok) {
+        await dispatch(deleteSong(+songId));
+        return res
+    }
+}
 
 
 //reducer
 const initialState = { songs: {} };
-export default function productReducer(state = initialState, action) {
+export default function songReducer(state = initialState, action) {
+    console.log('hello')
     let newState;
     switch (action.type) {
         case GET_SONGS:
             newState = {...state};
-            newState.products = action.songs.reduce((songs, song) => {
+            newState.songs = action.songs.reduce((songs, song) => {
                 songs[song.id] = song;
                 return songs;
             }, {});
             return newState
-        // case GET_PRODUCT:
-        //     newState = {...state};
-        //     newState.products[action.product.id] = action.product
-        //     return newState;
-        // case ADD_PRODUCT:
-        //     newState = {...state};
-        //     newState.products[action.product.id] = action.product;
-        //     return newState;
-        // case DELETE_PRODUCT:
-        //     newState = {...state};
-        //     delete newState.products[action.id]
-        //     return newState;
+        case GET_SONG:
+            newState = {...state};
+            console.log(newState);
+            newState.songs[action.song.id] = action.song
+            return newState;
+        case ADD_SONG:
+            newState = {...state};
+            newState.songs[action.song.id] = action.song;
+            return newState;
+        case DELETE_PRODUCT:
+            newState = {...state};
+            delete newState.songs[action.id]
+            return newState;
         default:
             return state;
     }

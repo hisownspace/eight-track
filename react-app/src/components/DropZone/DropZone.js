@@ -26,7 +26,11 @@ function DropZone() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
+    setErrors([]);
     e.preventDefault();
+    console.log(errors);
+    console.log(artist);
+    console.log(title);
 
     const formErrors = [];
 
@@ -36,6 +40,7 @@ function DropZone() {
     if (!title) {
       formErrors.push("Please fill out title field!")
     }
+
     if (formErrors.length > 0) {
       setErrors(formErrors)
       setSubmitted(true);
@@ -54,11 +59,19 @@ function DropZone() {
       //* aws uploads can be a bit slow—displaying
       //* some sort of loading message is a good idea
       setSongLoading(true);
-  
-      const res = await dispatch(addOneSong(formData))
+      setErrors([]);
+      setArtist('');
+      setTitle('');
+      setDescription('');
+      setPublicSong(true);
+      setSubmitted(false);
+      
+      const res = await dispatch(addOneSong(formData));
+      setSongLoading(false);
       if (res.errors) {
-        console.log(res.errors);
+        setErrors(["There was an unknown error. Please Try again later."]);
       } else {
+        setDropFile("")
         history.push(`/songs/${res.song.id}`)
       }
     }
@@ -76,7 +89,8 @@ function DropZone() {
     }
     if (formErrors.length > 0) {
       setErrors(formErrors)
-    } 
+    }
+    setSubmitted(false);
   }, [artist, title]);
 
   //* clears drop file and reloads drop zone
@@ -122,7 +136,7 @@ function DropZone() {
       <div className="drop_zone_submit">
       <div className='upload-errors'>
           <ul>
-          {errors.map((error, idx) => {
+          {errors?.map((error, idx) => {
             return <li key={idx}>{error}</li>
           })}
           </ul>
