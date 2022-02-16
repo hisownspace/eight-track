@@ -34,9 +34,20 @@ def add_songs():
         # so we send back that error message
         return upload, 400
 
+    columns = request.form.to_dict()
+    print(columns)
     url = upload["url"]
     # flask_login allows us to get the current user from the request
-    new_song = Song(title="title", artist="artist", url=url)
+    new_song = Song(
+                genreId=columns["genreId"],
+                userId=columns["userId"],
+                url=url,
+                title=columns["title"],
+                artist=columns["artist"],
+                length=columns["length"],
+                description=columns["description"],
+                public=(True if columns["publicSong"] == "true" else False)
+                )
     if new_song:
         db.session.add(new_song)
         db.session.commit()

@@ -18,7 +18,7 @@ function DropZone() {
   const [artist, setArtist] = useState("");
   const [description, setDescription] = useState("");
   const [genreId, setGenreId] = useState(1)
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState(2);
   const [publicSong, setPublicSong] = useState(true)
 
   const [songLoading, setSongLoading] = useState(false);
@@ -27,6 +27,7 @@ function DropZone() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("song", dropFile);
     formData.append("length", length);
@@ -42,10 +43,20 @@ function DropZone() {
     setSongLoading(true);
     console.log(formData)
 
-    const res = dispatch(addOneSong(formData));
-    if (res) {
-      history.push(`/songs/${res.id}`);
-    }
+    const res = await fetch('/api/songs/', {
+        method: "POST",
+        body: formData,
+    })
+    
+    // aws uploads can be a bit slow—displaying
+    // some sort of loading message is a good idea
+    setSongLoading(true);
+    console.log(formData)
+
+    // const res = dispatch(addOneSong(formData));
+    // if (res) {
+    //   history.push(`/songs/${res.id}`);
+    // }
     // const res = await fetch('/api/songs', {
     //     method: "POST",
     //     body: formData,
@@ -79,7 +90,7 @@ function DropZone() {
     reader.onload = function (e) {
       setAudioSource(e.target.result)
     };
-    
+
     console.log('drop file set')
 
     reader.readAsDataURL(e.dataTransfer?.files[0]);
