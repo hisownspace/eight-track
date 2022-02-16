@@ -1,8 +1,8 @@
-"""create comments, genres, users and songs tables
+"""create comments, genres, songs, users tables
 
-Revision ID: e5b42bb7b01c
+Revision ID: 9dc76e4d69d2
 Revises: 
-Create Date: 2022-02-15 18:36:11.298342
+Create Date: 2022-02-16 08:42:59.708469
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e5b42bb7b01c'
+revision = '9dc76e4d69d2'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,7 +47,7 @@ def upgrade():
     sa.Column('url', sa.String(), nullable=False),
     sa.Column('title', sa.String(), nullable=True),
     sa.Column('artist', sa.String(), nullable=True),
-    sa.Column('length', sa.Numeric(), nullable=False),
+    sa.Column('length', sa.Numeric(precision=4, scale=1), nullable=False),
     sa.Column('description', sa.String(length=1000), nullable=True),
     sa.Column('public', sa.Boolean(), nullable=False),
     sa.Column('createdAt', sa.DateTime(), nullable=False),

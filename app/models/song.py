@@ -10,7 +10,7 @@ class Song(db.Model):
     url = db.Column(db.String, nullable=False)
     title = db.Column(db.String, nullable=True)
     artist = db.Column(db.String, nullable=True)
-    length = db.Column(db.Numeric, nullable=False)
+    length = db.Column(db.Numeric(4,1), nullable=False)
     description = db.Column(db.String(1000))
     public = db.Column(db.Boolean, nullable=False, default=True)
     createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
@@ -26,7 +26,7 @@ class Song(db.Model):
             "title": self.title,
             "artist": self.artist,
             "url": self.url,
-            "length": self.length,
+            "length": float(self.length),
             "description": self.description,
             "public": self.public,
             # these keys are associated with other tables

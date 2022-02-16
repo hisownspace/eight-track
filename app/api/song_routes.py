@@ -10,7 +10,7 @@ song_routes = Blueprint('api/songs', __name__)
 def get_all_songs():
     songs = Song.query.all()
     if songs:
-        return [song.to_dict() for song in songs]
+        return {"songs": [song.to_dict() for song in songs]}
     else:
         return { "errors": "unknown error" }
 
@@ -48,10 +48,11 @@ def add_songs():
                 description=columns["description"],
                 public=(True if columns["publicSong"] == "true" else False)
                 )
-    if new_song:
+    try:
         db.session.add(new_song)
         db.session.commit()
-        return {"url": url}
-    else:
+        print(new_song.id)
+        return {"songId": new_song.id}
+    except Exception as e:
         remove_file_from_s3(url.rsplit('/')[-1])
-        return { "message": "There was an error uploading your file"}, 400
+        return e, 400

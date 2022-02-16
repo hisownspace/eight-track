@@ -72,7 +72,6 @@ function DropZone() {
     reader.readAsDataURL(e.dataTransfer?.files[0]);
   };
 
-
   //* runs when audio tag metadata is loaded
   //* and gets the song length in seconds
   const getDuration = (e) => {
@@ -160,6 +159,7 @@ function DropZone() {
           onDragOver={dragHandler}
           onDrop={dropHandler}>
           <p>{"Drag a file into this Drop Zone ..."}</p>
+          {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
         </div>
       </div>
     );
