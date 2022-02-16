@@ -39,8 +39,8 @@ def add_songs():
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     new_song = Song(
-                genreId=columns["genreId"],
-                userId=columns["userId"],
+                genre_id=columns["genreId"],
+                user_id=columns["userId"],
                 url=url,
                 title=columns["title"],
                 artist=columns["artist"],

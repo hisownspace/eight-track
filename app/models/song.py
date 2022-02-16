@@ -6,16 +6,16 @@ class Song(db.Model):
     __tablename__ = "songs"
 
     id = db.Column(db.Integer, primary_key=True)
-    genreId = db.Column(db.Integer, db.ForeignKey("genres.id"), nullable=False)
-    userId = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    genre_id = db.Column(db.Integer, db.ForeignKey("genres.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     url = db.Column(db.String, nullable=False)
     title = db.Column(db.String, nullable=True)
     artist = db.Column(db.String, nullable=True)
     length = db.Column(db.Numeric(4,1), nullable=False)
     description = db.Column(db.String(1000))
     public = db.Column(db.Boolean, nullable=False, default=True)
-    createdAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updatedAt = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     genre = db.relationship('Genre', back_populates="songs")
     user = db.relationship('User', back_populates="songs")
