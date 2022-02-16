@@ -27,7 +27,6 @@ def get_all_songs():
 
 @song_routes.route("/<int:id>/")
 def get_one_song(id):
-    print("hyello")
     song = Song.query.get(id)
     if song:
         return song.to_dict()
