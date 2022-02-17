@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateOneSong } from '../../../store/song'
+import { getAllGenres } from '../../../store/genre';
 
 
-function UpdateSongFormModal({ props }) {
+function UpdateSongFormModal({ genresObj }) {
     const history = useHistory()
     const dispatch = useDispatch();
-    const [showModal, setShowModal] = useState(false);
-    const [title, setTitle] = useState();
-    const [artist, setArtist] = useState();
-    const [description, setDescription] = useState();
-    const [publicSong, setPublicSong] = useState();
-    const [genreId, setGenreId] = useState();
-    const [errors, setErrors] = useState([]);
+    const song = useSelector(state => state.songs.songs)
+    const songArr = Object.values(song)[0]
 
-    const genresObj = useSelector(state => state.genres.genres);
+    console.log(songArr);
+
+    const [showModal, setShowModal] = useState(false);
+    const [title, setTitle] = useState(songArr.title);
+    const [artist, setArtist] = useState(songArr.artist);
+    const [description, setDescription] = useState(songArr.description);
+    const [publicSong, setPublicSong] = useState(songArr.public);
+    const [genreId, setGenreId] = useState(songArr.genre.id);
+    const [errors, setErrors] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const onUpdate = async (e) => {
         e.preventDefault();
@@ -26,11 +31,12 @@ function UpdateSongFormModal({ props }) {
             publicSong,
             genreId
         }
-
-        const data = await dispatch(updateOneSong(new_song_info))
+        console.log(new_song_info);
+        // const data = await dispatch(updateOneSong(new_song_info))
     };
 
-    return (
+
+        return (
         <>
             <form onSubmit={onUpdate}>
                 <div className='modal_ul_errors'>
@@ -96,7 +102,7 @@ function UpdateSongFormModal({ props }) {
                         ))}
                     </select>
                 </div>
-                <button className="button_submit button_main" type="submit">Log In</button>
+                <button className="button_submit button_main" type="submit">Update Song</button>
             </form>
             <hr className="hrmodal" />
         </>

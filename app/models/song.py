@@ -32,5 +32,5 @@ class Song(db.Model):
             "public": self.public,
             # these keys are associated with other tables
             "user": self.user.to_dict(),
-            "genre": self.genre.name
+            "genre": self.genre.to_dict()
         }
