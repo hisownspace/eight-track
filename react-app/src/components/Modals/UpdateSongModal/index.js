@@ -20,7 +20,7 @@ function UpdateSongForm() {
             <button className='button button_login' onClick={() => setShowModal(true)}>Update Song Info</button>
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
-                    <UpdateSongFormModal genresObj={genresObj} />
+                    <UpdateSongFormModal genresObj={genresObj} setShowModal={setShowModal} />
                 </Modal>
             )}
         </>

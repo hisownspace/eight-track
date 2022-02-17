@@ -5,7 +5,7 @@ import { updateOneSong } from '../../../store/song'
 import { getAllGenres } from '../../../store/genre';
 
 
-function UpdateSongFormModal({ genresObj }) {
+function UpdateSongFormModal({ genresObj, setShowModal }) {
     const history = useHistory()
     const dispatch = useDispatch();
     const song = useSelector(state => state.songs.songs)
@@ -13,7 +13,6 @@ function UpdateSongFormModal({ genresObj }) {
 
     console.log(songArr);
 
-    const [showModal, setShowModal] = useState(false);
     const [title, setTitle] = useState(songArr.title);
     const [artist, setArtist] = useState(songArr.artist);
     const [description, setDescription] = useState(songArr.description);
@@ -22,18 +21,24 @@ function UpdateSongFormModal({ genresObj }) {
     const [errors, setErrors] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
+
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const new_song_info = {
-            id: songArr.id
-            title,
-            artist,
-            description,
-            publicSong,
-            genreId
+
+        const formData = new FormData();
+        formData.append("id", songArr.id);
+        formData.append("title", title);
+        formData.append("artist", artist);
+        formData.append("genreId", genreId);
+        formData.append("description", description);
+        formData.append("publicSong", publicSong);
+        const res = await dispatch(updateOneSong(formData))
+        if (res?.errors) {
+            setErrors(["There was an unknown error. Please Try again later."]);
+        } else {
+            setShowModal(false)
+            history.push(`/songs/${songArr.id}`)
         }
-        console.log(new_song_info);
-        const data = await dispatch(updateOneSong(new_song_info))
     };
 
 

@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import db, Song, User, Genre
 from app.forms import SongEditForm
+from datetime import datetime
 from app.s3_helpers import (
     remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
 
@@ -88,15 +89,17 @@ def delete_song(id):
 
 @song_routes.route("/<int:id>", methods=["PUT"])
 def update_song(id):
-    form = SongEditForm()
-    if form.validate_on_submit:
-        song_to_edit = Song.query.get(id)
-        song_to_edit.title = form.data["title"]
-        song_to_edit.description = form.data["description"]
-        song_to_edit.image_url = form.data["image_url"]
-        song_to_edit.public = form.data["public"]
-        song_to_edit.genre_id = form.data["genre_id"]
-        db.session.add(song_to_edit)
+    song_changes = request.form.to_dict()
+    try:
+        updated_song = Song.query.get(id)
+        updated_song.title = song_changes["title"]
+        updated_song.artist = song_changes["artist"]
+        updated_song.description = song_changes["description"]
+        updated_song.publicSong = song_changes["publicSong"]
+        updated_song.genre_id = song_changes["genreId"]
+        updated_song.updated_at = datetime.now()
+        db.session.add(updated_song)
         db.session.commit()
-        return song_to_edit.to_dict()
-    return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+        return updated_song.to_dict()
+    except Exception as e:
+        return {"errors": e}, 400
