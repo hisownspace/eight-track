@@ -84,7 +84,7 @@ def delete_song(id):
     remove_file_from_s3(song.url.rsplit('/')[-1])
     db.session.delete(song)
     db.session.commit()
-    return "Delete successful!"
+    return { "message": "Delete successful!" }
 
 
 @song_routes.route("/<int:id>", methods=["PUT"])

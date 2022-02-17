@@ -37,7 +37,6 @@ function UploadPicture() {
             // a real app would probably use more advanced
             // error handling
             const error = await res.json();
-            console.log(error);
         }
     }
     
@@ -48,7 +47,6 @@ function UploadPicture() {
         } else if (dropFile) {
             setSong(dropFile);
         }
-        console.log(dropFile)
     }
     
     return (

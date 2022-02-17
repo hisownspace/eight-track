@@ -23,7 +23,6 @@ export const getAllGenres = () => async (dispatch) => {
     if (res.ok) {
         const genres = await res.json();
         dispatch(getGenres(genres));
-        console.log(genres);
         return genres;
     }
 }

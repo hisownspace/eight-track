@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateOneSong } from '../../../store/song'
-import { getAllGenres } from '../../../store/genre';
-
 
 function UpdateSongFormModal({ genresObj, setShowModal }) {
     const history = useHistory()
@@ -11,7 +9,6 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
     const song = useSelector(state => state.songs.songs)
     const songArr = Object.values(song)[0]
 
-    console.log(songArr);
 
     const [title, setTitle] = useState(songArr.title);
     const [artist, setArtist] = useState(songArr.artist);
@@ -19,7 +16,6 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
     const [publicSong, setPublicSong] = useState(songArr.public);
     const [genreId, setGenreId] = useState(songArr.genre.id);
     const [errors, setErrors] = useState([]);
-    const [isLoaded, setIsLoaded] = useState(false);
 
 
     const handleUpdate = async (e) => {

@@ -23,8 +23,6 @@ function SongDetail() {
         if (isLoaded && !song) {
             history.push("/songs");
         }
-        console.log(isLoaded);
-        console.log(song)
     }, [isLoaded])
 
     const handleDelete = () => {

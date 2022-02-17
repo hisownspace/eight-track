@@ -9,10 +9,9 @@ function DropZone() {
   const history = useHistory();
   const dispatch = useDispatch();
   const genresObj = useSelector(state => state.genres.genres);
+  const sessionUser = useSelector(state => state.session.user);
 
-  console.log(genresObj);
-
-  const [isLoaded, setIsLoaded] = useState(false);
+  // const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
   const [dropFile, setDropFile] = useState("");
   const [length, setLength] = useState(0);
@@ -21,7 +20,6 @@ function DropZone() {
   const [artist, setArtist] = useState("");
   const [description, setDescription] = useState("");
   const [genreId, setGenreId] = useState(1);
-  const [userId, setUserId] = useState(2);
   const [publicSong, setPublicSong] = useState(true);
 
   const [songLoading, setSongLoading] = useState(false);
@@ -52,7 +50,7 @@ function DropZone() {
       formData.append("title", title);
       formData.append("artist", artist);
       formData.append("genreId", genreId);
-      formData.append("userId", userId);
+      formData.append("userId", sessionUser.id);
       formData.append("description", description);
       formData.append("publicSong", publicSong);
       
@@ -79,8 +77,7 @@ function DropZone() {
 
   useEffect(() => {
     dispatch(getAllGenres());
-    console.log(genresObj);
-  }, [songLoading]);
+  }, [songLoading, dispatch]);
 
   useEffect(() => {
     setErrors([])
@@ -125,7 +122,6 @@ function DropZone() {
   //* and gets the song length in seconds
   const getDuration = (e) => {
     const duration = e.target.duration;
-    console.log(e.target);
     setLength(duration);
   };
 

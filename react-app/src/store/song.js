@@ -60,7 +60,6 @@ export const getOneSong = (songId) => async (dispatch) => {
     const res = await fetch(`/api/songs/${songId}/`);
     if (res.ok) {
         const song = await res.json();
-        console.log(song);
         dispatch(getSong(song));
         return song
     }
@@ -77,14 +76,11 @@ export const addOneSong = (songDetails) => async (dispatch) => {
         dispatch(addSong(song))
         return song;
     } else if (res.status < 500) {
-        console.log("res status < 500")
         const data = await res.json();
         if (data.errors) {
-            console.log("res.data has errors")
           return data.errors;
         }
       } else {
-        console.log("an error occurred")
         return {"errors": "An error occurred. Please try again."}
       }
 }
@@ -123,19 +119,15 @@ export const deleteOneSong = songId => async dispatch => {
 //reducer
 const initialState = { songs: {} };
 export default function songReducer(state = initialState, action) {
-    console.log('hello')
     let newState;
     switch (action.type) {
         case GET_SONGS:
+            console.log(action.songs);
             newState = {...state};
-            newState.songs = action.songs.reduce((songs, song) => {
-                songs[song.id] = song;
-                return songs;
-            }, {});
+            newState.songs = action.songs;
             return newState
         case GET_SONG:
             newState = {...state};
-            console.log(newState);
             newState.songs[action.song.id] = action.song
             return newState;
         case ADD_SONG:

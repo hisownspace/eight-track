@@ -9,6 +9,7 @@ import UsersList from './components/UsersList';
 import User from './components/User';
 import DropZone from './components/DropZone';
 import SongDetail from "./components/SongDetail";
+import AllSongs from './components/AllSongs/AllSongs';
 import { authenticate } from './store/session';
 
 function App() {
@@ -50,6 +51,9 @@ function App() {
         </Route>
         <Route path='/songs/:id'>
           <SongDetail />
+        </Route>
+        <Route path='/songs'>
+          <AllSongs />
         </Route>
       </Switch>
     </BrowserRouter>

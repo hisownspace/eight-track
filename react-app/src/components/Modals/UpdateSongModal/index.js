@@ -12,7 +12,6 @@ function UpdateSongForm() {
 
     useEffect(() => {
         dispatch(getAllGenres());
-        console.log(genresObj);
     }, []);
 
     return (
