@@ -105,7 +105,7 @@ function DropZone() {
   };
 
   //* when file is dragged into the dropzone, the file is set 
-  //*as the source of the audio element to access the metadata
+  //* as the source of the audio element to access the metadata
   const dropHandler = (e) => {
     e.preventDefault();
     e.stopPropagation();

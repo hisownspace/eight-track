@@ -94,6 +94,8 @@ def update_song(id):
         song_to_edit.title = form.data["title"]
         song_to_edit.description = form.data["description"]
         song_to_edit.image_url = form.data["image_url"]
+        song_to_edit.public = form.data["public"]
+        song_to_edit.genre_id = form.data["genre_id"]
         db.session.add(song_to_edit)
         db.session.commit()
         return song_to_edit.to_dict()

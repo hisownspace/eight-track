@@ -22,9 +22,10 @@ function UpdateSongFormModal({ genresObj }) {
     const [errors, setErrors] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
 
-    const onUpdate = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         const new_song_info = {
+            id: songArr.id
             title,
             artist,
             description,
@@ -32,13 +33,13 @@ function UpdateSongFormModal({ genresObj }) {
             genreId
         }
         console.log(new_song_info);
-        // const data = await dispatch(updateOneSong(new_song_info))
+        const data = await dispatch(updateOneSong(new_song_info))
     };
 
 
         return (
         <>
-            <form onSubmit={onUpdate}>
+            <form onSubmit={handleUpdate}>
                 <div className='modal_ul_errors'>
                     {errors.map((error, ind) => (
                         <div key={ind}>{error}</div>
