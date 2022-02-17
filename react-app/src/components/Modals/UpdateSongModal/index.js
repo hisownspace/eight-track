@@ -12,7 +12,7 @@ function UpdateSongForm() {
 
     useEffect(() => {
         dispatch(getAllGenres());
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

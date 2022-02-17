@@ -9,6 +9,7 @@ class Song(db.Model):
     genre_id = db.Column(db.Integer, db.ForeignKey("genres.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     url = db.Column(db.String, nullable=False)
+    image_url = db.Column(db.String)
     title = db.Column(db.String, nullable=True)
     artist = db.Column(db.String, nullable=True)
     length = db.Column(db.Numeric(4,1), nullable=False)
@@ -27,6 +28,7 @@ class Song(db.Model):
             "title": self.title,
             "artist": self.artist,
             "url": self.url,
+            "image_url": self.image_url,
             "length": ceil(float(str(self.length))),
             "description": self.description,
             "public": self.public,

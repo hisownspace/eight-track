@@ -117,23 +117,25 @@ export const deleteOneSong = songId => async dispatch => {
 
 
 //reducer
-const initialState = { songs: {} };
+const initialState = { songs: {}, song: {} };
 export default function songReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         case GET_SONGS:
-            console.log(action.songs);
             newState = {...state};
-            newState.songs = action.songs;
+            newState.songs = action.songs.songs?.reduce((songs, song) => {
+                songs[song.id] = song;
+                return songs;
+            }, {});
             return newState
         case GET_SONG:
             newState = {...state};
-            newState.songs[action.song.id] = action.song
+            newState.song[action.song.id] = action.song
             return newState;
-        case ADD_SONG:
-            newState = {...state};
-            newState.songs[action.song.id] = action.song;
-            return newState;
+        // case ADD_SONG:
+        //     newState = {...state};
+        //     newState.songs[action.song.id] = action.song;
+        //     return newState;
         case DELETE_SONG:
             newState = {...state};
             delete newState.songs[action.id]

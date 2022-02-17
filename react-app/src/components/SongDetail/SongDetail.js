@@ -10,20 +10,20 @@ function SongDetail() {
     const songId = +id;
     const dispatch = useDispatch();
     const history = useHistory()
-    const song = useSelector(state => state.songs.songs[songId]);
+    const song = useSelector(state => state.songs.song[songId]);
 
     const [isLoaded, setIsLoaded] = useState(false);
     
     useEffect(() => {
         dispatch(getOneSong(songId))
-        .then(() => setIsLoaded(!isLoaded))
-    }, [songId]);
+        .then(() => setIsLoaded(true))
+    }, [songId, dispatch]);
     
     useEffect(() => {
         if (isLoaded && !song) {
             history.push("/songs");
         }
-    }, [isLoaded])
+    }, [isLoaded, history, song])
 
     const handleDelete = () => {
         dispatch(deleteOneSong(songId));

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { updateOneSong } from '../../../store/song'
+import { getOneSong, updateOneSong } from '../../../store/song'
 
 function UpdateSongFormModal({ genresObj, setShowModal }) {
     const history = useHistory()
     const dispatch = useDispatch();
-    const song = useSelector(state => state.songs.songs)
+    const song = useSelector(state => state.songs.song)
     const songArr = Object.values(song)[0]
 
 
@@ -32,6 +32,7 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
         if (res?.errors) {
             setErrors(["There was an unknown error. Please Try again later."]);
         } else {
+            dispatch(getOneSong(songArr.id))
             setShowModal(false)
             history.push(`/songs/${songArr.id}`)
         }

@@ -6,9 +6,18 @@ genre_routes = Blueprint('api/genres', __name__)
 
 @genre_routes.route('/')
 def get_genres():
-    print("HOWDY PARDNER!")
     genres = Genre.query.all()
     genres = [genre.to_dict() for genre in genres]
     genres.sort(key=lambda g: g['name'])
     return { "genres": genres }
 
+@genre_routes.route('/<int:id>')
+def get_genre_songs(id):
+    print('howdy')
+    genre_id = +id
+    songs = Song.query.filter_by(genre_id=genre_id).all()
+    print({ "songs": [song.to_dict() for song in songs] })
+    return { "songs": [song.to_dict() for song in songs] }
+
+# @genre_routes.route('/')
+# def get_all_songs_by_genre():

@@ -93,7 +93,7 @@ function DropZone() {
       setErrors(formErrors)
     }
     setSubmitted(false);
-  }, [artist, title]);
+  }, [artist, title, submitted]);
 
   //* clears drop file and reloads drop zone
   const handleCancel = (e) => {
