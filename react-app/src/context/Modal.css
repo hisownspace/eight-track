@@ -1,0 +1,77 @@
+#modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+  }
+
+#modal-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(88, 88, 88, 0.58);
+}
+
+#modal-content {
+  position: absolute;
+  width: 440px;
+  height: fit-content;
+  padding:40px;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#modal-content input{
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid rgb(133, 133, 133);;
+  background: none;
+  border-radius: 5px;
+}
+
+#modal-content input:focus{
+  outline:rgba(0, 0, 0, 0);
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.button_submit{
+  width:100%;
+  box-sizing: border-box;
+  padding:10px 0;
+  margin: 8px 0;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  height: 40px;
+
+}
+
+.button_submit:hover{
+  cursor: pointer;
+}
+
+.button_submit.button_main{
+  background-color: #3F00B7;
+  color:rgba(255, 255, 255, 1);
+}
+
+.button_submit.button_secondary{
+  border: 1px solid #3F00B7;
+}
+
+.button_submit.button_transfer{
+  /* background-color:#3F00B7; */
+  border: 1px solid #3F00B7;
+}
+
+.hrmodal{
+  margin: 8px 0;
+}

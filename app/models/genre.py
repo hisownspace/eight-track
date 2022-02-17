@@ -10,3 +10,9 @@ class Genre(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
     songs = db.relationship('Song', back_populates="genre")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }

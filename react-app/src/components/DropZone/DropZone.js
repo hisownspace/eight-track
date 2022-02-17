@@ -1,14 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addOneSong } from '../../store/song';
-// import { getAllGenres } from '../../../store/genre';
+import { getAllGenres } from '../../store/genre';
 import './DropZone.css';
 
 function DropZone() {
   const history = useHistory();
   const dispatch = useDispatch();
-  
+  const genresObj = useSelector(state => state.genres.genres);
+
+  console.log(genresObj);
+
   const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
   const [dropFile, setDropFile] = useState("");
@@ -28,9 +31,6 @@ function DropZone() {
   const handleSubmit = async (e) => {
     setErrors([]);
     e.preventDefault();
-    console.log(errors);
-    console.log(artist);
-    console.log(title);
 
     const formErrors = [];
 
@@ -76,6 +76,11 @@ function DropZone() {
       }
     }
   }
+
+  useEffect(() => {
+    dispatch(getAllGenres());
+    console.log(genresObj);
+  }, [songLoading]);
 
   useEffect(() => {
     setErrors([])
@@ -183,20 +188,17 @@ function DropZone() {
               onChange={e => setPublicSong(!publicSong)}
             />
           </div>
-          {/* uncomment and configure when genre store is ready */}
-          {/* <div className='form_content'>
-            <label htmlFor="Genre">Genre</label>
+          <div className='form_content'>
+            <label htmlFor="genre">Genre</label>
             <select
-              required
               value={genreId}
               onChange={(e) => setGenreId(e.target.value)}
             >
-              <option value=''>Select a genre</option>
-              {genresArr.map((genre) => (
-                <option key={genre?.id} value={genre?.id}>{genre?.name}</option>
+              {Object.values(genresObj).map((genre) => (
+                <option key={genre.id} value={genre.id}>{genre.name}</option>
               ))}
             </select>
-          </div> */}
+          </div>
           <button type="submit" className="add-product-button">Add Product</button>
           <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
         </form>

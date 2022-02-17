@@ -19,10 +19,11 @@ const getGenreSongs = (genre) => {
 
 // thunks
 export const getAllGenres = () => async (dispatch) => {
-    const res = await fetch('/api/genres');
+    const res = await fetch('/api/genres/');
     if (res.ok) {
-        const genres = res.json();
+        const genres = await res.json();
         dispatch(getGenres(genres));
+        console.log(genres);
         return genres;
     }
 }
@@ -37,13 +38,16 @@ export const getAllGenreSongs = (genreId) => async (dispatch) => {
 }
 
 // reducer
-const initialState = { genre: '', songs: {} }
+const initialState = { songs: {} }
 export default function genreReducer(state = initialState, action) {
     let newState;
     switch(action.type) {
         case GET_GENRES:
             newState = { ...state };
-            newState.genre = action.type;
+            newState.genres = action.genres.genres.reduce((genres, genre) => {
+                genres[genre.id] = genre;
+                return genres;
+            }, {});
             return newState;
         case GET_GENRE_SONGS:
             newState = { ...state };

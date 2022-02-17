@@ -89,7 +89,7 @@ export const addOneSong = (songDetails) => async (dispatch) => {
       }
 }
 
-export const updateOneSong = (song, songId) => async dispatch => {
+export const updateOneSong = (songDetails) => async dispatch => {
     const res = await fetch(`/api/songs/edit/${songId}`, {
         method: 'PUT',
         headers: {

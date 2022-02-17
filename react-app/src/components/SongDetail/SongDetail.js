@@ -12,30 +12,38 @@ function SongDetail() {
     const song = useSelector(state => state.songs.songs[songId]);
 
     const [isLoaded, setIsLoaded] = useState(false);
-
+    
     useEffect(() => {
         dispatch(getOneSong(songId))
-            .then(() => setIsLoaded(!isLoaded))
+        .then(() => setIsLoaded(!isLoaded))
     }, [songId]);
-
-    const handleDelete = () => {
-        dispatch(deleteOneSong(songId))
-    };
-
+    
     useEffect(() => {
         if (isLoaded && !song) {
             history.push("/songs");
         }
-    })
+        console.log(isLoaded);
+        console.log(song)
+    }, [isLoaded])
+
+    const handleDelete = () => {
+        dispatch(deleteOneSong(songId));
+        history.push("/songs");
+    };
     
-    return isLoaded && (
+    const handleEdit = () => {
+        
+    };
+
+    return !isLoaded ? null : (
         <>
             <h1>Song Page</h1>
-            <div>{song.title}</div>
-            <div>{song.artist}</div>
-            <div>{song.description}</div>
+            <div>{song?.title}</div>
+            <div>{song?.artist}</div>
+            <div>{song?.description}</div>
             <button onClick={handleDelete}>Delete Song</button>
-            <audio controls src={song.url}></audio>
+            <button onClick={handleEdit}>Edit Song Information</button>
+            <audio controls src={song?.url}></audio>
         </>
     )
 }
