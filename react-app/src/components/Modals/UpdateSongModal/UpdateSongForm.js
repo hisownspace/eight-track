@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { updateOneSong } from '../../../store/song'
 
 
-function LoginForm({ props }) {
+function UpdateSongFormModal({ props }) {
     const history = useHistory()
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
@@ -13,6 +13,7 @@ function LoginForm({ props }) {
     const [description, setDescription] = useState();
     const [publicSong, setPublicSong] = useState();
     const [genreId, setGenreId] = useState();
+    const [errors, setErrors] = useState([]);
 
     const genresObj = useSelector(state => state.genres.genres);
 
@@ -34,42 +35,73 @@ function LoginForm({ props }) {
             <form onSubmit={onUpdate}>
                 <div className='modal_ul_errors'>
                     {errors.map((error, ind) => (
-                    <div key={ind}>{error}</div>
+                        <div key={ind}>{error}</div>
                     ))}
                 </div>
+                <div className='form-content'>
 
-                <label>
+                    <label>
+                        <input
+                            id='title'
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder='Title'
+                            required
+                        />
+                    </label>
+                </div>
+                <div className='form-content'>
+                    <label>
+                        <input
+                            id='artist'
+                            type="test"
+                            value={artist}
+                            onChange={e => setArtist(e.target.value)}
+                            placeholder='Artist'
+                            required
+                        />
+                    </label>
+                </div>
+                <div className='form-content'>
+                    <label>
+                        <input
+                            type="text"
+                            name="description"
+                            placeholder="Description"
+                            autoComplete="off"
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                    </label>
+                </div>
+                <div className='form-content'>
+                    <label>
                     <input
-                        id='email'
-                        type="text"
-                        value={email}
-                        onChange={updateEmail}
-                        placeholder='Email'
-                        required
+                        type="checkbox"
+                        name="public"
+                        checked={publicSong}
+                        onChange={e => setPublicSong(!publicSong)}
                     />
-                </label>
-                <label>
-                    <input
-                        id='password'
-                        type="password"
-                        value={password}
-                        onChange={updatePassword}
-                        placeholder='Password'
-                        required
-                    />
-                </label>
+                    </label>
+                </div>
+                <div className='form_content'>
+                    <label htmlFor="genre">Genre</label>
+                    <select
+                        value={genreId}
+                        onChange={(e) => setGenreId(e.target.value)}
+                    >
+                        {Object.values(genresObj).map((genre) => (
+                            <option key={genre.id} value={genre.id}>{genre.name}</option>
+                        ))}
+                    </select>
+                </div>
                 <button className="button_submit button_main" type="submit">Log In</button>
             </form>
-            <hr className="hrmodal"/>
-            <form  onSubmit={DemoLogin}>
-                <button className="button_submit button_secondary"type="submit">Demo User</button>
-            </form>
-            <form onSubmit={handleRedirect}>
-                <button className="button_submit button_transfer" type="submit">Want to Sign Up?</button>
-            </form>
+            <hr className="hrmodal" />
         </>
     );
 }
 
 
-export default LoginForm;
+export default UpdateSongFormModal;

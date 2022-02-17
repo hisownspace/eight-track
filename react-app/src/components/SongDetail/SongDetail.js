@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneSong, getOneSong } from '../../store/song';
+import UpdateSongForm from '../Modals/UpdateSongModal';
 
 
 function SongDetail() {
@@ -43,6 +44,7 @@ function SongDetail() {
             <div>{song?.description}</div>
             <button onClick={handleDelete}>Delete Song</button>
             <button onClick={handleEdit}>Edit Song Information</button>
+            <UpdateSongForm />
             <audio controls src={song?.url}></audio>
         </>
     )
