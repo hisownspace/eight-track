@@ -36,3 +36,13 @@ def add_comment(id):
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
         return { "errors": "An unkown error occurred. Please try again."}
+
+@comment_routes.route('/<int:id>', methods=["DELETE"])
+def delete_comment(id):
+    try:
+        comment = Comment.query.get(id)
+        db.session.delete(comment)
+        db.session.commit()
+        return { "message": "Comment successfully deleted!"}
+    except Exception as e:
+        return { "message": str(e)}

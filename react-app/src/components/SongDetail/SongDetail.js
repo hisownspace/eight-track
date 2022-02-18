@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { getAllSongComments } from '../../store/comment';
+import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
@@ -23,7 +23,6 @@ function SongDetail() {
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
-        console.log('comments', comments);
     }, [songId, dispatch]);
     
     useEffect(() => {
@@ -36,9 +35,16 @@ function SongDetail() {
         dispatch(deleteOneSong(songId));
         history.push("/songs");
     };
-    
-    const handleEdit = () => {
+
+    useEffect(() => {
         
+    }, [comments])
+    
+    const handleDeleteComment = e => {
+        e.preventDefault();
+        const commentId = +(e.target.value)
+        dispatch(deleteOneComment(commentId))
+        dispatch(getAllSongComments(songId));
     };
 
     return !isLoaded ? null : (
@@ -49,7 +55,6 @@ function SongDetail() {
                 <div>{song?.artist}</div>
                 <div>{song?.description}</div>
                 <button onClick={handleDelete}>Delete Song</button>
-                <button onClick={handleEdit}>Edit Song Information</button>
                 <UpdateSongForm />
                 <audio controls src={song?.url}></audio>
             </div>
@@ -60,8 +65,20 @@ function SongDetail() {
                    <div className='comment-list-item'>
                        <p>{comment.content}</p>
                        <div> - {comment.user.username}</div>
-                       {comment.user.id === userId ? <button>Edit Comment</button> : null}
-                   </div>)
+                       {comment.user.id === userId ?
+                       <>
+                            <button
+                                onClick>
+                                Edit Comment
+                            </button>
+                                <button
+                                value={comment.id}
+                                    onClick={handleDeleteComment}>
+                                    Delete Comment
+                                </button>
+                        </>
+                        : null}
+                       </div>)
                 })}
             </div>
 

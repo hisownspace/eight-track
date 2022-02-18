@@ -1,8 +1,9 @@
 
 
 // constants
-const GET_SONG_COMMENTS = "comments/GET_SONG_COMMENTS"
-const ADD_SONG_COMMENT = "comments/ADD_SONG_COMMENT"
+const GET_SONG_COMMENTS = "comments/GET_SONG_COMMENTS";
+const ADD_SONG_COMMENT = "comments/ADD_SONG_COMMENT";
+const DELETE_COMMENT = 'comments/DELETE_COMMENT';
 
 // action creators
 function getSongComments(comments) {
@@ -50,6 +51,19 @@ export const addSongComment = commentForm => async dispatch => {
         return ["An error occurred. Please try again."]
     }
 }
+
+export const deleteOneComment = commentId => async dispatch => {
+    const res = await fetch(`/api/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+        'Content-Type': 'application/json'
+      }})
+    if (res.ok) {
+        return "Comment successfully deleted!"
+    } else {
+        return res.error;
+    }
+};
 
 
 // reducer
