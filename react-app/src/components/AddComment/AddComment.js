@@ -10,13 +10,20 @@ function AddComment({ songId, audioRef }) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const timestamp = audioRef.current.currentTime;
+        let timestamp;
+        if (audioRef?.current?.currentTime) {
+                timestamp = audioRef.current.currentTime;
+            } else {
+                    timestamp = 0;
+            }
+        console.log(audioRef.current.currentTime)
         const payload = {
             content,
             songId,
             userId,
             timestamp
         }
+        console.log(payload);
         await dispatch(addSongComment(payload));
         dispatch(getAllSongComments(songId));
         setContent('');

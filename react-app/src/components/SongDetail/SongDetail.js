@@ -5,6 +5,7 @@ import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
+import './SongDetail.css';
 
 
 function SongDetail() {
@@ -14,7 +15,7 @@ function SongDetail() {
     const history = useHistory();
     const song = useSelector(state => state.songs.song[songId]);
     const comments = useSelector(state => state.comments.comments);
-    const userId = useSelector(state => state.session.user.id);
+    const userId = useSelector(state => state.session.user?.id);
     const audioRef = useRef();
 
     const [isLoaded, setIsLoaded] = useState(false);
@@ -61,17 +62,19 @@ function SongDetail() {
 
     return (
         <>
-            <h1>Song Page</h1>
             <div className='song-detail'>
                 <div>{song?.title}</div>
                 <div>{song?.artist}</div>
                 <div>{song?.description}</div>
-                <button onClick={handleDelete}>Delete Song</button>
-                <UpdateSongForm />
+                {(userId && (userId === song?.user?.id)) ? 
+                <>
+                    <button onClick={handleDelete}>Delete Song</button>
+                    <UpdateSongForm />
+                </> : null}
                 <audio ref={audioRef} controls src={song?.url}></audio>
             </div>
             <div className='song-comments'>
-                <AddComment songId={songId} audioRef={audioRef}/>
+                {userId ? <AddComment songId={songId} audioRef={audioRef}/> : null}
                 {isLoaded && comments?.comments && (Object.values(comments?.comments)).map((comment, idx) => {
                    return (
                    <div key={idx} className='comment-list-item'>

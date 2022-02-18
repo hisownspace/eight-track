@@ -31,6 +31,7 @@ export const getAllSongComments = songId => async dispatch => {
 
 export const addSongComment = commentForm => async dispatch => {
     const songId = commentForm.songId
+    console.log(commentForm);
     const res = await fetch(`/api/songs/${songId}/comments`,{
             method: 'POST',
             headers: {

@@ -24,7 +24,7 @@ function AllSongs() {
         <div>
             <h1>All Songs Page</h1>
             <div>
-            {songs?.map((song, idx) => {
+            {/* {songs?.map((song, idx) => {
                 return (
                     <div key={idx}>
                         {song.title}
@@ -33,7 +33,7 @@ function AllSongs() {
                         </div>
                     </div>
                 )
-            })}
+            })} */}
             </div>
             <div>
                 {genres?.map((genre, idx) => {
