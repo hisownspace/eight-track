@@ -13,10 +13,8 @@ def get_genres():
 
 @genre_routes.route('/<int:id>')
 def get_genre_songs(id):
-    print('howdy')
     genre_id = +id
     songs = Song.query.filter_by(genre_id=genre_id).all()
-    print({ "songs": [song.to_dict() for song in songs] })
     return { "songs": [song.to_dict() for song in songs] }
 
 # @genre_routes.route('/')

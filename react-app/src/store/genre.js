@@ -31,7 +31,6 @@ export const getAllGenreSongs = (genreId) => async (dispatch) => {
     const res = await fetch(`/api/genres/${genreId}`);
     if (res.ok) {
         const genreSongs = await res.json();
-        console.log(genreSongs);
         dispatch(getGenreSongs(genreSongs));
         return genreSongs
     }
@@ -51,7 +50,6 @@ export default function genreReducer(state = initialState, action) {
             return newState;
         case GET_GENRE_SONGS:
             newState = { ...state };
-            console.log('ACTION.SONGS', action.songs);
             newState.songs = action.songs.songs?.reduce((songs, song) => {
                 songs[song.id] = song;
                 return songs;

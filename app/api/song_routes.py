@@ -55,7 +55,6 @@ def add_songs():
         return upload, 400
 
     columns = request.form.to_dict()
-    print(columns)
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     new_song = Song(

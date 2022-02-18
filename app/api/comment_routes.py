@@ -22,7 +22,6 @@ def get_song_comments(songId):
 def add_comment(id):
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    print(form.data)
     if form.validate_on_submit():
         comment = Comment(
             song_id=form.data['songId'],
@@ -51,7 +50,6 @@ def delete_comment(id):
 # def update_comment(id):
 #     form = CommentForm()
 #     form['csrf_token'].data = request.cookies['csrf_token']
-#     print(form.data)
 #     if form.validate_on_submit():
 #         comment = Comment.query.get(id)
 #         comment.content=form.data['content']

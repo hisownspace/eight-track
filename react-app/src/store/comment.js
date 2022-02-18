@@ -3,7 +3,6 @@
 // constants
 const GET_SONG_COMMENTS = "comments/GET_SONG_COMMENTS";
 const ADD_SONG_COMMENT = "comments/ADD_SONG_COMMENT";
-const DELETE_COMMENT = 'comments/DELETE_COMMENT';
 
 // action creators
 function getSongComments(comments) {
@@ -25,7 +24,6 @@ export const getAllSongComments = songId => async dispatch => {
     const res  = await fetch(`/api/songs/${songId}/comments`);
     if (res.ok) {
         const comments = await res.json();
-        console.log(comments);
         dispatch(getSongComments(comments));
         return comments;
     }

@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneComment, getAllSongComments } from '../../store/comment';
-import { deleteOneSong, getOneSong, editOneComment } from '../../store/song';
+import { deleteOneSong, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
 
@@ -15,7 +15,6 @@ function SongDetail() {
     const song = useSelector(state => state.songs.song[songId]);
     const comments = useSelector(state => state.comments.comments);
     const userId = useSelector(state => state.session.user.id);
-    const [content, setContent] = useState('');
     const audioRef = useRef();
 
     const [isLoaded, setIsLoaded] = useState(false);
