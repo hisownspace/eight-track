@@ -12,20 +12,27 @@ comment_routes = Blueprint('api/comments', __name__)
 
 @song_routes.route('/<int:songId>/comments')
 def get_song_comments(songId):
-    comments = Comment.filter_by(song_id=songId).all()
+    comments = Comment.query.filter_by(song_id=songId).all()
     if comments:
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
         return {}
 
 @song_routes.route('/<int:id>/comments', methods=["POST"])
-def add_comment():
-
+def add_comment(id):
+    print('HELLO')
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    print(form.data)
     if form.validate_on_submit():
         comment = Comment(
-            song_id=song_id,
-            user_id=user_id,
-            content=content
+            song_id=int(form.data['songId']),
+            user_id=int(form.data['userId']),
+            content=form.data['content']
         )
+        db.session.add(comment)
+        db.session.commit()
+        comments = Comment.query.all()
+        return { "comments": [comment.to_dict() for comment in comments] }
+    else:
+        return { "errors": "An unkown error occurred. Please try again."}
