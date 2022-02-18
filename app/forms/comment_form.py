@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, IntegerField, TextAreaField
+from wtforms import StringField, FloatField, IntegerField
 from wtforms.validators import DataRequired, Length, NumberRange
 
 v = [DataRequired()]
 
 class CommentForm(FlaskForm):
-    userId = StringField('user_id', v)
-    songId = StringField('song_id', v)
+    userId = IntegerField('user_id', v)
+    songId = IntegerField('song_id', v)
+    timestamp = FloatField('timestamp', v)
     content = StringField('content',
         validators=[DataRequired(),
                     Length(min=1,

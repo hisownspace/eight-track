@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneComment, getAllSongComments } from '../../store/comment';
-import { deleteOneSong, getOneSong } from '../../store/song';
+import { deleteOneSong, getOneSong, editOneComment } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
 
@@ -11,11 +11,12 @@ function SongDetail() {
     const { id } = useParams();
     const songId = +id;
     const dispatch = useDispatch();
-    const history = useHistory()
+    const history = useHistory();
     const song = useSelector(state => state.songs.song[songId]);
-    const comments = useSelector(state => state.comments.comments)
-    const userId = useSelector(state => state.session.user.id)
-
+    const comments = useSelector(state => state.comments.comments);
+    const userId = useSelector(state => state.session.user.id);
+    const [content, setContent] = useState('');
+    const audioRef = useRef();
 
     const [isLoaded, setIsLoaded] = useState(false);
     
@@ -23,31 +24,43 @@ function SongDetail() {
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
-    }, [songId, dispatch]);
+    }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
         if (isLoaded && !song) {
             history.push("/songs");
         }
-    }, [isLoaded, history, song])
+    }, [isLoaded, history, song]);
 
     const handleDelete = () => {
         dispatch(deleteOneSong(songId));
         history.push("/songs");
     };
-
-    useEffect(() => {
-        
-    }, [comments])
     
     const handleDeleteComment = e => {
         e.preventDefault();
-        const commentId = +(e.target.value)
-        dispatch(deleteOneComment(commentId))
+        const commentId = +(e.target.value);
+        dispatch(deleteOneComment(commentId));
         dispatch(getAllSongComments(songId));
+        setIsLoaded(false);
     };
 
-    return !isLoaded ? null : (
+
+    // const openCommentForm = e => {
+
+    // };
+
+    // const handleEditComment = e => {
+    //     e.preventDefault();
+    //     const payload = {
+    //         content,
+    //         commentId: e.target.value
+    //     } 
+    //     const commentId = +(e.target.value);
+    //     dispatch(editOneComment(commentId));
+    // };
+
+    return (
         <>
             <h1>Song Page</h1>
             <div className='song-detail'>
@@ -56,21 +69,18 @@ function SongDetail() {
                 <div>{song?.description}</div>
                 <button onClick={handleDelete}>Delete Song</button>
                 <UpdateSongForm />
-                <audio controls src={song?.url}></audio>
+                <audio ref={audioRef} controls src={song?.url}></audio>
             </div>
             <div className='song-comments'>
-                <AddComment songId={songId}/>
-                {comments?.comments && (Object.values(comments?.comments)).map(comment => {
+                <AddComment songId={songId} audioRef={audioRef}/>
+                {isLoaded && comments?.comments && (Object.values(comments?.comments)).map((comment, idx) => {
                    return (
-                   <div className='comment-list-item'>
+                   <div key={idx} className='comment-list-item'>
                        <p>{comment.content}</p>
                        <div> - {comment.user.username}</div>
+                       <div>{comment.timestamp}</div>
                        {comment.user.id === userId ?
                        <>
-                            <button
-                                onClick>
-                                Edit Comment
-                            </button>
                                 <button
                                 value={comment.id}
                                     onClick={handleDeleteComment}>

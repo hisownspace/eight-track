@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSongComment, getAllSongComments } from '../../store/comment';
 
-function AddComment({ songId }) {
+function AddComment({ songId, audioRef }) {
     const dispatch = useDispatch();
     const [content, setContent] = useState('');
     const userId = useSelector(state => state.session.user.id)
@@ -10,13 +10,13 @@ function AddComment({ songId }) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(userId);
+        const timestamp = audioRef.current.currentTime;
         const payload = {
             content,
             songId,
-            userId
+            userId,
+            timestamp
         }
-        console.log(payload);
         await dispatch(addSongComment(payload));
         dispatch(getAllSongComments(songId));
         setContent('');

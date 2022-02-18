@@ -20,14 +20,14 @@ def get_song_comments(songId):
 
 @song_routes.route('/<int:id>/comments', methods=["POST"])
 def add_comment(id):
-    print('HELLO')
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     print(form.data)
     if form.validate_on_submit():
         comment = Comment(
-            song_id=int(form.data['songId']),
-            user_id=int(form.data['userId']),
+            song_id=form.data['songId'],
+            user_id=form.data['userId'],
+            timestamp=form.data['timestamp'],
             content=form.data['content']
         )
         db.session.add(comment)
@@ -46,3 +46,18 @@ def delete_comment(id):
         return { "message": "Comment successfully deleted!"}
     except Exception as e:
         return { "message": str(e)}
+
+# @comment_routes.route('/<int:id>', methods=["PUT"])
+# def update_comment(id):
+#     form = CommentForm()
+#     form['csrf_token'].data = request.cookies['csrf_token']
+#     print(form.data)
+#     if form.validate_on_submit():
+#         comment = Comment.query.get(id)
+#         comment.content=form.data['content']
+#         db.session.add(comment)
+#         db.session.commit()
+#         comments = Comment.query.all()
+#         return { "comments": [comment.to_dict() for comment in comments] }
+#     else:
+#         return { "errors": "An unkown error occurred. Please try again."}
