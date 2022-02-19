@@ -65,6 +65,8 @@ def add_songs():
                 artist=columns["artist"],
                 length=columns["length"],
                 description=columns["description"],
+                created_at=datetime.now(),
+                updated_at=datetime.now(),
                 public=(True if columns["publicSong"] == "true" else False)
                 )
     try:
