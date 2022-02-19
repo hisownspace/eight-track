@@ -120,20 +120,18 @@ function SongDetail() {
                             </div>
                         </div>
                     </div>
-                    <div className="song-detail-player"><AudioPlayer
+                    <div className="song-detail-player"><audio
                     id="actual-player"
                     ref={audioRef}
                     controls
-                    src={song?.url}
-                    customAdditionalControls={[]}
-                    showJumpControls={false} /></div>
+                    src={song?.url} /></div>
                 </div>
                 <div className='song-detail-album-art'>
                     <img alt={song?.title} src={song?.image_url || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}></img>
                 </div>
             </div>
             <div className='song-comments'>
-                {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
+                {userId ? <AddComment songId={songId} setIsLoaded={setIsLoaded} audioRef={audioRef} /> : null}
                 {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map((comment, idx) => {
                     return (
                         <div key={idx} className='comment-list-item'>
