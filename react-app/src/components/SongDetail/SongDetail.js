@@ -153,7 +153,6 @@ function SongDetail() {
                         </div>)
                 })}
             </div>
-
         </>
     )
 }
