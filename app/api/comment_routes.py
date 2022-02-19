@@ -31,7 +31,7 @@ def add_comment(id):
         )
         db.session.add(comment)
         db.session.commit()
-        comments = Comment.query.all()
+        comments = Comment.query.order_by(Comment.created_at).all()
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
         return { "errors": "An unkown error occurred. Please try again."}

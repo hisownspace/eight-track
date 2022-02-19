@@ -1,5 +1,6 @@
 from .db import db
 from datetime import datetime
+import time
 from math import floor
 
 class Comment(db.Model):
@@ -23,7 +24,7 @@ class Comment(db.Model):
             "song": self.song.to_dict(),
             "content": self.content,
             "timestamp": self.convert_timestamp(),
-            "created_at": self.created_at,
+            "created_at": time.mktime(self.created_at.timetuple()) * 1000,
             "updated_at": self.updated_at,
         }
 

@@ -24,6 +24,13 @@ def seed_genres():
     edm = Genre(
         name="edm"
     )
+    reggae = Genre(
+        name="reggae"
+    )
+    rnb = Genre(
+        name="r&b"
+    )
+
     db.session.add(hip_hop)
     db.session.add(folk)
     db.session.add(punk)
@@ -31,6 +38,8 @@ def seed_genres():
     db.session.add(blues)
     db.session.add(jazz)
     db.session.add(edm)
+    db.session.add(reggae)
+    db.session.add(rnb)
 
     db.session.commit()
 

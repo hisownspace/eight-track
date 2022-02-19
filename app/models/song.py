@@ -1,5 +1,6 @@
 from .db import db
 from datetime import datetime
+import time
 from math import ceil
 
 class Song(db.Model):
@@ -32,6 +33,7 @@ class Song(db.Model):
             "length": ceil(float(str(self.length))),
             "description": self.description,
             "public": self.public,
+            "created_at": time.mktime(self.created_at.timetuple()) * 1000,
             # these keys are associated with other tables
             "user": self.user.to_dict(),
             "genre": self.genre.to_dict()
