@@ -15,6 +15,10 @@
     margin: 20px;
 }
 
+.song-detail-album-art img {
+    width: 100%;
+}
+
 .song-detail-player-side {
     display: flex;
     flex-direction: column;

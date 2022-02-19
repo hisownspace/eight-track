@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addOneSong } from '../../store/song';
@@ -10,6 +10,7 @@ function DropZone() {
   const dispatch = useDispatch();
   const genresObj = useSelector(state => state.genres.genres);
   const sessionUser = useSelector(state => state.session.user);
+  const imageFile = useRef();
 
   // const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
@@ -32,15 +33,15 @@ function DropZone() {
 
     const formErrors = [];
 
-    if (!artist) {
+    if (artist === "") {
       formErrors.push("Please fill out artist field!")
     }
-    if (!title) {
+    if (title === "") {
       formErrors.push("Please fill out title field!")
     }
 
     if (formErrors.length > 0) {
-      setErrors(formErrors)
+      setErrors(formErrors);
       setSubmitted(true);
     } else {
       //* add controlled inputs to form
@@ -53,7 +54,8 @@ function DropZone() {
       formData.append("userId", sessionUser.id);
       formData.append("description", description);
       formData.append("publicSong", publicSong);
-      
+      formData.append("image", imageFile.current.files[0]);
+
       //* aws uploads can be a bit slow—displaying
       //* some sort of loading message is a good idea
       setSongLoading(true);
@@ -67,7 +69,7 @@ function DropZone() {
       const res = await dispatch(addOneSong(formData));
       setSongLoading(false);
       if (res.errors) {
-        setErrors(["There was an unknown error. Please Try again later."]);
+        setErrors([res.errors]);
       } else {
         setDropFile("")
         history.push(`/songs/${res.song.id}`)
@@ -82,7 +84,6 @@ function DropZone() {
   useEffect(() => {
     setErrors([])
     const formErrors = [];
-
     if (!artist && submitted) {
       formErrors.push("Please fill out artist field!")
     }
@@ -92,13 +93,13 @@ function DropZone() {
     if (formErrors.length > 0) {
       setErrors(formErrors)
     }
-    setSubmitted(false);
   }, [artist, title, submitted]);
 
   //* clears drop file and reloads drop zone
   const handleCancel = (e) => {
     e.preventDefault();
-    setDropFile("")
+    setDropFile("");
+    setSubmitted(false);
   };
 
   //* when file is dragged into the dropzone, the file is set 
@@ -165,6 +166,13 @@ function DropZone() {
               value={artist}
               onChange={e => setArtist(e.target.value)}
               />
+          </div>
+          <div>
+            <input type="file"
+            name="image"
+            ref={imageFile}
+            >
+            </input>
           </div>
           <div className='form-content'>
             <input

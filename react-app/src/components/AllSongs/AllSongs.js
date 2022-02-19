@@ -36,9 +36,9 @@ function AllSongs() {
             })} */}
             </div>
             <div>
-                {genres?.map((genre, idx) => {
+                {genres?.map(genre => {
                     return (
-                        <div key={idx}>
+                        <div key={genre.id}>
                             <h1>{genre.name}</h1>
                             <GenreList genreId={genre.id} />
                         </div>

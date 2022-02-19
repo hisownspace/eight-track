@@ -10,7 +10,7 @@ s3 = boto3.client(
    aws_secret_access_key=os.environ.get("S3_SECRET")
 )
 
-ALLOWED_EXTENSIONS = {
+AUDIO_EXTENSIONS = {
                     "mp3",
                     "wav",
                     "flac",
@@ -20,9 +20,22 @@ ALLOWED_EXTENSIONS = {
                     "wma",
                     }
 
-def allowed_file(filename):
+IMAGE_EXTENSIONS = {
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif"
+}
+
+def audio_file(filename):
+    print(filename)
     return "." in filename and \
-           filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit(".", 1)[1].lower() in AUDIO_EXTENSIONS
+
+def image_file(filename):
+    print(filename)
+    return "." in filename and \
+           filename.rsplit(".", 1)[1].lower() in IMAGE_EXTENSIONS
 
 def get_unique_filename(filename):
     ext = filename.rsplit(".", 1)[1].lower()

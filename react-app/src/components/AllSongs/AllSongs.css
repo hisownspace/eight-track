@@ -1,3 +1,7 @@
 .song-image-list-item-container {
     width: 200px;
 }
+
+.song-image-list-item-container img {
+    width: 100%;
+}

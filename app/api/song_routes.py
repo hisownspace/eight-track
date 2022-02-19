@@ -4,7 +4,7 @@ from app.models import db, Song, User, Genre
 from app.forms import SongEditForm
 from datetime import datetime
 from app.s3_helpers import (
-    remove_file_from_s3, upload_file_to_s3, allowed_file, get_unique_filename)
+    remove_file_from_s3, upload_file_to_s3, audio_file, get_unique_filename, image_file)
 
 song_routes = Blueprint('api/songs', __name__)
 
@@ -36,13 +36,24 @@ def get_one_song(id):
 
 @song_routes.route("/", methods=["POST"])
 def add_songs():
+    print(request.files)
     if "song" not in request.files:
         return { "errors": "audio file required"}, 400
 
+    imageUrl = None
     song = request.files["song"]
+    if "image" in request.files:
+        image = request.files["image"]
+        if not image_file(image.filename):
+            return { "errors": "file type not permitted for submitted image" }
+        image.filename = get_unique_filename(image.filename)
+        imageUpload = upload_file_to_s3(image)
+        if "url" not in imageUpload:
+            return imageUpload, 400
+        imageUrl = imageUpload["url"]
 
-    if not allowed_file(song.filename):
-        return { "errors": "file type not permitted" }
+    if not audio_file(song.filename):
+        return { "errors": "file type not permitted for submitted audio file" }
     
     song.filename = get_unique_filename(song.filename)
 
@@ -57,10 +68,13 @@ def add_songs():
     columns = request.form.to_dict()
     url = upload["url"]
     # flask_login allows us to get the current user from the request
+    if imageUrl is None:
+        imageUrl = "https://hisownbucket.s3.amazonaws.com/play-button.svg"
     new_song = Song(
                 genre_id=columns["genreId"],
                 user_id=columns["userId"],
                 url=url,
+                image_url= imageUrl,
                 title=columns["title"],
                 artist=columns["artist"],
                 length=columns["length"],

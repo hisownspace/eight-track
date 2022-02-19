@@ -132,9 +132,9 @@ function SongDetail() {
             </div>
             <div className='song-comments'>
                 {userId ? <AddComment songId={songId} setIsLoaded={setIsLoaded} audioRef={audioRef} /> : null}
-                {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map((comment, idx) => {
+                {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map(comment => {
                     return (
-                        <div key={idx} className='comment-list-item'>
+                        <div key={comment.id} className='comment-list-item'>
                             <p>{comment.content}</p>
                             <div> - {comment.user.username}</div>
                             <div>{comment.timestamp}</div>
