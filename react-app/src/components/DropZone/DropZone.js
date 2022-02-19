@@ -143,7 +143,7 @@ function DropZone() {
           </ul>
         </div>
         <span>{dropFile.name}</span>
-        <form onSubmit={handleSubmit}>
+        {!songLoading ? <form onSubmit={handleSubmit}>
           <div className='form-content'>
             <label htmlFor="title">Title</label>
             <input
@@ -197,8 +197,7 @@ function DropZone() {
           </div>
           <button type="submit" className="add-product-button">Add Product</button>
           <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
-        </form>
-        {songLoading ? <div className='song-loading'>Song Loading...</div> : null}
+        </form> : <div className='song-loading'>Song Loading...</div>}
       </div>
       <audio src={audioSource} onLoadedMetadata={getDuration}></audio>
     </div>)

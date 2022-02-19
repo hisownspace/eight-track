@@ -5,6 +5,8 @@ import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 import './SongDetail.css';
 
 
@@ -45,6 +47,41 @@ function SongDetail() {
         setIsLoaded(false);
     };
 
+    const timeElapsed = (time) => {
+        const postDate = new Date(time);
+        const rightNow = new Date(Date.now());
+        const elapsedTime = rightNow - postDate
+        console.log(elapsedTime);
+        const seconds = elapsedTime / 1000;
+        const minutes = seconds / 60;
+        if (minutes < 5) {
+            return "Just moments ago...";
+        }
+        const hours = minutes / 60;
+        if (hours < 1) {
+            return `${Math.floor(minutes)} minutes ago`
+        } else if (Math.floor(hours) === 1) {
+            return `1 hour ago`;
+        }
+        const days = hours / 24;
+        if ( days < 1) {
+            return `${Math.floor(hours)} hours ago`;
+        } else if (Math.floor(days) ===1) {
+            return `1 day ago`
+        }
+        const months = days / 30;
+        if (months < 1) {
+            return `${Math.floor(days)} days ago`;
+        }
+        const years = months / 12
+        if (years < 1) {
+            return `${Math.floor(months)} months ago`;
+        } else if (Math.floor(years) === 1) {
+            return `1 year ago`;
+        } else {
+            return `${Math.floor(years)} years ago`;
+        }
+    };
 
     // const openCommentForm = e => {
 
@@ -55,7 +92,7 @@ function SongDetail() {
     //     const payload = {
     //         content,
     //         commentId: e.target.value
-    //     } 
+    //     } created_at
     //     const commentId = +(e.target.value);
     //     dispatch(editOneComment(commentId));
     // };
@@ -63,34 +100,57 @@ function SongDetail() {
     return (
         <>
             <div className='song-detail'>
-                <div>{song?.title}</div>
-                <div>{song?.artist}</div>
-                <div>{song?.description}</div>
-                {(userId && (userId === song?.user?.id)) ? 
-                <>
-                    <button onClick={handleDelete}>Delete Song</button>
-                    <UpdateSongForm />
-                </> : null}
-                <audio ref={audioRef} controls src={song?.url}></audio>
+                <div className='song-detail-player-side'>
+                    <div className="song-info-headline">
+                        <div>
+                            <div>{song?.title}</div>
+                            <div>{song?.artist}</div>
+                            {(userId && (userId === song?.user?.id)) ?
+                                <>
+                                    <button onClick={handleDelete}>Delete Song</button>
+                                    <UpdateSongForm />
+                                </> : null}
+                        </div>
+                        <div>
+                            <div>
+                                {timeElapsed(song?.created_at)}
+                            </div>
+                            <div>
+                                {song?.genre.name}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="song-detail-player"><AudioPlayer
+                    id="actual-player"
+                    ref={audioRef}
+                    controls
+                    src={song?.url}
+                    customAdditionalControls={[]}
+                    showJumpControls={false} /></div>
+                </div>
+                <div className='song-detail-album-art'>
+                    <img alt={song?.title} src={song?.image_url || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}></img>
+                </div>
             </div>
             <div className='song-comments'>
-                {userId ? <AddComment songId={songId} audioRef={audioRef}/> : null}
-                {isLoaded && comments?.comments && (Object.values(comments?.comments)).map((comment, idx) => {
-                   return (
-                   <div key={idx} className='comment-list-item'>
-                       <p>{comment.content}</p>
-                       <div> - {comment.user.username}</div>
-                       <div>{comment.timestamp}</div>
-                       {comment.user.id === userId ?
-                       <>
-                                <button
-                                value={comment.id}
-                                    onClick={handleDeleteComment}>
-                                    Delete Comment
-                                </button>
-                        </>
-                        : null}
-                       </div>)
+                {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
+                {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map((comment, idx) => {
+                    return (
+                        <div key={idx} className='comment-list-item'>
+                            <p>{comment.content}</p>
+                            <div> - {comment.user.username}</div>
+                            <div>{comment.timestamp}</div>
+                            <div>{timeElapsed(comment.created_at)}</div>
+                            {comment.user.id === userId ?
+                                <>
+                                    <button
+                                        value={comment.id}
+                                        onClick={handleDeleteComment}>
+                                        Delete Comment
+                                    </button>
+                                </>
+                                : null}
+                        </div>)
                 })}
             </div>
 

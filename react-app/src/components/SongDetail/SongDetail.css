@@ -2,8 +2,43 @@
     height: 380px;
     background-color: #6B6D7A;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .song-comments {
 
+}
+
+.song-detail-album-art {
+    width: 340px;
+    margin: 20px;
+}
+
+.song-detail-player-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 2;
+}
+
+#actual-player {
+    width: 700px;
+}
+
+.rhap_container, .rhap_container *:focus {
+    outline: none;
+    /* background-color: #6B6D7A; */
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.rhap_container svg {
+    color: white;
+}
+
+.song-info-headline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

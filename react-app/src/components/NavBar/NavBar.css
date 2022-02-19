@@ -12,10 +12,9 @@
     color: #EEEEEE;
     width: 1240px;
     height:47px;
-    display: grid;
-    grid-template-columns: 1fr .2fr;
+    display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 a {
