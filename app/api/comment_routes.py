@@ -27,7 +27,9 @@ def add_comment(id):
             song_id=form.data['songId'],
             user_id=form.data['userId'],
             timestamp=form.data['timestamp'],
-            content=form.data['content']
+            content=form.data['content'],
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
         db.session.add(comment)
         db.session.commit()
