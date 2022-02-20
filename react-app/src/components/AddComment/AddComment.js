@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSongComment, getAllSongComments } from '../../store/comment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import './AddComment.css'
 
-function AddComment({ songId, audioRef, setIsLoaded }) {
+function AddComment({ songId, audioRef }) {
     const dispatch = useDispatch();
     const [content, setContent] = useState('');
     const userId = useSelector(state => state.session.user.id)
@@ -10,21 +13,18 @@ function AddComment({ songId, audioRef, setIsLoaded }) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(audioRef.current.currentTime)
         let timestamp;
-        if (audioRef.current.currentTime) {
+        if (audioRef?.current?.currentTime) {
                 timestamp = audioRef.current.currentTime;
             } else {
                     timestamp = 0;
             }
-        console.log(audioRef.current.currentTime)
         const payload = {
             content,
             songId,
             userId,
             timestamp
         }
-        console.log(payload);
         await dispatch(addSongComment(payload));
         dispatch(getAllSongComments(songId));
         setContent('');
@@ -32,14 +32,18 @@ function AddComment({ songId, audioRef, setIsLoaded }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <label htmlFor="content">Comment:</label>
+            <label htmlFor="content">
+                {/* <img src={user.image_url || } */}
+                <FontAwesomeIcon className="fa-solid" icon={faUser} />
+            </label>
             <input
                 type="text"
                 value={content}
                 onChange={e => setContent(e.target.value)}
-                placeholder="Comment..."
+                placeholder="Write a comment..."
+                className='comment-box'
                 />
-            <button>Submit Comment</button>
+            {/* <button>Submit Comment</button> */}
         </form>
     )
 }

@@ -130,6 +130,7 @@ export default function songReducer(state = initialState, action) {
             return newState
         case GET_SONG:
             newState = {...state};
+            newState.song = {};
             newState.song[action.song.id] = action.song
             return newState;
         // case ADD_SONG:
@@ -138,7 +139,9 @@ export default function songReducer(state = initialState, action) {
         //     return newState;
         case DELETE_SONG:
             newState = {...state};
-            delete newState.songs[action.id]
+            console.log(newState);
+            const id = +action.id
+            delete newState.songs[id]
             return newState;
         default:
             return state;

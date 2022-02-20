@@ -7,6 +7,7 @@ import SignUpForm from '../auth/SignUpForm';
 import LoginFormModal from '../Modals/LoginFormModal'
 import SignupFormModal from '../Modals/SignupFormModal'
 import ProfileButton from './ProfileButton';
+import Footer from './FooterPlayer';
 
 
 function NavBar({ isLoaded }) {
@@ -37,6 +38,7 @@ function NavBar({ isLoaded }) {
     }
 
     return (
+        <>
         <div className="nav-bar">
             <div className='occupied-nav-bar'>
                 <div className='nav-left'>
@@ -57,6 +59,8 @@ function NavBar({ isLoaded }) {
                 </div>
             </div>
         </div>
+        <Footer />
+        </>
     )
     };
 

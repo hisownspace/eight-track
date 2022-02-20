@@ -2,11 +2,10 @@ import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneComment, getAllSongComments } from '../../store/comment';
-import { deleteOneSong, getOneSong } from '../../store/song';
+import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
-import AudioPlayer from 'react-h5-audio-player';
-import 'react-h5-audio-player/lib/styles.css';
+import WaveForm from '../WaveForm';
 import './SongDetail.css';
 
 
@@ -23,35 +22,41 @@ function SongDetail() {
     const [isLoaded, setIsLoaded] = useState(false);
     
     useEffect(() => {
+        console.log("SongDetails");
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
-    }, [songId, dispatch, isLoaded]);
+    }, [songId, dispatch]);
     
     useEffect(() => {
         if (isLoaded && !song) {
             history.push("/songs");
         }
-    }, [isLoaded, history, song]);
+        // setIsLoaded(true);
+    }, [isLoaded, history, song, dispatch, songId]);
 
-    const handleDelete = () => {
-        dispatch(deleteOneSong(songId));
+    const handleDelete = async () => {
+        await dispatch(deleteOneSong(songId));
+        await dispatch(getAllSongs());
         history.push("/songs");
+        setIsLoaded(!isLoaded);
     };
     
     const handleDeleteComment = e => {
         e.preventDefault();
         const commentId = +(e.target.value);
         dispatch(deleteOneComment(commentId));
-        dispatch(getAllSongComments(songId));
-        setIsLoaded(false);
     };
+
+    useEffect(() => {
+        dispatch(getAllSongComments(songId));
+        setIsLoaded(true);
+    }, [isLoaded])
 
     const timeElapsed = (time) => {
         const postDate = new Date(time);
         const rightNow = new Date(Date.now());
         const elapsedTime = rightNow - postDate
-        console.log(elapsedTime);
         const seconds = elapsedTime / 1000;
         const minutes = seconds / 60;
         if (minutes < 5) {
@@ -113,25 +118,28 @@ function SongDetail() {
                         </div>
                         <div>
                             <div>
-                                {timeElapsed(song?.created_at)}
+                                {isLoaded ? timeElapsed(song?.created_at) : null}
                             </div>
                             <div>
                                 {song?.genre.name}
                             </div>
                         </div>
                     </div>
-                    <div className="song-detail-player"><audio
+                    <div className="song-detail-player">
+                        {/* <audio
                     id="actual-player"
                     ref={audioRef}
                     controls
-                    src={song?.url} /></div>
+                    src={song?.url} /> */}
+                        <WaveForm />
+                    </div>
                 </div>
                 <div className='song-detail-album-art'>
                     <img alt={song?.title} src={song?.image_url || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}></img>
                 </div>
             </div>
             <div className='song-comments'>
-                {userId ? <AddComment songId={songId} setIsLoaded={setIsLoaded} audioRef={audioRef} /> : null}
+                {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
                 {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map(comment => {
                     return (
                         <div key={comment.id} className='comment-list-item'>
