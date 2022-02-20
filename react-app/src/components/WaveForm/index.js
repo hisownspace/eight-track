@@ -1,3 +1,3 @@
-import WaveForm from "./WaveForm";
+import WaveFormTEST from "./WaveFormTEST";
 
-export default WaveForm;
+export default WaveFormTEST;

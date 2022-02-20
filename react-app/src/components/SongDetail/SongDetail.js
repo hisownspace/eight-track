@@ -5,7 +5,7 @@ import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
-import WaveForm from '../WaveForm';
+import WaveFormTEST from '../WaveForm';
 import './SongDetail.css';
 
 
@@ -22,11 +22,10 @@ function SongDetail() {
     const [isLoaded, setIsLoaded] = useState(false);
     
     useEffect(() => {
-        console.log("SongDetails");
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
-    }, [songId, dispatch]);
+    }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
         if (isLoaded && !song) {
@@ -39,19 +38,16 @@ function SongDetail() {
         await dispatch(deleteOneSong(songId));
         await dispatch(getAllSongs());
         history.push("/songs");
-        setIsLoaded(!isLoaded);
+        // setIsLoaded(!isLoaded);
     };
     
     const handleDeleteComment = e => {
         e.preventDefault();
         const commentId = +(e.target.value);
         dispatch(deleteOneComment(commentId));
-    };
-
-    useEffect(() => {
         dispatch(getAllSongComments(songId));
-        setIsLoaded(true);
-    }, [isLoaded])
+        setIsLoaded(false);
+    };
 
     const timeElapsed = (time) => {
         const postDate = new Date(time);
@@ -131,7 +127,7 @@ function SongDetail() {
                     ref={audioRef}
                     controls
                     src={song?.url} /> */}
-                        <WaveForm />
+                        <WaveFormTEST songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>

@@ -22,6 +22,7 @@ def get_song_comments(songId):
 def add_comment(id):
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+    print(form.data)
     if form.validate_on_submit():
         comment = Comment(
             song_id=form.data['songId'],
@@ -33,7 +34,7 @@ def add_comment(id):
         )
         db.session.add(comment)
         db.session.commit()
-        comments = Comment.query.order_by(Comment.created_at).all()
+        comments = Comment.query.all()
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
         return { "errors": "An unkown error occurred. Please try again."}
