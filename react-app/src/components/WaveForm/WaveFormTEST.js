@@ -9,9 +9,9 @@ const formWaveSurferOptions = ref => ({
   waveColor: "#eee",
   progressColor: "OrangeRed",
   cursorColor: "OrangeRed",
-  barWidth: .00005,
+  barWidth: 1,
   responsive: true,
-  height: 150,
+  height: 100,
   // If true, normalize by the maximum peak instead of 1.0.
   normalize: true,
   // Use the PeakCache to improve rendering speed of large waveforms.
@@ -36,18 +36,24 @@ export default function WaveformTEST({ songId }) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
 
-      wavesurfer.current.load(url);
+      // wavesurfer.current.load(url);
 
       wavesurfer.current.on("ready", function () {
         if (wavesurfer.current) {
           wavesurfer.current.setVolume(volume);
           setVolume(volume);
         }
+        wavesurfer.current.setMute(true);
       });
-
+      
+      wavesurfer.current.on("finish", function () {
+        setPlay(false);
+      });
+      
       return () => wavesurfer.current.destroy();
     }
   }, [url]);
+  
 
   useEffect(() => {
     dispatch(addSongToPlayer(songId));
@@ -57,6 +63,7 @@ export default function WaveformTEST({ songId }) {
   const handlePlayPause = async () => {
     setPlay(!playing);
     wavesurfer.current.playPause();
+    console.log(wavesurfer.current.getCurrentTime());
   };
 
   const onVolumeChange = e => {
@@ -65,7 +72,7 @@ export default function WaveformTEST({ songId }) {
 
     if (newVolume) {
       setVolume(newVolume);
-      wavesurfer.current.setVolume(newVolume || 1);
+      wavesurfer.current.setVolume(newVolume || 0);
     }
   };
 

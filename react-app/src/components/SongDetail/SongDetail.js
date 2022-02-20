@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
+import { addSongToPlayer } from '../../store/player';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
 import WaveFormTEST from '../WaveForm';
@@ -25,6 +26,7 @@ function SongDetail() {
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
+        // dispatch(addSongToPlayer(songId));
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
@@ -127,7 +129,7 @@ function SongDetail() {
                     ref={audioRef}
                     controls
                     src={song?.url} /> */}
-                        <WaveFormTEST songId={songId} />
+                        {/* <WaveFormTEST songId={songId} /> */}
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
