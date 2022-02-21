@@ -29,10 +29,10 @@ export const addSongToPlayer = (songId) => async (dispatch) => {
     }
 }
 
-export const setRef = ref => async dispatch => {
-    console.log(ref);
-    await dispatch(setReference(ref));
-};
+// export const setRef = ref => async dispatch => {
+//     console.log(ref);
+//     await dispatch(setReference(ref));
+// };
 
 
 // reducer

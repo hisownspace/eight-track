@@ -204,8 +204,8 @@ function DropZone() {
               ))}
             </select>
           </div>
-          <button type="submit" className="add-product-button">Add Product</button>
-          <button className="add-product-button cancel" onClick={handleCancel}>Cancel</button>
+          <button type="submit" className="add-song-button">Add Song</button>
+          <button className="add-song-button cancel" onClick={handleCancel}>Cancel</button>
         </form> : <div className='song-loading'>Song Loading...</div>}
       </div>
       <audio src={audioSource} onLoadedMetadata={getDuration}></audio>

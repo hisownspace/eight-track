@@ -129,7 +129,7 @@ function SongDetail() {
                     ref={audioRef}
                     controls
                     src={song?.url} /> */}
-                        {/* <WaveFormTEST songId={songId} /> */}
+                        <WaveFormTEST songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>

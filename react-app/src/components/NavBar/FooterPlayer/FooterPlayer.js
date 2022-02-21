@@ -18,7 +18,8 @@ function Footer() {
     const waveformRef = useSelector(state => state.player.ref)
     const song = useSelector(state => state.player.currentSong);
     let audioElement;
-    const player = useRef();
+    const player = useRef(null);
+    const playButton = useRef(null);
 
     useEffect(() => {
         // console.log(player?.current?.audio?.current.currentTime);
@@ -26,40 +27,42 @@ function Footer() {
         audioElement = player.current;
         audioElement.crossOrigin = "anonymous";
         // pass it into the audio context
-        const track = audioContext.createMediaElementSource(audioElement);
-        console.log(track);
-        track.connect(audioContext.destination);
+        console.log(audioElement.audio.current.dataset);
+        // const track = audioContext.createMediaElementSource(audioElement.audio.current);
+        // console.log(track);
+        // track.connect(audioContext.destination);
     }, [song, dispatch]);
 
-    const playAction = () => {
-    // check if context is in suspended state (autoplay policy)
-    if (audioContext.state === 'suspended') {
-        audioContext.resume();
-    }
-
-    // play or pause track depending on state
-    if (audioContext.dataset.playing === 'false') {
-        audioElement.play();
-        audioContext.dataset.playing = 'true';
-    } else if (this.dataset.playing === 'true') {
-        audioElement.pause();
-        audioContext.dataset.playing = 'false';
-    }
-    };
+    // const playAction = () => {
+    //     // check if context is in suspended state (autoplay policy)
+    //     if (audioContext.state === 'suspended') {
+    //         audioContext.resume();
+    //     }
+    //     console.log(audioContext);
+    //     console.log(playButton.current.dataset);
+    //     // play or pause track depending on state
+    //     if (playButton.current.dataset.playing === 'false') {
+    //         audioElement.play();
+    //         playButton.current.dataset.playing = 'true';
+    //     } else if (playButton.current.dataset.playing === 'true') {
+    //         audioElement.pause();
+    //         playButton.current.dataset.playing = 'false';
+    //     }
+    // };
 
   return (
-    <footer className="footer">
-      {/* <AudioPlayer layout="horizontal-reverse"
+    <footer className={song ? "footer" : "footer-hidden"} >
+      <AudioPlayer layout="horizontal-reverse"
         showSkipControls={true}
         showJumpControls={false}
         autoPlay={false}
         src={song?.url}
         ref={player}
-      /> */}
-      <audio src={"http://hisownbucket.s3.amazonaws.com/fb05f2ebc96740d6847058c841e8efa3.mp3"} ref={player}></audio>
-      <button onClick={playAction} data-playing="false" role="switch" aria-checked="false">
-    <span>Play/Pause</span>
-</button>
+      />
+      {/* <audio src={song?.url} ref={player}></audio> */}
+      {/* <button ref={playButton} onClick={playAction} data-playing="false" role="switch" aria-checked="false"> */}
+    {/* <span>Play/Pause</span> */}
+{/* </button> */}
       {/* <div ref={waveformRef}></div> */}
     </footer>
   );

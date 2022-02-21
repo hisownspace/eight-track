@@ -25,18 +25,20 @@ export default function WaveformTEST({ songId }) {
   const wavesurfer = useRef(null);
   const [playing, setPlay] = useState(false);
   const [volume, setVolume] = useState(0.5);
-  const url = useSelector(state => state.player.currentSong?.url)
-
+  const playerUrl = useSelector(state => state.player.currentSong?.url)
+  const song = useSelector(state => state.songs.song);
+  const songUrl = Object.values(song)[0]?.url
   // create new WaveSurfer instance
   // On component mount and when url changes
   useEffect(() => {
     setPlay(false);
-
-    if (url) {
+    console.log(songUrl)
+    if (songUrl) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
-
-      // wavesurfer.current.load(url);
+      if (songUrl) {
+        wavesurfer.current.load(songUrl);
+      }
 
       wavesurfer.current.on("ready", function () {
         if (wavesurfer.current) {
@@ -52,18 +54,18 @@ export default function WaveformTEST({ songId }) {
       
       return () => wavesurfer.current.destroy();
     }
-  }, [url]);
+  }, [songUrl]);
   
 
-  useEffect(() => {
-    dispatch(addSongToPlayer(songId));
-    dispatch(setRef(waveformRef))
-  }, [dispatch, songId]);
-
+  // useEffect(() => {
+  //   dispatch(setRef(waveformRef))
+  // }, [dispatch, songId]);
+  
   const handlePlayPause = async () => {
     setPlay(!playing);
     wavesurfer.current.playPause();
-    console.log(wavesurfer.current.getCurrentTime());
+    dispatch(addSongToPlayer(songId));
+    // console.log(wavesurfer.current.getCurrentTime());
   };
 
   const onVolumeChange = e => {
