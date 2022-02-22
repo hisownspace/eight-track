@@ -47,3 +47,9 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.comment-list-item {
+    background-color: purple;
+    width: 70%;
+    height: 170px;
+}

@@ -33,14 +33,13 @@ function App() {
       {loaded && (
         <div id="main">
           <Switch>
-            <Route path='/login' ><LoginForm /></Route>
-            <Route path='/sign-up' ><SignUpForm /></Route>
             <ProtectedRoute path='/users/:userId' ><User /></ProtectedRoute>
             <ProtectedRoute path='/users' ><UsersList /></ProtectedRoute>
             <Route path='/songs/:id'><SongDetail /></Route>
             <Route path='/songs' ><AllSongs /></Route>
             <ProtectedRoute path='/upload' ><DropZone /></ProtectedRoute>
-            <ProtectedRoute path='/' ><h1>My Home Page</h1></ProtectedRoute>
+            <ProtectedRoute path='/' ><AllSongs /></ProtectedRoute>
+            <ProtectedRoute path='' ><AllSongs /></ProtectedRoute>
           </Switch>
         </div>
       )}

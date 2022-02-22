@@ -137,11 +137,13 @@ function SongDetail() {
                 </div>
             </div>
             <div className='song-comments'>
+                <div className="song-description">{song?.description}</div>
                 {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
                 {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map(comment => {
                     return (
                         <div key={comment.id} className='comment-list-item'>
-                            <p>{comment.content}</p>
+                            <div>{comment.user.image_url}</div>
+                            <div>{comment.content}</div>
                             <div> - {comment.user.username}</div>
                             <div>{comment.timestamp}</div>
                             <div>{timeElapsed(comment.created_at)}</div>

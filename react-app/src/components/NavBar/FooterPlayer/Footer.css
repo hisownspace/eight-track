@@ -11,10 +11,6 @@
   display: none;
 }
 
- .rhap_container {
-   background-color: #F2F2F2;
- }
-
  .rhap_container * {
    color:black;
  }

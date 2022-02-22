@@ -8,14 +8,15 @@ import './AddComment.css'
 function AddComment({ songId, audioRef }) {
     const dispatch = useDispatch();
     const [content, setContent] = useState('');
-    const userId = useSelector(state => state.session.user.id)
+    const userId = useSelector(state => state.session.user.id);
+    const playTime = useSelector(state => state.player.time);
 
 
     const handleSubmit = async e => {
         e.preventDefault();
         let timestamp;
-        if (audioRef?.current?.currentTime) {
-                timestamp = audioRef.current.currentTime;
+        if (playTime) {
+                timestamp = playTime;
             } else {
                     timestamp = 0;
             }

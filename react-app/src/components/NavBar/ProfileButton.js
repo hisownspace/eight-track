@@ -30,7 +30,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
-    return history.push('/');
+    return history.push('/songs');
   };
 
   return (

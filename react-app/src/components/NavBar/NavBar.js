@@ -24,10 +24,6 @@ function NavBar({ isLoaded }) {
             <ProfileButton user={sessionUser} />
         );
     } else {
-        if (location.pathname === '/signup'
-        || location.pathname === '/login') {
-            sessionLinks = (<></>)
-        } else {
             sessionLinks = (
                 <>
                     <LoginFormModal />
@@ -35,7 +31,6 @@ function NavBar({ isLoaded }) {
                 </>
             )
         }
-    }
 
     return (
         <>
