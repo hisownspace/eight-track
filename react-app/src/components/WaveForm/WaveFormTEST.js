@@ -96,7 +96,7 @@ export default function WaveformTEST({ songId }) {
     <div>
       <div id="waveform" ref={waveformRef} />
       <div className="controls">
-        {loaded ? <button onClick={handlePlayPause}>{!playing ? "Play" : "Pause"}</button> : null}
+        {loaded ? <button onClick={handlePlayPause}>{!playing  || playerUrl !== song.current?.url ? "Play" : "Pause"}</button> : null}
       </div>
     </div>
   );

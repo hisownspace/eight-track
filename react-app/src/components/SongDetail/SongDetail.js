@@ -36,9 +36,9 @@ function SongDetail() {
         // setIsLoaded(true);
     }, [isLoaded, history, song, dispatch, songId]);
 
-    const handleDelete = async () => {
-        await dispatch(deleteOneSong(songId));
-        await dispatch(getAllSongs());
+    const handleDelete = () => {
+        dispatch(deleteOneSong(songId));
+        dispatch(getAllSongs());
         history.push("/songs");
         // setIsLoaded(!isLoaded);
     };
