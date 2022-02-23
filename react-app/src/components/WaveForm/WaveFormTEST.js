@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer, setRef } from "../../store/player";
+import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
 
 const formWaveSurferOptions = ref => ({
   container: ref,
@@ -14,8 +14,6 @@ const formWaveSurferOptions = ref => ({
   height: 100,
   normalize: true,
   interact: false,
-  // Use the PeakCache to improve rendering speed of large waveforms.
-  // partialRender: true
 });
 
 export default function WaveformTEST({ songId }) {
@@ -49,21 +47,24 @@ export default function WaveformTEST({ songId }) {
         wavesurfer.current.seekTo(0);
         setLoaded(true);
       });
+  
+        // wavesurfer.current.on("seek", function () {
+        //   console.log(wavesurfer.current.getCurrentTime());
+          // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
+        // });
       
       wavesurfer.current.on("finish", function () {
         setPlay(false);
       });
 
-      // wavesurfer.current.on("audioprocess", function () {
-      //   setCurrentTime(wavesurfer.current.getCurrentTime());
-
-      // });
       return () => wavesurfer.current.destroy();
     }
   }, [songUrl]);
   
     useEffect(() => async () => {
-      if (!loaded && playTime && song && playerSong?.url === Object.values(song)[0]?.url) {
+      if (!loaded && playing && playTime && song && playerSong?.url === Object.values(song)[0]?.url) {
+        console.log("page song", Object.values(song)[0].url);
+        console.log("player song", playerSong.url);
         setPlay(!playing);
         wavesurfer.current?.seekTo(playTime / Object.values(song)[0]?.length);
         wavesurfer.current?.playPause();
@@ -73,6 +74,8 @@ export default function WaveformTEST({ songId }) {
 
     useEffect(() => {
       if (playTime && song && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
+        console.log("page song", Object.values(song)[0].url);
+        console.log("player song", playerSong.url);
         wavesurfer?.current?.seekTo(playTime / Object.values(song)[0]?.length);
       }
     }, [playTime]);

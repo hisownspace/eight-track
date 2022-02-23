@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteOneComment, getAllSongComments } from '../../store/comment';
+import { deleteOneComment, getAllSongComments, editOneComment } from '../../store/comment';
 import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
 import { addSongToPlayer } from '../../store/player';
 import UpdateSongForm from '../Modals/UpdateSongModal';
@@ -95,7 +95,7 @@ function SongDetail() {
     //     const payload = {
     //         content,
     //         commentId: e.target.value
-    //     } created_at
+    //     }
     //     const commentId = +(e.target.value);
     //     dispatch(editOneComment(commentId));
     // };
@@ -153,6 +153,11 @@ function SongDetail() {
                                         value={comment.id}
                                         onClick={handleDeleteComment}>
                                         Delete Comment
+                                    </button>
+                                    <button
+                                        value={comment.id}
+                                        onClick={handleDeleteComment}>
+                                        Update Comment
                                     </button>
                                 </>
                                 : null}

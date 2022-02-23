@@ -64,21 +64,21 @@ export const deleteOneComment = commentId => async dispatch => {
     }
 };
 
-// export const editOneComment = commentForm => async dispatch => {
-//     const commentId = commentForm.commentId;
-//     const res = await fetch(`/api/comments/${commentId}`, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         }
-//     })
-//     if (res.ok) {
-//         const comment = await res.json();
-//         return comment;
-//     } else {
-//         return res.error;
-//     }
-// }
+export const editOneComment = commentForm => async dispatch => {
+    const commentId = commentForm.commentId;
+    const res = await fetch(`/api/comments/${commentId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    if (res.ok) {
+        const comment = await res.json();
+        return comment;
+    } else {
+        return res.error;
+    }
+}
 
 
 // reducer

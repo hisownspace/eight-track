@@ -49,16 +49,16 @@ def delete_comment(id):
     except Exception as e:
         return { "message": str(e)}
 
-# @comment_routes.route('/<int:id>', methods=["PUT"])
-# def update_comment(id):
-#     form = CommentForm()
-#     form['csrf_token'].data = request.cookies['csrf_token']
-#     if form.validate_on_submit():
-#         comment = Comment.query.get(id)
-#         comment.content=form.data['content']
-#         db.session.add(comment)
-#         db.session.commit()
-#         comments = Comment.query.all()
-#         return { "comments": [comment.to_dict() for comment in comments] }
-#     else:
-#         return { "errors": "An unkown error occurred. Please try again."}
+@comment_routes.route('/<int:id>', methods=["PUT"])
+def update_comment(id):
+    form = CommentForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    if form.validate_on_submit():
+        comment = Comment.query.get(id)
+        comment.content=form.data['content']
+        db.session.add(comment)
+        db.session.commit()
+        comments = Comment.query.all()
+        return { "comments": [comment.to_dict() for comment in comments] }
+    else:
+        return { "errors": "An unkown error occurred. Please try again."}
