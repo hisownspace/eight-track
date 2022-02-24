@@ -15,9 +15,10 @@ function AllSongs() {
     const genres = Object.values(genresObj);
 
     useEffect(() => {
-        dispatch(getAllSongs());
-        dispatch(getAllGenres());
-
+        (async () => {
+            await dispatch(getAllSongs());
+            await dispatch(getAllGenres());
+        })();
     }, [dispatch]);
 
     return (

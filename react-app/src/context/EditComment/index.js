@@ -9,7 +9,7 @@ function EditCommentModal({ commentId, commentContent, songId }) {
 
     return (
         <>
-            <button id="add-post-modal-btn" onClick={() => setShowModal(true)}>Edit Comment</button>
+            <button className="edit-button" onClick={() => setShowModal(true)}>Edit Comment</button>
             {/* <button id="add-post-modal-btn" onClick={() => setShowModal(true)}><i className="far fa-plus-square"></i></button> */}
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>

@@ -105,7 +105,7 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
                         ))}
                     </select>
                 </div>
-                <button className="button_submit button_main" type="submit">Update Song</button>
+                <button className="edit-comment" type="submit">Update Song</button>
             </form>
             <hr className="hrmodal" />
         </>

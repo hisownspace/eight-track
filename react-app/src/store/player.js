@@ -16,22 +16,22 @@ const setReference = ref => {
     return {
         type: SET_REFERENCE,
         ref
-    }
-}
+    };
+};
 
 const setPlaying = playing => {
     return {
         type: SET_PLAYING,
         playing
-    }
+    };
 };
 
 const setTime = time => {
     return {
         type: SET_TIME,
         time
-    }
-}
+    };
+};
 
 
 // thunks
@@ -78,7 +78,7 @@ export default function playerReducer(state = initialState, action) {
             newState["playing"] = action.playing;
             return newState;
         case SET_TIME:
-            newState = { ... state };
+            newState = { ...state };
             newState["time"] = action.time;
             return newState;
         default:

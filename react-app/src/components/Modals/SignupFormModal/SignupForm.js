@@ -53,7 +53,7 @@ const SignupForm = () => {
       const handleRedirect = (e) => {
         e.preventDefault();
         setShowModal(false);
-        // history.push('/login')
+        history.push('/login');
     }
 
     useEffect(() => {

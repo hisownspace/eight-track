@@ -15,3 +15,7 @@
     width: auto;
     overflow-x: scroll;
 }
+
+.genre-carousel-item div {
+    margin: 2px;
+}

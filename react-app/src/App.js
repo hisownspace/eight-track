@@ -38,8 +38,9 @@ function App() {
             <Route path='/songs/:id'><SongDetail /></Route>
             <Route path='/songs' ><AllSongs /></Route>
             <ProtectedRoute path='/upload' ><DropZone /></ProtectedRoute>
-            <ProtectedRoute path='/' ><AllSongs /></ProtectedRoute>
-            <ProtectedRoute path='' ><AllSongs /></ProtectedRoute>
+            <Route path='/' ><AllSongs /></Route>
+            <Route path='' ><AllSongs /></Route>
+            <Route path='/signup'><SignUpForm /></Route>
           </Switch>
         </div>
       )}

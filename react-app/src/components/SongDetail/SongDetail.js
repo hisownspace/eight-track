@@ -129,6 +129,7 @@ function SongDetail() {
                             {comment.user.id === userId ?
                                 <>
                                     <button
+                                        className="delete-comment-button"
                                         value={comment.id}
                                         onClick={handleDeleteComment}>
                                         Delete Comment

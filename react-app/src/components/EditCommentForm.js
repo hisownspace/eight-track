@@ -33,6 +33,7 @@ const EditCommentForm = ({ showModal, commentId, setShowModal, commentContent, s
             />
             <input type="hidden" value={commentId}></input>
             <input type="hidden" value={songId}></input>
+            <button className="submit-comment-edit-button">Submit Comment</button>
         </form>
     )
 }

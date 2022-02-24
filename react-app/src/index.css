@@ -18,3 +18,7 @@ body {
     max-width: 1240px;
     align-self: center;
 }
+
+body {
+    margin-bottom: 75px;
+}

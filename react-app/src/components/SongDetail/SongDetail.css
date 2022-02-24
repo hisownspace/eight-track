@@ -52,3 +52,29 @@
     width: 70%;
     height: 170px;
 }
+
+.edit-button {
+    background-color: white;
+    border: none;
+}
+
+.edit-button:hover {
+    cursor: pointer;
+}
+.delete-comment-button {
+    background-color: white;
+    border: none;
+}
+
+.delete-comment-button:hover {
+    cursor: pointer;
+}
+.submit-comment-edit-button {
+    background-color: white;
+    border: none;
+}
+
+.submit-comment-edit-button:hover {
+    cursor: pointer;
+}
+

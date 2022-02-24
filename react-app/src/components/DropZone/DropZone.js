@@ -11,6 +11,7 @@ function DropZone() {
   const genresObj = useSelector(state => state.genres.genres);
   const sessionUser = useSelector(state => state.session.user);
   const imageFile = useRef();
+  const songFile = useRef();
 
   // const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
@@ -102,6 +103,20 @@ function DropZone() {
     setSubmitted(false);
   };
 
+
+  const chooseFile = (e) => {
+    const file = songFile.current.files[0];
+
+    // const file = e.dataTransfer.files[0];
+    setDropFile(file);
+
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      setAudioSource(e.target.result)
+    };
+
+    reader.readAsDataURL(file);
+  };
   //* when file is dragged into the dropzone, the file is set 
   //* as the source of the audio element to access the metadata
   const dropHandler = (e) => {
@@ -215,7 +230,14 @@ function DropZone() {
         <div className="drop_zone"
           onDragOver={dragHandler}
           onDrop={dropHandler}>
-          <p>{"Drag a file into this Drop Zone ..."}</p>
+          <div>{"Drag a file into this Drop Zone ..."}</div>
+          <div>Or click below to choose a file:</div>
+          <input type="file"
+            name="image"
+            ref={songFile}
+            onChange={chooseFile}
+            >
+            </input>
         </div>
       </div>
     );

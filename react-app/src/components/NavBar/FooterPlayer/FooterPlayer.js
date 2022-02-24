@@ -2,7 +2,7 @@ import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong } from '../../../store/song';
 import { playingState, timeRequest, setPlayerTime } from '../../../store/player'
@@ -10,6 +10,7 @@ import { playingState, timeRequest, setPlayerTime } from '../../../store/player'
 
 function Footer() {
     const location = useLocation();
+    const history = useHistory();
     const dispatch = useDispatch();
     const waveformRef = useSelector(state => state.player.ref)
     const song = useSelector(state => state.player.currentSong);
@@ -43,7 +44,9 @@ function Footer() {
         onPause={setPause}
         onListen={setTime}
       />
-      <div><Link to={`/songs/${song?.id}`}>{song?.title}</Link></div>
+                    <button onClick={() => history.push(`/songs/${song?.id}`)} >
+                        {song?.title}
+                    </button>
       <div>{song?.artist}</div>
     </footer>
   );

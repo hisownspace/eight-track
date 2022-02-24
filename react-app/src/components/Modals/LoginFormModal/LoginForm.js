@@ -38,14 +38,14 @@ function LoginForm() {
     const handleRedirect = (e) => {
         e.preventDefault();
         setShowModal(false);
-        history.push('/signup')
+        history.push('/signup');
     }
     return (
         <>
             <form onSubmit={onLogin}>
                 <div className='modal_ul_errors'>
-                    {errors.map((error, ind) => (
-                    <div key={ind}>{error}</div>
+                    {errors.map((error, idx) => (
+                    <div key={idx}>{error}</div>
                     ))}
                 </div>
 
@@ -73,7 +73,7 @@ function LoginForm() {
             </form>
             <hr className="hrmodal"/>
             <form  onSubmit={DemoLogin}>
-                <button className="button_submit button_secondary"type="submit">Demo User</button>
+                <button className="button_submit button_secondary" type="submit">Demo User</button>
             </form>
             <form onSubmit={handleRedirect}>
                 <button className="button_submit button_transfer" type="submit">Want to Sign Up?</button>
