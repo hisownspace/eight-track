@@ -4,15 +4,16 @@ import { Modal } from '../Modal';
 import EditCommentForm from '../../components/EditCommentForm';
 import "../Modal.css"
 
-function EditCommentModal({ commentId }) {
+function EditCommentModal({ commentId, commentContent, songId }) {
     const [showModal, setShowModal] = useState(false);
 
     return (
         <>
-            <button id="add-post-modal-btn" onClick={() => setShowModal(true)}><i className="far fa-plus-square"></i></button>
+            <button id="add-post-modal-btn" onClick={() => setShowModal(true)}>Edit Comment</button>
+            {/* <button id="add-post-modal-btn" onClick={() => setShowModal(true)}><i className="far fa-plus-square"></i></button> */}
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
-                    <EditCommentForm commentId={commentId} setShowModal={setShowModal} />
+                    <EditCommentForm commentId={commentId} setShowModal={setShowModal} commentContent={commentContent} songId={songId} />
                 </Modal>
             )}
         </>

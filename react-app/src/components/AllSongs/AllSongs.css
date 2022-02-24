@@ -5,3 +5,13 @@
 .song-image-list-item-container img {
     width: 100%;
 }
+
+.genre-list-item {
+    display:flex;
+    flex-direction: row;
+}
+
+.genre-carousel-item {
+    width: auto;
+    overflow-x: scroll;
+}

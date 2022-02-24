@@ -16,7 +16,6 @@ function NavBar({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
     const dispatch = useDispatch();
 
-    console.log(location);
 
     let sessionLinks;
     if (sessionUser) {

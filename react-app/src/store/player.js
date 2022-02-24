@@ -44,19 +44,15 @@ export const addSongToPlayer = (songId) => async (dispatch) => {
 };
 
  export const playingState = bool => dispatch => {
-    console.log("play!");
-    console.log(bool);
     dispatch(setPlaying(bool));
 
  }
 
 export const setRef = ref => async dispatch => {
-    console.log(ref);
     await dispatch(setReference(ref));
 };
 
 export const timeRequest = requestState => async dispatch => {
-    console.log("request acknowledged");
 };
 
 export const setPlayerTime = time => dispatch => {
@@ -78,7 +74,6 @@ export default function playerReducer(state = initialState, action) {
             newState["ref"] = action.ref;
             return newState;
         case SET_PLAYING:
-            console.log("playing reducer");
             newState = { ...state };
             newState["playing"] = action.playing;
             return newState;

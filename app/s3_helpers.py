@@ -28,12 +28,10 @@ IMAGE_EXTENSIONS = {
 }
 
 def audio_file(filename):
-    print(filename)
     return "." in filename and \
            filename.rsplit(".", 1)[1].lower() in AUDIO_EXTENSIONS
 
 def image_file(filename):
-    print(filename)
     return "." in filename and \
            filename.rsplit(".", 1)[1].lower() in IMAGE_EXTENSIONS
 

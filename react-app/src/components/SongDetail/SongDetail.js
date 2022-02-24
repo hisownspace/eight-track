@@ -27,11 +27,9 @@ function SongDetail() {
         dispatch(getOneSong(songId))
         .then(() => setIsLoaded(true));
         dispatch(getAllSongComments(songId));
-        // dispatch(addSongToPlayer(songId));
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
-        setIsLoaded(false);
         if (isLoaded && !song) {
             history.push("/songs");
         }
@@ -41,7 +39,6 @@ function SongDetail() {
         dispatch(deleteOneSong(songId));
         dispatch(getAllSongs());
         history.push("/songs");
-        // setIsLoaded(!isLoaded);
     };
     
     const handleDeleteComment = e => {
@@ -87,20 +84,6 @@ function SongDetail() {
         }
     };
 
-    // const openCommentForm = e => {
-
-    // };
-
-    // const handleEditComment = e => {
-    //     e.preventDefault();
-    //     const payload = {
-    //         content,
-    //         commentId: e.target.value
-    //     }
-    //     const commentId = +(e.target.value);
-    //     dispatch(editOneComment(commentId));
-    // };
-
     return (
         <>
             <div className='song-detail'>
@@ -125,11 +108,6 @@ function SongDetail() {
                         </div>
                     </div>
                     <div className="song-detail-player">
-                        {/* <audio
-                    id="actual-player"
-                    ref={audioRef}
-                    controls
-                    src={song?.url} /> */}
                         <WaveFormTEST songId={songId} />
                     </div>
                 </div>
@@ -155,12 +133,7 @@ function SongDetail() {
                                         onClick={handleDeleteComment}>
                                         Delete Comment
                                     </button>
-                                    <button
-                                        value={comment.id}
-                                        onClick={handleDeleteComment}>
-                                        Update Comment
-                                    </button>
-                                    <EditCommentModal commentId={comment?.id} />
+                                    <EditCommentModal commentId={comment?.id} commentContent={comment?.content} songId={songId} />
                                 </>
                                 : null}
                         </div>)

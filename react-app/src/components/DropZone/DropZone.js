@@ -117,7 +117,6 @@ function DropZone() {
     };
 
     reader.readAsDataURL(e.dataTransfer?.files[0]);
-    console.log(file);
   };
 
   //* runs when audio tag metadata is loaded

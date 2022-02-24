@@ -35,10 +35,10 @@ function AllSongs() {
                 )
             })} */}
             </div>
-            <div>
+            <div className="genre-carousel-list">
                 {genres?.map(genre => {
                     return (
-                        <div key={genre.id}>
+                        <div className="genre-carousel-item" key={genre.id}>
                             <h1>{genre.name}</h1>
                             <GenreList genreId={genre.id} />
                         </div>

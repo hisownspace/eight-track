@@ -49,7 +49,6 @@ export default function WaveformTEST({ songId }) {
       });
   
         // wavesurfer.current.on("seek", function () {
-        //   console.log(wavesurfer.current.getCurrentTime());
           // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
         // });
       

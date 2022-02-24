@@ -3,7 +3,7 @@ from flask_login import login_required
 from app.forms import song_edit_form
 from app.models import db, Song, User, Comment
 from .song_routes import song_routes
-from ..forms.comment_form import CommentForm
+from ..forms.comment_form import CommentForm, EditCommentForm
 from datetime import datetime
 
 
@@ -12,7 +12,7 @@ comment_routes = Blueprint('api/comments', __name__)
 
 @song_routes.route('/<int:songId>/comments')
 def get_song_comments(songId):
-    comments = Comment.query.filter_by(song_id=songId).all()
+    comments = Comment.query.filter_by(song_id=songId).order_by(Comment.created_at).all()
     if comments:
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
@@ -22,7 +22,6 @@ def get_song_comments(songId):
 def add_comment(id):
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']
-    print(form.data)
     if form.validate_on_submit():
         comment = Comment(
             song_id=form.data['songId'],
@@ -52,14 +51,15 @@ def delete_comment(id):
 @comment_routes.route('/<int:id>', methods=["PUT"])
 @login_required
 def update_comment(id):
-    form = CommentForm()
+    form = EditCommentForm()
+    songId = form.data['songId']
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         comment = Comment.query.get(id)
         comment.content=form.data['content']
         db.session.add(comment)
         db.session.commit()
-        comments = Comment.query.all()
+        comments = Comment.query.filter_by(song_id=songId).order_by(Comment.created_at).all()
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
         return { "errors": "An unkown error occurred. Please try again."}

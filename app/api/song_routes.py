@@ -36,7 +36,6 @@ def get_one_song(id):
 
 @song_routes.route("/", methods=["POST"])
 def add_songs():
-    print(request.files)
     if "song" not in request.files:
         return { "errors": "audio file required"}, 400
 

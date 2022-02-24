@@ -13,3 +13,13 @@ class CommentForm(FlaskForm):
                     Length(min=1,
                         max=1000,
                         message="Comments can't be longer than 1000 characters.")])
+
+                        
+class EditCommentForm(FlaskForm):
+    commentId = IntegerField('commentId', v)
+    songId = IntegerField("songId", v)
+    content = StringField('content',
+        validators=[DataRequired(),
+                    Length(min=1,
+                        max=1000,
+                        message="Comments can't be longer than 1000 characters.")])

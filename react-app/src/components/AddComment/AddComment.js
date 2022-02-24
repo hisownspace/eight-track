@@ -16,7 +16,6 @@ function AddComment({ songId, audioRef }) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        console.log(Object.values(pageSong)[0], playerSong);
         let timestamp;
         if (playTime && Object.values(pageSong)[0].url === playerSong.url) {
                 timestamp = playTime;

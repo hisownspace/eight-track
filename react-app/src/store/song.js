@@ -139,7 +139,6 @@ export default function songReducer(state = initialState, action) {
         //     return newState;
         case DELETE_SONG:
             newState = {...state};
-            console.log(newState);
             const id = +action.id
             delete newState.songs[id]
             return newState;

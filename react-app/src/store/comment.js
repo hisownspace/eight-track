@@ -3,6 +3,7 @@
 // constants
 const GET_SONG_COMMENTS = "comments/GET_SONG_COMMENTS";
 const ADD_SONG_COMMENT = "comments/ADD_SONG_COMMENT";
+const EDIT_COMMENT = "comments/EDIT_COMMENT";
 
 // action creators
 function getSongComments(comments) {
@@ -12,10 +13,17 @@ function getSongComments(comments) {
     }
 }
 
-function addComment(comment) {
+function addComment(comments) {
     return {
         type: ADD_SONG_COMMENT,
-        comment
+        comments
+    }
+}
+
+function editComment(comments) {
+    return {
+        type: EDIT_COMMENT,
+        comments
     }
 }
 
@@ -31,7 +39,6 @@ export const getAllSongComments = songId => async dispatch => {
 
 export const addSongComment = commentForm => async dispatch => {
     const songId = commentForm.songId
-    console.log(commentForm);
     const res = await fetch(`/api/songs/${songId}/comments`,{
             method: 'POST',
             headers: {
@@ -51,6 +58,29 @@ export const addSongComment = commentForm => async dispatch => {
     }
 }
 
+export const editOneComment = commentForm => async dispatch => {
+    const commentId = commentForm.commentId;
+    const res = await fetch(`/api/comments/${commentId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(commentForm)
+    });
+    if (res.ok) {
+        const comments = await res.json();
+        dispatch(editComment(comments));
+    } else if (res.status > 500) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An error occurred. Please try again."]
+    }
+}
+
+
 export const deleteOneComment = commentId => async dispatch => {
     const res = await fetch(`/api/comments/${commentId}`, {
     method: "DELETE",
@@ -64,23 +94,6 @@ export const deleteOneComment = commentId => async dispatch => {
     }
 };
 
-export const editOneComment = commentForm => async dispatch => {
-    const commentId = commentForm.commentId;
-    const res = await fetch(`/api/comments/${commentId}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    if (res.ok) {
-        const comment = await res.json();
-        return comment;
-    } else {
-        return res.error;
-    }
-}
-
-
 // reducer
 
 let initialState = { "comments": {} }
@@ -92,6 +105,10 @@ export default function commentReducer(state = initialState, action) {
             newState.comments = action.comments;
             return newState;
         case ADD_SONG_COMMENT:
+            newState = { ...state };
+            newState.comments = action.comments;
+            return newState;
+        case EDIT_COMMENT:
             newState = { ...state };
             newState.comments = action.comments;
             return newState;

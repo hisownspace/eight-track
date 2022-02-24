@@ -16,11 +16,6 @@ function Footer() {
     const player = useRef(null);
 
     useEffect(() => {
-      // dispatch(get)
-      console.log(song?.id);
-    });
-
-    useEffect(() => {
       dispatch(timeRequest());
     }, [waveformRef]);
 
