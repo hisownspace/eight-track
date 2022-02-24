@@ -50,6 +50,7 @@ def delete_comment(id):
         return { "message": str(e)}
 
 @comment_routes.route('/<int:id>', methods=["PUT"])
+@login_required
 def update_comment(id):
     form = CommentForm()
     form['csrf_token'].data = request.cookies['csrf_token']

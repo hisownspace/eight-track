@@ -26,7 +26,7 @@ def get_all_songs():
     else:
         return { "errors": "unknown error" }
 
-@song_routes.route("/<int:id>/")
+@song_routes.route("/<int:id>")
 def get_one_song(id):
     song = Song.query.get(id)
     if song:

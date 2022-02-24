@@ -8,6 +8,7 @@ import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
 import WaveFormTEST from '../WaveForm';
 import './SongDetail.css';
+import EditCommentModal from '../../context/EditComment';
 
 
 function SongDetail() {
@@ -30,10 +31,10 @@ function SongDetail() {
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
+        setIsLoaded(false);
         if (isLoaded && !song) {
             history.push("/songs");
         }
-        // setIsLoaded(true);
     }, [isLoaded, history, song, dispatch, songId]);
 
     const handleDelete = () => {
@@ -159,6 +160,7 @@ function SongDetail() {
                                         onClick={handleDeleteComment}>
                                         Update Comment
                                     </button>
+                                    <EditCommentModal commentId={comment?.id} />
                                 </>
                                 : null}
                         </div>)

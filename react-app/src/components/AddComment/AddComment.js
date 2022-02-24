@@ -10,12 +10,15 @@ function AddComment({ songId, audioRef }) {
     const [content, setContent] = useState('');
     const userId = useSelector(state => state.session.user.id);
     const playTime = useSelector(state => state.player.time);
+    const playerSong = useSelector(state => state.player.currentSong)
+    const pageSong = useSelector(state => state.songs.song)
 
 
     const handleSubmit = async e => {
         e.preventDefault();
+        console.log(Object.values(pageSong)[0], playerSong);
         let timestamp;
-        if (playTime) {
+        if (playTime && Object.values(pageSong)[0].url === playerSong.url) {
                 timestamp = playTime;
             } else {
                     timestamp = 0;

@@ -63,20 +63,17 @@ export default function WaveformTEST({ songId }) {
   
     useEffect(() => async () => {
       if (!loaded && playing && playTime && song && playerSong?.url === Object.values(song)[0]?.url) {
-        console.log("page song", Object.values(song)[0].url);
-        console.log("player song", playerSong.url);
         setPlay(!playing);
         wavesurfer.current?.seekTo(playTime / Object.values(song)[0]?.length);
         wavesurfer.current?.playPause();
-        console.log(wavesurfer.current?.getCurrentTime());
       }
     }, [playTime, dispatch, loaded, wavesurfer]);
 
     useEffect(() => {
-      if (playTime && song && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
-        console.log("page song", Object.values(song)[0].url);
-        console.log("player song", playerSong.url);
+      if (loaded && playTime && song && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
         wavesurfer?.current?.seekTo(playTime / Object.values(song)[0]?.length);
+        // setLoaded(false);
+        wavesurfer?.current.play();
       }
     }, [playTime]);
 
