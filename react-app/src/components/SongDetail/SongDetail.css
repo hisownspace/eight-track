@@ -51,6 +51,7 @@
 .comment-list-item {
     width: 70%;
     height: 170px;
+    overflow-wrap: anywhere;
 }
 
 .edit-button {
