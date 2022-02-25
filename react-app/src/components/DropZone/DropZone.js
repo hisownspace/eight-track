@@ -25,25 +25,27 @@ function DropZone() {
   const [publicSong, setPublicSong] = useState(true);
 
   const [songLoading, setSongLoading] = useState(false);
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e) => {
-    setErrors([]);
+    setErrors({});
     e.preventDefault();
 
-    const formErrors = [];
+    const formErrors = {};
 
     if (artist === "") {
-      formErrors.push("Please fill out artist field!")
+      formErrors["artist"] = "Please fill out artist field!";
     }
     if (title === "") {
-      formErrors.push("Please fill out title field!")
+      formErrors["title"] = "Please fill out title field!";
     }
 
-    if (formErrors.length > 0) {
+    console.log(formErrors);
+
+    if (Object.values(formErrors).length > 0) {
       setErrors(formErrors);
-      setSubmitted(true);
+      // setSubmitted(true);
     } else {
       //* add controlled inputs to form
       const formData = new FormData();
@@ -60,7 +62,7 @@ function DropZone() {
       //* aws uploads can be a bit slow—displaying
       //* some sort of loading message is a good idea
       setSongLoading(true);
-      setErrors([]);
+      setErrors({});
       setArtist('');
       setTitle('');
       setDescription('');
@@ -152,15 +154,16 @@ function DropZone() {
     <div>
       <div className="drop_zone_submit">
       <div className='upload-errors'>
-          <ul>
+          {/* <ul>
           {errors?.map((error, idx) => {
             return <li key={idx}>{error}</li>
           })}
-          </ul>
+          </ul> */}
         </div>
         <span>{dropFile.name}</span>
         {!songLoading ? <form onSubmit={handleSubmit}>
           <div className='form-content'>
+          {Object.values(errors).length > 0 && errors.title ? <div>{errors.title}</div> : null}
             <label htmlFor="title">Title</label>
             <input
               type="text"
@@ -172,6 +175,8 @@ function DropZone() {
               />
           </div>
           <div className='form-content'>
+          {Object.values(errors).length > 0 && errors.artist ? <div>{errors.artist}</div> : null}
+
             <label htmlFor="artist">Artist</label>
             <input
               type="text"
@@ -183,9 +188,12 @@ function DropZone() {
               />
           </div>
           <div>
+            <label forHtml="image">Song Image</label>
             <input type="file"
+            id="image"
             name="image"
             ref={imageFile}
+            accept="image/png, image/jpeg"
             >
             </input>
           </div>
@@ -202,6 +210,7 @@ function DropZone() {
           <div className='form-content'>
             <input
               type="checkbox"
+              hidden={true}
               name="public"
               checked={publicSong}
               onChange={e => setPublicSong(!publicSong)}

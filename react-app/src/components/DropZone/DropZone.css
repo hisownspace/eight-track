@@ -7,10 +7,14 @@
 
   .drop_zone_submit {
     height: 500px;
-    font-size: 35px;
+    font-size: 15px;
     font-weight: bold;
     width: 50%;
     border: 5px dashed black;
     background-color: rgba(0, 0, 255, 0.794);
     text-align: center;
+  }
+
+  label {
+    margin: 10px;
   }
