@@ -97,7 +97,13 @@ export default function WaveformTEST({ songId }) {
   return (
     <div className="waveform">
       <div className="controls">
-        {(loaded && (playerUrl !== songUrl)) ? <button className="waveform-play" onClick={handlePlayPause}><FontAwesomeIcon icon={faPlay} /></button> : null}
+        {(loaded && (playerUrl !== songUrl)) ? 
+        <button
+          className="waveform-play"
+          onClick={handlePlayPause}
+        >
+            <FontAwesomeIcon icon={faPlay} />
+        </button> : null}
       </div>
       <div id="waveform" ref={waveformRef} />
     </div>
