@@ -44,9 +44,9 @@ function NavBar({ isLoaded }) {
                     </button>
                 </div>
                 <div className='nav-right'>
-                    <button onClick={() => history.push('/upload')} className='nav-bar-button nav-button'>
+                    {sessionUser && <button onClick={() => history.push('/upload')} className='nav-bar-button nav-button'>
                         Upload
-                    </button>
+                    </button>}
                     <div className="nav-right">
                         {isLoaded && sessionLinks}
                     </div>

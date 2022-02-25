@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
@@ -61,7 +64,7 @@ export default function WaveformTEST({ songId }) {
   }, [songUrl]);
   
     useEffect(() => async () => {
-      if (!loaded && playTime && song && playerSong?.url === Object.values(song)[0]?.url) {
+      if (!loaded && playTime && song && playing && playerSong?.url === Object.values(song)[0]?.url) {
         setPlay(!playing);
         wavesurfer.current?.seekTo(playTime / Object.values(song)[0]?.length);
         wavesurfer.current?.playPause();
@@ -69,7 +72,7 @@ export default function WaveformTEST({ songId }) {
     }, [playTime, dispatch, loaded, wavesurfer]);
 
     useEffect(() => {
-      if (loaded && playTime && song && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
+      if (loaded && playTime && song && playState && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
         wavesurfer?.current?.seekTo(playTime / Object.values(song)[0]?.length);
         // setLoaded(false);
         wavesurfer?.current.play();
@@ -94,7 +97,7 @@ export default function WaveformTEST({ songId }) {
   return (
     <div className="waveform">
       <div className="controls">
-        {(loaded && (playerUrl !== songUrl)) || playState === false ? <button onClick={handlePlayPause}>{!playing  || playerUrl !== song.current?.url ? "Play" : "Pause"}</button> : null}
+        {(loaded && (playerUrl !== songUrl)) ? <button className="waveform-play" onClick={handlePlayPause}><FontAwesomeIcon icon={faPlay} /></button> : null}
       </div>
       <div id="waveform" ref={waveformRef} />
     </div>
