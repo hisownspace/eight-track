@@ -74,7 +74,7 @@ export default function WaveformTEST({ songId }) {
         // setLoaded(false);
         wavesurfer?.current.play();
       }
-    }, [playTime]);
+    }, [playTime, loaded]);
 
   useEffect(() => {
     if (!playState) {
@@ -85,18 +85,18 @@ export default function WaveformTEST({ songId }) {
   }, [playState]);
   
   const handlePlayPause = async () => {
-    setPlay(!playing);
+    setPlay(true);
     wavesurfer.current.playPause();
     dispatch(addSongToPlayer(songId));
     dispatch(setRef(waveformRef));
   };
 
   return (
-    <div>
-      <div id="waveform" ref={waveformRef} />
+    <div className="waveform">
       <div className="controls">
-        {loaded ? <button onClick={handlePlayPause}>{!playing  || playerUrl !== song.current?.url ? "Play" : "Pause"}</button> : null}
+        {(loaded && (playerUrl !== songUrl)) || playState === false ? <button onClick={handlePlayPause}>{!playing  || playerUrl !== song.current?.url ? "Play" : "Pause"}</button> : null}
       </div>
+      <div id="waveform" ref={waveformRef} />
     </div>
   );
 }

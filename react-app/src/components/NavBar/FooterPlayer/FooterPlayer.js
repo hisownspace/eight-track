@@ -35,7 +35,7 @@ function Footer() {
   return (
     <footer className={song ? "footer" : "footer-hidden"} >
       <AudioPlayer layout="horizontal-reverse"
-        showSkipControls={true}
+        // showSkipControls={true}
         showJumpControls={false}
         autoPlay={false}
         customAdditionalControls={[]}
