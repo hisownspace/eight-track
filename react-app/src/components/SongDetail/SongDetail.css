@@ -69,12 +69,12 @@
 .delete-comment-button:hover {
     cursor: pointer;
 }
-.submit-comment-edit-button {
+.submit-comment-button {
     background-color: white;
     border: none;
 }
 
-.submit-comment-edit-button:hover {
+.submit-comment-button:hover {
     cursor: pointer;
 }
 
