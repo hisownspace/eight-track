@@ -38,6 +38,7 @@ function Footer() {
         showSkipControls={true}
         showJumpControls={false}
         autoPlay={false}
+        customAdditionalControls={[]}
         src={song?.url}
         ref={player}
         onPlay={setPlay}

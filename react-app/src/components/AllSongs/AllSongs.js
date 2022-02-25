@@ -23,8 +23,7 @@ function AllSongs() {
 
     return (
         <div>
-            <h1>All Songs Page</h1>
-            <div>
+            <div className='all-songs'>
             {/* {songs?.map((song, idx) => {
                 return (
                     <div key={idx}>

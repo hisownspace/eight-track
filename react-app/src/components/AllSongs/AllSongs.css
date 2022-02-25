@@ -6,14 +6,13 @@
     width: 100%;
 }
 
+.all-songs {
+    z-index: inherit;
+}
+
 .genre-list-item {
     display:flex;
     flex-direction: row;
-}
-
-.genre-carousel-item {
-    width: auto;
-    overflow-x: scroll;
 }
 
 .genre-carousel-item div {

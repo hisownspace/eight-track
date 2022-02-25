@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
+
+const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+      slidesToSlide: 2
+    }
+  };
 
 function GenreList({ genreId }) {
     const id = +genreId;
@@ -14,11 +24,14 @@ function GenreList({ genreId }) {
     }, [songs, id]);
 
     return (
-        <div className="genre-list-item">
+        <Carousel responsive={responsive}
+        infinite={true}
+        autoPlaySpeed={10000000}
+        >
             {theseSongs?.map(song => {
                 return (
                     <Link key={song.id} to={`/songs/${song.id}`}>
-                        <div>
+                        <div className='hide-image'>
                             {song.title}
                             <div className='song-image-list-item-container'>
                                 <img alt={song.title} src={song.image_url
@@ -29,7 +42,7 @@ function GenreList({ genreId }) {
                     </Link>
                 )
             })}
-        </div>
+        </Carousel>
     )
 }
 
