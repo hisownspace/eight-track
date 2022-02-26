@@ -10,8 +10,9 @@ function DropZone() {
   const dispatch = useDispatch();
   const genresObj = useSelector(state => state.genres.genres);
   const sessionUser = useSelector(state => state.session.user);
-  const imageFile = useRef();
   const songFile = useRef();
+  const imageFile = useRef();
+  const imagePreview = useRef();
 
   // const [isLoaded, setIsLoaded] = useState(false);
   const [audioSource, setAudioSource] = useState("");
@@ -79,6 +80,21 @@ function DropZone() {
       }
     }
   }
+
+  const populateImagePreview = (e) => {
+    const file = e.target.files[0]
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        imagePreview.current.src = e.target.result;
+      }
+
+      reader.readAsDataURL(file);
+    }
+    console.log(file);
+  };
 
   useEffect(() => {
     dispatch(getAllGenres());
@@ -194,8 +210,15 @@ function DropZone() {
             name="image"
             ref={imageFile}
             accept="image/png, image/jpeg"
+            onChange={populateImagePreview}
             >
             </input>
+            <div className='image-preview'>
+              <span>
+                Image Preview
+              </span>
+              <img className="image-preview" ref={imagePreview} alt="preview" src={"https://hisownbucket.s3.amazonaws.com/default-placeholder.png"}></img>
+            </div>
           </div>
           <div className='form-content'>
             <input
@@ -242,6 +265,7 @@ function DropZone() {
           <div>{"Drag a file into this Drop Zone ..."}</div>
           <div>Or click below to choose a file:</div>
           <input type="file"
+            accept="audio/mp3, audio/*"
             name="image"
             ref={songFile}
             onChange={chooseFile}

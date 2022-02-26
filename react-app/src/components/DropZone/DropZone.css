@@ -18,3 +18,8 @@
   label {
     margin: 10px;
   }
+
+  .image-preview {
+    width: 200px;
+    height: 200px;
+  }
