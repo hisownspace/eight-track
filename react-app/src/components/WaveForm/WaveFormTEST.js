@@ -64,6 +64,10 @@ export default function WaveformTEST({ songId }) {
   }, [songUrl]);
   
     useEffect(() => async () => {
+      if (playTime === 0) {
+        wavesurfer.current.seekTo(0);
+        wavesurfer.current.pause();
+      }
       if (!loaded && playTime && song && playing && playerSong?.url === Object.values(song)[0]?.url) {
         setPlay(!playing);
         wavesurfer.current?.seekTo(playTime / Object.values(song)[0]?.length);

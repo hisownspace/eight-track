@@ -30,10 +30,11 @@ function SongDetail() {
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
-        if (isLoaded && !song) {
+        if (isLoaded && song && !(song.id) && history && songId) {
+            window.alert(song?.id);
             history.push("/songs");
         }
-    }, [isLoaded, history, song, dispatch, songId]);
+    }, [isLoaded, songId, song, dispatch, history]);
 
     const handleDelete = () => {
         dispatch(deleteOneSong(songId));

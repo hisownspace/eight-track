@@ -263,12 +263,17 @@ function DropZone() {
           onDragOver={dragHandler}
           onDrop={dropHandler}>
           <div>{"Drag a file into this Drop Zone ..."}</div>
-          <div>Or click below to choose a file:</div>
+          <label
+          className='custom-file-upload'
+          htmlFor="choose-audio-file-button">
+            Or click here to choose a file
+          </label>
           <input type="file"
             accept="audio/mp3, audio/*"
             name="image"
             ref={songFile}
             onChange={chooseFile}
+            id="choose-audio-file-button"
             >
             </input>
         </div>
