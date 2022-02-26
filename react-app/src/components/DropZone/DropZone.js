@@ -46,7 +46,7 @@ function DropZone() {
 
     if (Object.values(formErrors).length > 0) {
       setErrors(formErrors);
-      // setSubmitted(true);
+      setSubmitted(true);
     } else {
       //* add controlled inputs to form
       const formData = new FormData();
@@ -101,16 +101,16 @@ function DropZone() {
   }, [songLoading, dispatch]);
 
   useEffect(() => {
-    setErrors([])
-    const formErrors = [];
-    if (!artist && submitted) {
-      formErrors.push("Please fill out artist field!")
+    setErrors({})
+    const formErrors = {};
+    if (submitted && !artist) {
+      formErrors.artist = ("Please fill out artist field!")
     }
-    if (!title && submitted) {
-      formErrors.push("Please fill out title field!")
+    if (submitted && !title) {
+      formErrors.title = ("Please fill out title field!")
     }
-    if (formErrors.length > 0) {
-      setErrors(formErrors)
+    if (Object.values(formErrors).length > 0) {
+      setErrors(formErrors);
     }
   }, [artist, title, submitted]);
 
@@ -119,6 +119,8 @@ function DropZone() {
     e.preventDefault();
     setDropFile("");
     setSubmitted(false);
+    setArtist("");
+    setTitle("");
   };
 
 

@@ -12,6 +12,7 @@ function LoginForm() {
     const [errors, setErrors] = useState([]);
 
     const onLogin = async (e) => {
+        
         e.preventDefault();
         const data = await dispatch(login(email, password));
         if (data) {
@@ -76,7 +77,8 @@ function LoginForm() {
                 <button className="button_submit button_secondary" type="submit">Demo User</button>
             </form>
             <form onSubmit={handleRedirect}>
-                <button className="button_submit button_transfer" type="submit">Want to Sign Up?</button>
+                {/* <button className="button_submit button_transfer" type="submit">Want to Sign Up?</button> */}
+
             </form>
         </>
     );

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, useHistory } from 'react-router-dom';
 import { signUp, login } from '../../../store/session';
+import LoginFormModal from '../LoginFormModal';
+import LoginForm from '../LoginFormModal/LoginForm';
 
 
 const SignupForm = () => {
@@ -18,12 +20,20 @@ const SignupForm = () => {
 
     const onSignUp = async (e) => {
         e.preventDefault();
-        // if (password === repeatPassword) {
-            const data = await dispatch(signUp(username, email, password, repeatPassword));
-            if (data) {
-                setErrors(data)
+        const signupErrors = {};
+        if (repeatPassword !== password) {
+            signupErrors.passwordMismatch = "Passwords do not match!"
+        }
+        if (Object.values(signupErrors).length > 0) {
+            setErrors(signupErrors);
+        } else {
+            if (password === repeatPassword) {
+                const data = await dispatch(signUp(username, email, password, repeatPassword));
+                if (data) {
+                    setErrors(data)
+                }
             }
-        // }
+        }
     }
 
 
@@ -68,9 +78,9 @@ const SignupForm = () => {
             className="main_modal"
             onSubmit={onSignUp}>
                 <div className='modal_ul_errors'>
-                    {errors.map((error, ind) => (
+                    {/* {errors.map((error, ind) => (
                         <div key={ind}>{error}</div>
-                    ))}
+                    ))} */}
                 </div>
                 <div>
                     <label htmlFor='username'>
@@ -93,6 +103,7 @@ const SignupForm = () => {
                             required
                         />
                     </label>
+                    {errors ? <div>{errors.passwordMismatch}</div> : null}
                     <label htmlFor='password'>
                         <input
                             id='password'
@@ -121,7 +132,8 @@ const SignupForm = () => {
                     <button className="button_submit button_secondary"type="submit">Demo User</button>
                 </form>
                 <form onSubmit={handleRedirect}>
-                    <button className="button_submit button_transfer" type="submit">Want to Login?</button>
+                    {/* <button className="button_submit button_transfer" type="submit">Want to Login?</button> */}
+                    {/* <LoginFormModal /> */}
                 </form>
         </>
     )
