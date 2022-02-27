@@ -6,9 +6,24 @@ const EditCommentForm = ({ showModal, commentId, setShowModal, commentContent, s
     const dispatch = useDispatch();
     // const comment = useSelector(state => state.comments.comments.comments)
     const [ content, setContent] = useState(commentContent);
+    const [errors, setErrors] = useState([]);
 
     const handleSubmit = event => {
         event.preventDefault();
+
+        setErrors([]);
+
+        const validationErrors = [];
+
+        if (content.length > 250) {
+            validationErrors.push("Comments cannot be longer than 250 characters.");
+        }
+
+        if (validationErrors.length > 0) {
+            setErrors(validationErrors);
+            return;
+        };
+
         const payload = {
             commentId,
             content,
@@ -19,21 +34,39 @@ const EditCommentForm = ({ showModal, commentId, setShowModal, commentContent, s
         setShowModal(false);
     };
 
+    const checkErrors = e => {
+        setContent(e.target.value);
+    
+        setErrors([]);
+
+        const validationErrors = [];
+
+        if (content.length > 250) {
+            validationErrors.push("Comments cannot be longer than 250 characters.");
+        }
+
+        if (validationErrors.length > 0) {
+            setErrors(validationErrors);
+        };
+        
+    };
+
     return (
         <form onSubmit={handleSubmit}>
+            {errors ? errors[0] : null}
             <label htmlFor="content">
                 {/* <img src={user.image_url || } */}
             </label>
             <input
                 type="text"
                 value={content}
-                onChange={e => setContent(e.target.value)}
+                onChange={checkErrors}
                 // placeholder="Write a comment..."
                 className='comment-box'
             />
             <input type="hidden" value={commentId}></input>
             <input type="hidden" value={songId}></input>
-            <button className="submit-comment-edit-button">Submit Comment</button>
+            <button className="submit-comment-edit-button button">Submit Comment</button>
         </form>
     )
 }

@@ -79,3 +79,11 @@
     cursor: pointer;
 }
 
+.submit-comment-edit-button {
+    border: none;
+    background-color: white;
+}
+
+.submit-comment-edit-button:hover {
+    cursor: pointer;
+}

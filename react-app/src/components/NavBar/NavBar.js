@@ -49,6 +49,11 @@ function NavBar({ isLoaded }) {
                     </button>}
                     <div className="nav-right">
                         {isLoaded && sessionLinks}
+                    <div className='github-link'>
+                        <a href='https://github.com/hisownspace/capstone-project' rel="noreferrer" target='_blank'>
+                            GitHub
+                        </a>
+                    </div>
                     </div>
                 </div>
             </div>
