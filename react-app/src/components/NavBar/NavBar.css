@@ -64,7 +64,37 @@ a:visited {
     line-height: 21px;;
 }
 
+.button_login {
+    height: 100%;
+    background-color: #333333;
+    color:#EEEEEE;
+    border: none;
+    font-family: interstate, sans-serif;
+    font-weight: 100;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 21px;;
+}
+.profile-dropdown {
+    padding: 0;
+}
+
+#nav-logout {
+    width: 100%;
+    margin: 0;
+    border: none;
+    background-color: white;
+}
+
+#nav-logout:hover {
+    cursor: pointer;
+}
+
 .nav-button:hover {
+    cursor: pointer;
+}
+
+.button_login:hover {
     cursor: pointer;
 }
 
