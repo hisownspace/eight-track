@@ -40,6 +40,6 @@ A user who is signed in is given the opportunity to upload music either by dragg
 
 ![upload-2](https://user-images.githubusercontent.com/61633951/155903219-d4c6334c-0f4e-4334-adc6-45663c284cc1.png)
 
-Once the song has been loaded. the user is able to select a title, artist name, image, and description of the song, and upload the song and create a row in the database with the relevant information.
+Once the song has been loaded. the user is able to select a title, artist name, image, genre, and description of the song, and upload the song and create a row in the database with the relevant information.
 
 
