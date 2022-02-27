@@ -18,6 +18,5 @@
 - [react-multi-carousel](https://www.npmjs.com/package/react-multi-carousel)
 
 ## Features
-
-* User creation
-** 
+ ### Splash Screen
+![splash-screen](https://user-images.githubusercontent.com/61633951/155901264-c246fd19-e148-4d33-bb1a-f865daa832c9.png)
