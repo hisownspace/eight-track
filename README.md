@@ -18,6 +18,28 @@
 - [react-multi-carousel](https://www.npmjs.com/package/react-multi-carousel)
 
 ## Features
+ ### Splash Screen
+![splash-screen](https://user-images.githubusercontent.com/61633951/155901264-c246fd19-e148-4d33-bb1a-f865daa832c9.png)
 
-* User creation
-** 
+
+### Song Detail
+
+![player-waveform](https://user-images.githubusercontent.com/61633951/155901543-1ffe7bc3-a1a0-4033-b75e-667c3dc656b7.png)
+
+The song detail page displays a waveform that represents the audio levels of the song during it's playtime, as well as an indicator of the current song playtime location the song if the player is currently playing that song.
+
+### Comments
+
+When a user is signed in, they can make comments about any song, and if the song being commented on is currently playing, the current time of the song is logged. This allows users to be able to make a comment about a specific moment in the song.
+
+## Song Upload
+
+![upload](https://user-images.githubusercontent.com/61633951/155903183-8239b0d3-ac35-4e71-91da-d4892b5ab105.png)
+
+A user who is signed in is given the opportunity to upload music either by dragging a file from their gui onto the dropzone or using the file input element and selecting a song to upload.
+
+![upload-2](https://user-images.githubusercontent.com/61633951/155903219-d4c6334c-0f4e-4334-adc6-45663c284cc1.png)
+
+Once the song has been loaded. the user is able to select a title, artist name, image, genre, and description of the song, and upload the song and create a row in the database with the relevant information.
+
+
