@@ -52,9 +52,6 @@ function AddComment({ songId, audioRef }) {
     const checkErrors = e => {
         setContent(e.target.value);
     
-        console.log(content.length);
-
-        console.log(content);
         setErrors([]);
 
         const validationErrors = [];

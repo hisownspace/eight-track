@@ -42,7 +42,6 @@ function DropZone() {
       formErrors["title"] = "Please fill out title field!";
     }
 
-    console.log(formErrors);
 
     if (Object.values(formErrors).length > 0) {
       setErrors(formErrors);
@@ -93,7 +92,6 @@ function DropZone() {
 
       reader.readAsDataURL(file);
     }
-    console.log(file);
   };
 
   useEffect(() => {
