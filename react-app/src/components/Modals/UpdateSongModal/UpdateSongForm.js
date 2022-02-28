@@ -84,7 +84,7 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
                         />
                     </label>
                 </div>
-                <div className='form-content'>
+                {/* <div className='form-content'>
                     <label>
                     <input
                         type="checkbox"
@@ -93,7 +93,7 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
                         onChange={e => setPublicSong(!publicSong)}
                     />
                     </label>
-                </div>
+                </div> */}
                 <div className='form_content'>
                     <label htmlFor="genre">Genre</label>
                     <select

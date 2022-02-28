@@ -16,7 +16,7 @@ function UpdateSongForm() {
 
     return (
         <>
-            <button className='button button_login' onClick={() => setShowModal(true)}>Update Song Info</button>
+            <button className='button song-detail-buttons' onClick={() => setShowModal(true)}>Update Song Info</button>
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
                     <UpdateSongFormModal genresObj={genresObj} setShowModal={setShowModal} />

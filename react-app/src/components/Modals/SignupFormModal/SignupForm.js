@@ -24,18 +24,23 @@ const SignupForm = () => {
         if (repeatPassword !== password) {
             signupErrors.passwordMismatch = "Passwords do not match!"
         }
+        if (username.length > 255) {
+            signupErrors.usernameLength = "Username is too long."
+        }
+        if (username.length === 0) {
+            signupErrors.usernameLength = "Username must not be empty."
+        }
         if (Object.values(signupErrors).length > 0) {
             setErrors(signupErrors);
         } else {
             if (password === repeatPassword) {
                 const data = await dispatch(signUp(username, email, password, repeatPassword));
                 if (data) {
-                    setErrors(data)
+                    setErrors(data);
                 }
             }
         }
     }
-
 
     const updateUsername = (e) => {
         setUsername(e.target.value);
@@ -78,11 +83,12 @@ const SignupForm = () => {
             className="main_modal"
             onSubmit={onSignUp}>
                 <div className='modal_ul_errors'>
-                    {/* {errors.map((error, ind) => (
+                    {/* {errors?.map((error, ind) => (
                         <div key={ind}>{error}</div>
                     ))} */}
                 </div>
                 <div>
+                {errors ? <div>{errors.usernameLength}</div> : null}
                     <label htmlFor='username'>
                         <input
                             id='username'

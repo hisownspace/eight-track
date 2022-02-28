@@ -95,7 +95,7 @@ function SongDetail() {
                             <div>{song?.artist}</div>
                             {(userId && (userId === song?.user?.id)) ?
                                 <>
-                                    <button onClick={handleDelete}>Delete Song</button>
+                                    <button className="song-detail-buttons" onClick={handleDelete}>Delete Song</button>
                                     <UpdateSongForm />
                                 </> : null}
                         </div>

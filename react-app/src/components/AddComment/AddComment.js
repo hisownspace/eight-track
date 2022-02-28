@@ -23,6 +23,9 @@ function AddComment({ songId, audioRef }) {
         if (content.length > 250) {
             validationErrors.push("Comments cannot be longer than 250 characters.");
         }
+        if (content.length === 0) {
+            validationErrors.push("Comments cannot be empty.");
+        }
 
         if (validationErrors.length > 0) {
             setErrors(validationErrors);
