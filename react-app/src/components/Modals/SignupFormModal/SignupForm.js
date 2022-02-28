@@ -36,7 +36,9 @@ const SignupForm = () => {
             if (password === repeatPassword) {
                 const data = await dispatch(signUp(username, email, password, repeatPassword));
                 if (data) {
+                    console.log("NIGGAAA")
                     setErrors(data);
+                    console.log(data)
                 }
             }
         }
@@ -83,12 +85,12 @@ const SignupForm = () => {
             className="main_modal"
             onSubmit={onSignUp}>
                 <div className='modal_ul_errors'>
-                    {/* {errors?.map((error, ind) => (
+                    {errors?.map((error, ind) => (
                         <div key={ind}>{error}</div>
-                    ))} */}
+                    ))}
                 </div>
                 <div>
-                {errors ? <div>{errors.usernameLength}</div> : null}
+                {/* {errors ? <div>{errors.usernameLength}</div> : null} */}
                     <label htmlFor='username'>
                         <input
                             id='username'
@@ -109,7 +111,7 @@ const SignupForm = () => {
                             required
                         />
                     </label>
-                    {errors ? <div>{errors.passwordMismatch}</div> : null}
+                    {/* {errors ? <div>{errors.passwordMismatch}</div> : null} */}
                     <label htmlFor='password'>
                         <input
                             id='password'
