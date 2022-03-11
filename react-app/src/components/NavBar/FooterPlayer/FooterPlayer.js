@@ -25,6 +25,7 @@ function Footer() {
       (async () => {
         const signed = await getPreSignedUrl(song?.url);
         setSignedSong(signed);
+        await dispatch(getAllSongs());
       })()
     }, [song]);
     
@@ -43,7 +44,9 @@ function Footer() {
       dispatch(timeRequest());
     }, [waveformRef]);
 
-    const setPlay = () => {
+    const setPlay = async () => {
+      console.log(song.id);
+      dispatch(addSongToPlayer(song.id))
       dispatch(playingState(true));
     };
 
@@ -51,21 +54,35 @@ function Footer() {
       dispatch(playingState(false));
     };
 
-    const setTime = e => {
-      dispatch(setPlayerTime(e.srcElement.currentTime));
-      // console.log("hi");
+    const setTime = (e) => {
+      if (e === 0) {
+        dispatch(setPlayerTime(0));
+      } else {
+        dispatch(setPlayerTime(e.srcElement.currentTime));
+      }
       // e.srcElement.pause();
       // player.current.audio.current.pause()
     };
 
-    const newSong = () => {
-      dispatch(getAllSongs());
+    const newSong = async () => {
       const songsLength = songs.length;
       const randomSongIdx = Math.floor(Math.random() * songsLength);
-      dispatch(addSongToPlayer(songs[randomSongIdx].id));
-      setPlay();
-      dispatch(setPlayerTime(0));
-      dispatch(playingState(false));
+      console.log(randomSongIdx);
+      if (songs[randomSongIdx]) {
+        dispatch(addSongToPlayer(songs[randomSongIdx].id));
+        console.log(randomSongIdx);
+        setPlay();
+        dispatch(setPlayerTime(0));
+        dispatch(playingState(false));
+      } else {
+        console.log("------------------------- The impossible has happened! ------------------------------")
+        console.log(randomSongIdx);
+        console.log(songs)
+        dispatch(addSongToPlayer(songs[1].id));
+        setPlay();
+        dispatch(setPlayerTime(0));
+        dispatch(playingState(false));
+      }
     };
     
 
@@ -78,16 +95,21 @@ function Footer() {
         customAdditionalControls={[]}
         src={signedSong}
         ref={player}
+        // onListen={setTime}
         onPlay={setPlay}
         onPause={setPause}
-        onListen={setTime}
-        onEnded={newSong}
+        onSeeked={setTime}
         onClickNext={newSong}
+        onEnded={newSong}
+        onCanPlay={e => setTime(0)}
       />
-                    <button onClick={e => changeSongPage(e)} >
+                    <button
+                      onClick={e => changeSongPage(e)}
+                      className="player-button" 
+                    >
                         {song?.title}
                     </button>
-      <div>{song?.artist}</div>
+      <div className = "player-title">{song?.artist}</div>
     </footer>
   );
 }

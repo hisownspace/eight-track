@@ -24,7 +24,6 @@ const responsive = {
 };
 
 function GenreList({ genreId }) {
-    console.log(getPreSignedUrl("1fbb9fac76624757a397aac5a95c7eff.mp3"))
     const id = +genreId;
     const songs = useSelector(state => state.songs.songs);
     const [theseSongs, setTheseSongs] = useState([]);

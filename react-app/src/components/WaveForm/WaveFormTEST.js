@@ -5,7 +5,7 @@ import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer, setRef } from "../../store/player";
+import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
 import getPreSignedUrl from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({
@@ -17,7 +17,7 @@ const formWaveSurferOptions = ref => ({
   responsive: true,
   height: 100,
   normalize: true,
-  interact: false,
+  interact: true,
 });
 
 export default function WaveformTEST({ songId }) {
@@ -27,8 +27,7 @@ export default function WaveformTEST({ songId }) {
   const wavesurfer = useRef(null);
   const [playing, setPlay] = useState(false);
   const playTime = useSelector(state => state.player.time);
-  const playerUrl = useSelector(state => state.player.currentSong?.url)
-  const song = useSelector(state => state.songs.song);
+  const song = useSelector(state => Object.values(state.songs.song));
   const playState = useSelector(state => state?.player.playing);
   const player = useSelector(state => state.player.player);
   const songUrl = Object.values(song)[0]?.url
@@ -49,63 +48,60 @@ export default function WaveformTEST({ songId }) {
         );
       }
       
-      wavesurfer.current.on("ready", function () {
+      wavesurfer.current.on("ready", async function () {
         wavesurfer.current.setMute(true);
-        wavesurfer.current.seekTo(0);
+        // syncs waveform with song playing if they match
+        if (playerSong?.url === songUrl) {
+          const currentTime  = player.current.audio.current.currentTime;
+          const songLength = Object.values(song)[0].length;
+          wavesurfer.current.seekTo(currentTime / songLength);
+          // if song is playing, starts waveform
+          if (playState) {
+            wavesurfer.current.play();
+          }
+        } else {
+          wavesurfer.current.seekTo(0);
+        }
         setLoaded(true);
       });
-  
-
       
       wavesurfer.current.on("finish", function () {
         setPlay(false);
+        wavesurfer.current.seekTo(0);
+        wavesurfer.current.pause();
       });
+
+      wavesurfer.current.on("seek", function (e) {
+        const surfTime = wavesurfer.current.getCurrentTime();
+        const playerTime = player.current.audio.current.currentTime;
+        const loopSeparator = (Math.abs(playerTime - surfTime));
+        console.log(playerSong);
+        console.log(song);
+        if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
+          player.current.audio.current.currentTime = surfTime;
+        }
+      })
 
       return () => wavesurfer.current.destroy();
     }
-  }, [songUrl]);
-
-    // useEffect(() => {
-    //   wavesurfer.current?.on("interaction", function () {
-    //     console.log("you have scrolled");
-    //     const surfTime = wavesurfer.current.getCurrentTime();
-    //     if (Math.abs(surfTime - playTime) > 2) {
-    //       // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
-    //       console.log("THIS NEVER HAPPENS!!!")
-    //     }
-    //     console.log(wavesurfer.current.getCurrentTime());
-    //     console.log(playTime);
-    //   });
-    // })
-  
-    useEffect(() => async () => {
-      if (playTime === 0) {
-        wavesurfer.current.seekTo(0);
-        wavesurfer.current.pause();
-      }
-      if (!loaded && playTime && song && playing && playerSong?.url === Object.values(song)[0]?.url) {
-        setPlay(!playing);
-        wavesurfer.current?.seekTo(playTime / Object.values(song)[0]?.length);
-        wavesurfer.current?.playPause();
-      }
-    }, [playTime, dispatch, loaded, wavesurfer]);
-
-    useEffect(() => {
-      if (loaded && playTime && song && playState && playerSong?.url === Object.values(song)[0]?.url) {
-        wavesurfer?.current?.seekTo(playTime / Object.values(song)[0]?.length);
-        // setLoaded(false);
-        wavesurfer?.current.play();
-      }
-    }, [playTime, loaded, playState, song, playerSong?.url]);
+  }, [songUrl, playerSong]);
 
   useEffect(() => {
-    if (!playState) {
-      wavesurfer?.current?.pause();
-    } else {
-      wavesurfer?.current?.play();
+    if (playerSong?.url === songUrl) {
+      const currentTime  = player?.current?.audio.current.currentTime;
+      const songLength = Object.values(song)[0]?.length;
+      wavesurfer.current?.seekTo(currentTime / songLength);
     }
-  }, [playState]);
-  
+  }, [playTime, player, song]);
+
+  useEffect(() => {
+    if (songUrl !== playerSong?.url && wavesurfer) {
+      console.log(wavesurfer);
+      wavesurfer.current.seekTo(0);
+      wavesurfer.current.pause();
+    }
+  }, [songUrl, playerSong?.url]);
+
   const handlePlayPause = async () => {
     setPlay(!playState);
     if (playerSong?.url !== Object.values(song)[0]?.url){
@@ -118,14 +114,13 @@ export default function WaveformTEST({ songId }) {
     } else {
       player.current.audio.current.play();
       wavesurfer.current.play();
-
     }
   };
 
   return (
     <div className="waveform">
       <div className="controls">
-        {loaded ? ((!playState || (playerUrl !== songUrl)) ? 
+        {loaded ? ((!playState || (playerSong?.url !== songUrl)) ? 
         <button
           className="waveform-play"
           onClick={handlePlayPause}

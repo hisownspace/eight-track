@@ -48,6 +48,7 @@ export const addSongToPlayer = (songId) => async (dispatch) => {
     if (res.ok) {
         const song = await res.json();
         await dispatch(addToPlayer(song));
+        return song;
     };
 };
 
