@@ -45,7 +45,6 @@ function Footer() {
     }, [waveformRef]);
 
     const setPlay = async () => {
-      console.log(song.id);
       dispatch(addSongToPlayer(song.id))
       dispatch(playingState(true));
     };
@@ -65,12 +64,14 @@ function Footer() {
     };
 
     const newSong = async () => {
+      console.log("SONGS", songs);
       const songsLength = songs.length;
       const randomSongIdx = Math.floor(Math.random() * songsLength);
       console.log(randomSongIdx);
       if (songs[randomSongIdx]) {
-        dispatch(addSongToPlayer(songs[randomSongIdx].id));
+        await dispatch(addSongToPlayer(songs[randomSongIdx].id));
         console.log(randomSongIdx);
+        console.log(song);
         setPlay();
         dispatch(setPlayerTime(0));
         dispatch(playingState(false));

@@ -71,19 +71,21 @@ export default function WaveformTEST({ songId }) {
         wavesurfer.current.pause();
       });
 
-      wavesurfer.current.on("seek", function (e) {
-        const surfTime = wavesurfer.current.getCurrentTime();
-        const playerTime = player.current.audio.current.currentTime;
-        const loopSeparator = (Math.abs(playerTime - surfTime));
-        console.log(playerSong);
-        console.log(song);
-        if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
-          player.current.audio.current.currentTime = surfTime;
-        }
-      })
-
       return () => wavesurfer.current.destroy();
     }
+  }, [songUrl]);
+  
+
+  useEffect(() => {
+    wavesurfer.current.on("seek", function (e) {
+      const surfTime = wavesurfer.current.getCurrentTime();
+      const playerTime = player.current.audio.current.currentTime;
+      const loopSeparator = (Math.abs(playerTime - surfTime));
+
+      if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
+        player.current.audio.current.currentTime = surfTime;
+      }
+    })
   }, [songUrl, playerSong]);
 
   useEffect(() => {
@@ -96,17 +98,19 @@ export default function WaveformTEST({ songId }) {
 
   useEffect(() => {
     if (songUrl !== playerSong?.url && wavesurfer) {
-      console.log(wavesurfer);
+
       wavesurfer.current.seekTo(0);
       wavesurfer.current.pause();
+    } else if (songUrl === playerSong?.url) {
+      wavesurfer.current.seekTo(0);
+      wavesurfer.current.play();
+
     }
   }, [songUrl, playerSong?.url]);
 
   const handlePlayPause = async () => {
     setPlay(!playState);
     if (playerSong?.url !== Object.values(song)[0]?.url){
-      dispatch(addSongToPlayer(songId));
-      dispatch(setRef(waveformRef));
       wavesurfer.current.play();
     } else if (playState){
       wavesurfer.current.pause();
