@@ -57,6 +57,7 @@ export const getAllSongs = () => async (dispatch) => {
 
 
 export const getOneSong = (songId) => async (dispatch) => {
+    console.log(songId)
     const res = await fetch(`/api/songs/${songId}`);
     if (res.ok) {
         const song = await res.json();

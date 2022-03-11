@@ -6,6 +6,7 @@ import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
+import getPreSignedUrl from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({
   container: ref,
@@ -42,7 +43,9 @@ export default function WaveformTEST({ songId }) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
-        wavesurfer.current.load(songUrl);
+        getPreSignedUrl(songUrl).then(signedSongUrl =>
+          wavesurfer.current.load(signedSongUrl)
+        );
       }
       
       wavesurfer.current.on("ready", function () {
@@ -51,9 +54,11 @@ export default function WaveformTEST({ songId }) {
         setLoaded(true);
       });
   
-        // wavesurfer.current.on("seek", function () {
+        wavesurfer.current.on("scroll", function () {
+          console.log("you have scrolled");
+          wavesurfer.current.getCurrentTime();
           // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
-        // });
+        });
       
       wavesurfer.current.on("finish", function () {
         setPlay(false);

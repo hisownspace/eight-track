@@ -7,10 +7,10 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../../store/song';
 import { playingState, timeRequest, setPlayerTime, addSongToPlayer } from '../../../store/player'
+import getPreSignedUrl from '../../../presignHelper';
 
 
 function Footer() {
-    const location = useLocation();
     const history = useHistory();
     const dispatch = useDispatch();
     const waveformRef = useSelector(state => state.player.ref);
@@ -19,8 +19,14 @@ function Footer() {
     const songs = Object.values(songsObj);
     const player = useRef(null);
 
+    const [signedSong, setSignedSong] = useState();
+
     useEffect(() => {
-    });
+      (async () => {
+        const signed = await getPreSignedUrl(song?.url);
+        setSignedSong(signed);
+      })()
+    }, [song]);
     
     
     const changeSongPage = (e) => {
@@ -63,7 +69,7 @@ function Footer() {
         showJumpControls={false}
         autoPlay={false}
         customAdditionalControls={[]}
-        src={song?.url}
+        src={signedSong}
         ref={player}
         onPlay={setPlay}
         onPause={setPause}
