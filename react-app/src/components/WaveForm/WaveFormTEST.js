@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
+import { addSongToPlayer, setRef } from "../../store/player";
 import getPreSignedUrl from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({
@@ -30,6 +30,7 @@ export default function WaveformTEST({ songId }) {
   const playerUrl = useSelector(state => state.player.currentSong?.url)
   const song = useSelector(state => state.songs.song);
   const playState = useSelector(state => state?.player.playing);
+  const player = useSelector(state => state.player.player);
   const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
 
@@ -54,11 +55,7 @@ export default function WaveformTEST({ songId }) {
         setLoaded(true);
       });
   
-        wavesurfer.current.on("scroll", function () {
-          console.log("you have scrolled");
-          wavesurfer.current.getCurrentTime();
-          // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
-        });
+
       
       wavesurfer.current.on("finish", function () {
         setPlay(false);
@@ -67,6 +64,19 @@ export default function WaveformTEST({ songId }) {
       return () => wavesurfer.current.destroy();
     }
   }, [songUrl]);
+
+    // useEffect(() => {
+    //   wavesurfer.current?.on("interaction", function () {
+    //     console.log("you have scrolled");
+    //     const surfTime = wavesurfer.current.getCurrentTime();
+    //     if (Math.abs(surfTime - playTime) > 2) {
+    //       // dispatch(setPlayerTime(wavesurfer.current.getCurrentTime()));
+    //       console.log("THIS NEVER HAPPENS!!!")
+    //     }
+    //     console.log(wavesurfer.current.getCurrentTime());
+    //     console.log(playTime);
+    //   });
+    // })
   
     useEffect(() => async () => {
       if (playTime === 0) {
@@ -81,12 +91,12 @@ export default function WaveformTEST({ songId }) {
     }, [playTime, dispatch, loaded, wavesurfer]);
 
     useEffect(() => {
-      if (loaded && playTime && song && playState && wavesurfer && playerSong?.url === Object.values(song)[0]?.url) {
+      if (loaded && playTime && song && playState && playerSong?.url === Object.values(song)[0]?.url) {
         wavesurfer?.current?.seekTo(playTime / Object.values(song)[0]?.length);
         // setLoaded(false);
         wavesurfer?.current.play();
       }
-    }, [playTime, loaded]);
+    }, [playTime, loaded, playState, song, playerSong?.url]);
 
   useEffect(() => {
     if (!playState) {
@@ -97,22 +107,36 @@ export default function WaveformTEST({ songId }) {
   }, [playState]);
   
   const handlePlayPause = async () => {
-    setPlay(true);
-    wavesurfer.current.playPause();
-    dispatch(addSongToPlayer(songId));
-    dispatch(setRef(waveformRef));
+    setPlay(!playState);
+    if (playerSong?.url !== Object.values(song)[0]?.url){
+      dispatch(addSongToPlayer(songId));
+      dispatch(setRef(waveformRef));
+      wavesurfer.current.play();
+    } else if (playState){
+      wavesurfer.current.pause();
+      player.current.audio.current.pause();
+    } else {
+      player.current.audio.current.play();
+      wavesurfer.current.play();
+
+    }
   };
 
   return (
     <div className="waveform">
       <div className="controls">
-        {(loaded && (playerUrl !== songUrl)) ? 
+        {loaded ? ((!playState || (playerUrl !== songUrl)) ? 
         <button
           className="waveform-play"
           onClick={handlePlayPause}
         >
             <FontAwesomeIcon icon={faPlay} />
-        </button> : null}
+        </button> : <button
+          className="waveform-play"
+          onClick={handlePlayPause}
+        >
+            <FontAwesomeIcon icon={faPause} />
+        </button>) : null}
       </div>
       <div id="waveform" ref={waveformRef} />
     </div>

@@ -1,12 +1,12 @@
-import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player';
+import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 import './Footer.css';
 // import random from Math;
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../../store/song';
-import { playingState, timeRequest, setPlayerTime, addSongToPlayer } from '../../../store/player'
+import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../../store/player'
 import getPreSignedUrl from '../../../presignHelper';
 
 
@@ -29,6 +29,10 @@ function Footer() {
     }, [song]);
     
     
+    useEffect(() => {
+      dispatch(setPlayer(player));
+    }, [dispatch]);
+
     const changeSongPage = (e) => {
       e.preventDefault();
       dispatch(getOneSong(song.id));
@@ -49,6 +53,9 @@ function Footer() {
 
     const setTime = e => {
       dispatch(setPlayerTime(e.srcElement.currentTime));
+      // console.log("hi");
+      // e.srcElement.pause();
+      // player.current.audio.current.pause()
     };
 
     const newSong = () => {
