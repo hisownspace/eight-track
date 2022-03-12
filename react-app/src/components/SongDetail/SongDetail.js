@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteOneComment, getAllSongComments, editOneComment } from '../../store/comment';
+import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
-import { addSongToPlayer } from '../../store/player';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
-import WaveFormTEST from '../WaveForm';
+import WaveForm from '../WaveForm';
 import './SongDetail.css';
 import EditCommentModal from '../../context/EditComment';
 
@@ -109,7 +108,7 @@ function SongDetail() {
                         </div>
                     </div>
                     <div className="song-detail-player">
-                        <WaveFormTEST songId={songId} />
+                        <WaveForm songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
