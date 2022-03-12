@@ -65,6 +65,7 @@ export default function WaveformTEST({ songId }) {
         }
       });
       
+      // when the waveform ends, it resets
       wavesurfer.current.on("finish", function () {
         setPlay(false);
         wavesurfer.current.seekTo(0);
@@ -76,18 +77,25 @@ export default function WaveformTEST({ songId }) {
   }, [songUrl]);
   
 
+  // allows the waveform to control the position of the
+  // footer player
   useEffect(() => {
     wavesurfer.current?.on("seek", function (e) {
       const surfTime = wavesurfer.current.getCurrentTime();
       const playerTime = player.current.audio.current.currentTime;
+      // loopSeparator prevents infinite loop between
+      // the two player control interfaces
       const loopSeparator = (Math.abs(playerTime - surfTime));
-
       if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
         player.current.audio.current.currentTime = surfTime;
       }
     })
   }, [songUrl, playerSong]);
 
+
+  // causes the waveform to seek to the appropriate position
+  // once it loads
+  // if the player is playing and the songs are the same
   useEffect(() => {
     if (playerSong?.url === songUrl) {
       const currentTime  = player?.current?.audio.current.currentTime;
@@ -96,9 +104,10 @@ export default function WaveformTEST({ songId }) {
     }
   }, [playTime, player, song]);
 
+
+  // seeks the waveform appropriately when the song changes
   useEffect(() => {
     if (songUrl !== playerSong?.url && wavesurfer) {
-
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.pause();
     } else if (songUrl === playerSong?.url) {
@@ -108,6 +117,8 @@ export default function WaveformTEST({ songId }) {
     }
   }, [songUrl, playerSong?.url]);
 
+
+  // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
     setPlay(!playState);
     if (playerSong?.url !== songUrl){
