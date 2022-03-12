@@ -29,7 +29,7 @@ function AllSongs() {
                     <div key={idx}>
                         {song.title}
                         <div className='song-image-list-item-container'>
-                            <img alt={song.title} src={song.image_url || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}></img>
+                            <img alt={song.title} src={song.image_url || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
                         </div>
                     </div>
                 )

@@ -40,14 +40,24 @@ def get_unique_filename(filename):
     unique_filename = uuid.uuid4().hex
     return f"{unique_filename}.{ext}"
 
-BUCKET_NAME = os.environ.get("S3_BUCKET")
-S3_LOCATION = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
+MUSIC_BUCKET = os.environ.get("S3_MUSIC_BUCKET")
+PHOTO_BUCKET = os.environ.get("S3_PHOTO_BUCKET")
 
-def upload_file_to_s3(file, acl="public-read"):
+print(MUSIC_BUCKET)
+print(PHOTO_BUCKET)
+
+S3_MUSIC_LOCATION = f"https://{MUSIC_BUCKET}.s3.amazonaws.com/"
+S3_PHOTO_LOCATION = f"https://{PHOTO_BUCKET}.s3.amazonaws.com/"
+
+print(S3_MUSIC_LOCATION)
+print(S3_PHOTO_LOCATION)
+
+def upload_music_file_to_s3(file, acl="public-read"):
+    print(file)
     try:
         s3.upload_fileobj(
             file,
-            BUCKET_NAME,
+            MUSIC_BUCKET,
             file.filename,
             ExtraArgs={
                 "ACL": acl,
@@ -58,12 +68,30 @@ def upload_file_to_s3(file, acl="public-read"):
         # in the case that our s3 upload fails
         return { "errors": str(e) }
 
-    return { "url": f"{S3_LOCATION}{file.filename}" }
+    return { "url": f"{S3_MUSIC_LOCATION}{file.filename}" }
+
+def upload_image_file_to_s3(file, acl="public-read"):
+    print(file)
+    try:
+        s3.upload_fileobj(
+            file,
+            PHOTO_BUCKET,
+            file.filename,
+            ExtraArgs={
+                "ACL": acl,
+                "ContentType": file.content_type
+            }
+        )
+    except Exception as e:
+        # in the case that our s3 upload fails
+        return { "errors": str(e) }
+
+    return { "url": f"{S3_PHOTO_LOCATION}{file.filename}" }
 
 def remove_file_from_s3(key):
     try:
         s3.delete_object(
-        Bucket=BUCKET_NAME,
+        Bucket=PHOTO_BUCKET,
         Key=key
         )
     except Exception as e:

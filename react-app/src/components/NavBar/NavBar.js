@@ -37,7 +37,7 @@ function NavBar({ isLoaded }) {
             <div className='occupied-nav-bar'>
                 <div className='nav-left'>
                     <div className="nav-bar-icon">
-                        <img alt="8-track-icon" src="https://hisownbucket.s3.amazonaws.com/8-track-icon.png"></img>
+                        <img alt="8-track-icon" src="https://eta-photobucket.s3.amazonaws.com/8-track-icon.png"></img>
                     </div>
                     <button onClick={() => history.push('/songs')} className="nav-bar-songs-button nav-button">
                         Library

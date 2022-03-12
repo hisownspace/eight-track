@@ -66,6 +66,7 @@ export const getOneSong = (songId) => async (dispatch) => {
 }
 
 export const addOneSong = (songDetails) => async (dispatch) => {
+    console.log(songDetails);
     const res = await fetch('/api/songs/', {
         method: 'POST',
         body: songDetails

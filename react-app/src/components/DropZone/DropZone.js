@@ -71,6 +71,7 @@ function DropZone() {
       
       const res = await dispatch(addOneSong(formData));
       setSongLoading(false);
+      console.log(res);
       if (res.errors) {
         setErrors([res.errors]);
       } else {
@@ -204,7 +205,7 @@ function DropZone() {
               />
           </div>
           <div>
-            <label forHtml="image">Song Image</label>
+            <label htmlFor="image">Song Image</label>
             <input type="file"
             id="image"
             name="image"
@@ -217,7 +218,7 @@ function DropZone() {
               <span>
                 Image Preview
               </span>
-              <img className="image-preview" ref={imagePreview} alt="preview" src={"https://hisownbucket.s3.amazonaws.com/default-placeholder.png"}></img>
+              <img className="image-preview" ref={imagePreview} alt="preview" src={"https://eta-photobucket.s3.amazonaws.com/default-placeholder.png"}></img>
             </div>
           </div>
           <div className='form-content'>

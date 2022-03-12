@@ -6,7 +6,7 @@ from botocore.exceptions import ClientError
 import botocore
 
 
-bucket_name = os.environ.get("S3_BUCKET")
+bucket_name = os.environ.get("S3_MUSIC_BUCKET")
 
 
 s3 = boto3.client(
