@@ -29,8 +29,9 @@ function DropZone() {
   const [errors, setErrors] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  console.log(errors);
+
   const handleSubmit = async (e) => {
-    setErrors({});
     e.preventDefault();
 
     const formErrors = {};
@@ -62,7 +63,7 @@ function DropZone() {
       //* aws uploads can be a bit slow—displaying
       //* some sort of loading message is a good idea
       setSongLoading(true);
-      setErrors({});
+      setErrors(false);
       setArtist('');
       setTitle('');
       setDescription('');
@@ -73,10 +74,11 @@ function DropZone() {
       setSongLoading(false);
       console.log(res);
       if (res.errors) {
-        setErrors([res.errors]);
+        setErrors(res.errors);
+        handleCancel();
       } else {
         setDropFile("")
-        history.push(`/songs/${res.song.id}`)
+        history.push(`/songs/${res.song?.id}`)
       }
     }
   }
@@ -100,7 +102,6 @@ function DropZone() {
   }, [songLoading, dispatch]);
 
   useEffect(() => {
-    setErrors({})
     const formErrors = {};
     if (submitted && !artist) {
       formErrors.artist = ("Please fill out artist field!")
@@ -115,7 +116,9 @@ function DropZone() {
 
   //* clears drop file and reloads drop zone
   const handleCancel = (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     setDropFile("");
     setSubmitted(false);
     setArtist("");
@@ -263,10 +266,17 @@ function DropZone() {
         <div className="drop_zone"
           onDragOver={dragHandler}
           onDrop={dropHandler}>
-          <div>{"Drag a file into this Drop Zone ..."}</div>
+          <div>
+              <div className='dropzone-prompt'>
+                {"Drag a file into this Drop Zone ..."}
+              </div>
+            <div className='upload-errors'>
+              {errors ? errors : null}
+            </div>
+          </div>
           <label
-          className='custom-file-upload'
-          htmlFor="choose-audio-file-button">
+            className='custom-file-upload'
+            htmlFor="choose-audio-file-button">
             Or click here to choose a file
           </label>
           <input type="file"
