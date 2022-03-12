@@ -16,7 +16,11 @@ function LoginForm() {
         e.preventDefault();
         const data = await dispatch(login(email, password));
         if (data) {
-        setErrors(data);
+            console.log(data);
+            if (data.email) {
+                delete data.password
+            }
+            setErrors(data);
         }
     };
 
@@ -45,11 +49,8 @@ function LoginForm() {
         <>
             <form onSubmit={onLogin}>
                 <div className='modal_ul_errors'>
-                    {errors.map((error, idx) => (
-                    <div key={idx}>{error}</div>
-                    ))}
+                    {errors.email}
                 </div>
-
                 <label>
                     <input
                         id='email'
@@ -60,6 +61,9 @@ function LoginForm() {
                         required
                     />
                 </label>
+                <div className='modal_ul_errors'>
+                    {errors.password}
+                </div>
                 <label>
                     <input
                         id='password'
