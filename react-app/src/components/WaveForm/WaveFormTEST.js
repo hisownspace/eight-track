@@ -49,6 +49,7 @@ export default function WaveformTEST({ songId }) {
       }
       
       wavesurfer.current.on("ready", async function () {
+        setLoaded(true);
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
         if (playerSong?.url === songUrl) {
@@ -62,7 +63,6 @@ export default function WaveformTEST({ songId }) {
         } else {
           wavesurfer.current.seekTo(0);
         }
-        setLoaded(true);
       });
       
       wavesurfer.current.on("finish", function () {
