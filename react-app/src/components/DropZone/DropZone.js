@@ -221,7 +221,7 @@ function DropZone() {
               <span>
                 Image Preview
               </span>
-              <img className="image-preview" ref={imagePreview} alt="preview" src={"https://eta-photobucket.s3.amazonaws.com/default-placeholder.png"}></img>
+              <img className="image-preview" ref={imagePreview} alt="preview" src={"https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
             </div>
           </div>
           <div className='form-content'>
