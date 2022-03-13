@@ -71,7 +71,9 @@ function LoginForm() {
                         value={password}
                         onChange={updatePassword}
                         placeholder='Password'
-                        required
+                        // required
+                        readOnly={true}
+                        onFocus={e => e.target.removeAttribute('readonly')}
                     />
                 </label>
                 <button className="button_submit button_main" type="submit">Log In</button>

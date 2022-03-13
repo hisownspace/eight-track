@@ -40,7 +40,7 @@ const SignupForm = () => {
         if (email.length === 0) {
             signupErrors.emailLength = "Email must not be empty."
         }
-        if (!validator.validate(email)) {
+        else if (!validator.validate(email)) {
             signupErrors.emailValid = "Please provide a valid email address."
         }
         if (Object.values(signupErrors).length > 0) {
@@ -109,7 +109,6 @@ const SignupForm = () => {
                             value={username}
                             onChange={updateUsername}
                             placeholder='Username'
-                            required
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -124,7 +123,6 @@ const SignupForm = () => {
                             value={email}
                             onChange={updateEmail}
                             placeholder='Email'
-                            required
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -138,7 +136,6 @@ const SignupForm = () => {
                             value={password}
                             onChange={updatePassword}
                             placeholder='Password'
-                            required
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -151,7 +148,6 @@ const SignupForm = () => {
                             value={repeatPassword}
                             onChange={updateRepeatPassword}
                             placeholder='Confirm Password'
-                            required
                         />
                     </label>
                     <button className="button_submit button_main" type="submit">Sign Up</button>
@@ -162,8 +158,6 @@ const SignupForm = () => {
                     <button className="button_submit button_secondary"type="submit">Demo User</button>
                 </form>
                 <form onSubmit={handleRedirect}>
-                    {/* <button className="button_submit button_transfer" type="submit">Want to Login?</button> */}
-                    {/* <LoginFormModal /> */}
                 </form>
         </>
     )
