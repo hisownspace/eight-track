@@ -75,10 +75,10 @@ export default function WaveForm({ songId }) {
   
 
   useEffect(() => {
-    if (!playState) {
-      wavesurfer.current?.pause();
-    } else {
+    if (playState && songUrl === playerSong?.url) {
       wavesurfer.current?.play();
+    } else {
+      wavesurfer.current?.pause();
     }
   }, [playState]);
 
@@ -137,6 +137,7 @@ export default function WaveForm({ songId }) {
     } else if (playState){
       wavesurfer.current.pause();
       player.current.audio.current.pause();
+
     } else {
       player.current.audio.current.play();
       wavesurfer.current.play();
