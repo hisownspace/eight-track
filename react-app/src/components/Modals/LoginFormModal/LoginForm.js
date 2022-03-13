@@ -56,7 +56,7 @@ function LoginForm() {
                         type="text"
                         value={username}
                         onChange={updateEmail}
-                        placeholder='Username'
+                        placeholder='Enter Username or Email'
                         required
                         autoComplete='username'
                     />
