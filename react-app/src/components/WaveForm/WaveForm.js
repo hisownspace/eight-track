@@ -5,7 +5,7 @@ import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer, setRef, setPlayerTime } from "../../store/player";
+import { addSongToPlayer, setRef, playingState } from "../../store/player";
 import getPreSignedUrl from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({
@@ -25,7 +25,6 @@ export default function WaveForm({ songId }) {
   const dispatch = useDispatch();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
-  const [playing, setPlay] = useState(false);
   const playTime = useSelector(state => state.player.time);
   const song = useSelector(state => Object.values(state.songs.song));
   const playState = useSelector(state => state?.player.playing);
@@ -37,7 +36,6 @@ export default function WaveForm({ songId }) {
   // On component mount and when url changes
   
   useEffect(() => {
-    setPlay(false);
 
     if (songUrl) {
       const options = formWaveSurferOptions(waveformRef.current);
@@ -53,9 +51,12 @@ export default function WaveForm({ songId }) {
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
         if (playerSong?.url === songUrl) {
-          const currentTime  = player.current.audio.current.currentTime;
+          const currentTime  = player.current?.audio.current.currentTime;
           const songLength = Object.values(song)[0].length;
-          wavesurfer.current.seekTo(currentTime / songLength);
+          const seek = currentTime / songLength;
+          if (seek > 0 && seek < 1) {
+            wavesurfer.current.seekTo(currentTime / songLength);
+          }
           // if song is playing, starts waveform
           if (playState) {
             wavesurfer.current.play();
@@ -67,7 +68,6 @@ export default function WaveForm({ songId }) {
       
       // when the waveform ends, it resets
       wavesurfer.current.on("finish", function () {
-        setPlay(false);
         wavesurfer.current.seekTo(0);
         wavesurfer.current.pause();
       });
@@ -76,13 +76,21 @@ export default function WaveForm({ songId }) {
     }
   }, [songUrl]);
   
+  useEffect(() => {
+    if (!playState) {
+      wavesurfer.current?.pause();
+    } else {
+      wavesurfer.current?.play();
+    }
+  }, [playState]);
+
 
   // allows the waveform to control the position of the
   // footer player
   useEffect(() => {
     wavesurfer.current?.on("seek", function (e) {
       const surfTime = wavesurfer.current.getCurrentTime();
-      const playerTime = player.current.audio.current.currentTime;
+      const playerTime = player.current?.audio.current.currentTime;
       // loopSeparator prevents infinite loop between
       // the two player control interfaces
       const loopSeparator = (Math.abs(playerTime - surfTime));
@@ -125,7 +133,6 @@ export default function WaveForm({ songId }) {
 
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
-    setPlay(!playState);
     if (playerSong?.url !== songUrl){
       dispatch(addSongToPlayer(songId))
       wavesurfer.current.play();

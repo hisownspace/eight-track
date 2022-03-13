@@ -63,21 +63,14 @@ function Footer() {
     };
 
     const newSong = async () => {
-      console.log("SONGS", songs);
       const songsLength = songs.length;
       const randomSongIdx = Math.floor(Math.random() * songsLength);
-      console.log(randomSongIdx);
       if (songs[randomSongIdx]) {
         await dispatch(addSongToPlayer(songs[randomSongIdx].id));
-        console.log(randomSongIdx);
-        console.log(song);
         setPlay();
         dispatch(setPlayerTime(0));
         dispatch(playingState(true));
       } else {
-        console.log("------------------------- The impossible has happened! ------------------------------")
-        console.log(randomSongIdx);
-        console.log(songs)
         dispatch(addSongToPlayer(songs[1].id));
         setPlay();
         dispatch(setPlayerTime(0));
