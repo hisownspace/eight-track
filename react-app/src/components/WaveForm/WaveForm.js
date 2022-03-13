@@ -6,7 +6,7 @@ import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer, setRef, playingState } from "../../store/player";
-import getPreSignedUrl from "../../presignHelper";
+import getCloudFrontDomain from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({
   container: ref,
@@ -45,7 +45,7 @@ export default function WaveForm({ songId }) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
-        getPreSignedUrl(songUrl).then(signedSongUrl =>
+        getCloudFrontDomain(songUrl).then(signedSongUrl =>
           wavesurfer.current?.load(signedSongUrl)
         );
       }

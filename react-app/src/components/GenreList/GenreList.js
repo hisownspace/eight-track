@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
-import getPreSignedUrl from '../../presignHelper';
+import getCloudFrontDomain from '../../presignHelper';
 
 const responsive = {
     desktop: {

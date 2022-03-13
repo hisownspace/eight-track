@@ -108,6 +108,7 @@ const SignupForm = () => {
                             value={username}
                             onChange={updateUsername}
                             placeholder='Username'
+                            autoComplete='username'
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -122,6 +123,7 @@ const SignupForm = () => {
                             value={email}
                             onChange={updateEmail}
                             placeholder='Email'
+                            autoComplete='email'
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -135,6 +137,7 @@ const SignupForm = () => {
                             value={password}
                             onChange={updatePassword}
                             placeholder='Password'
+                            autoComplete='new-password'
                         />
                     </label>
                     <div className='modal_ul_errors'>
@@ -147,6 +150,7 @@ const SignupForm = () => {
                             value={repeatPassword}
                             onChange={updateRepeatPassword}
                             placeholder='Confirm Password'
+                            autoComplete='new-password'
                         />
                     </label>
                     <button className="button_submit button_main" type="submit">Sign Up</button>

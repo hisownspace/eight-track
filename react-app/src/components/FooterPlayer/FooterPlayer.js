@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../store/song';
 import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
-import getPreSignedUrl from '../../presignHelper';
+import getCloudFrontDomain from '../../presignHelper';
 
 
 function Footer() {
@@ -23,7 +23,7 @@ function Footer() {
 
     useEffect(() => {
       (async () => {
-        const signed = await getPreSignedUrl(song?.url);
+        const signed = await getCloudFrontDomain(song?.url);
         setSignedSong(signed);
         await dispatch(getAllSongs());
       })()

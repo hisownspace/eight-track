@@ -7,14 +7,14 @@ function LoginForm() {
     const history = useHistory()
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
 
     const onLogin = async (e) => {
         
         e.preventDefault();
-        const data = await dispatch(login(email, password));
+        const data = await dispatch(login(username, password));
         if (data) {
             if (data.email) {
                 delete data.password
@@ -24,7 +24,7 @@ function LoginForm() {
     };
 
     const updateEmail = (e) => {
-    setEmail(e.target.value);
+    setUsername(e.target.value);
     };
 
     const updatePassword = (e) => {
@@ -33,7 +33,7 @@ function LoginForm() {
 
     const DemoLogin = async (e) => {
         e.preventDefault();
-        const data = await dispatch(login('demo@aa.io', 'password'));
+        const data = await dispatch(login('Demo', 'password'));
         if (data) {
         setErrors(data);
         }
@@ -52,12 +52,13 @@ function LoginForm() {
                 </div>
                 <label>
                     <input
-                        id='email'
+                        id='username'
                         type="text"
-                        value={email}
+                        value={username}
                         onChange={updateEmail}
-                        placeholder='Email'
+                        placeholder='Username'
                         required
+                        autoComplete='username'
                     />
                 </label>
                 <div className='modal_ul_errors'>
@@ -73,6 +74,7 @@ function LoginForm() {
                         // required
                         readOnly={true}
                         onFocus={e => e.target.removeAttribute('readonly')}
+                        autoComplete="current-password"
                     />
                 </label>
                 <button className="button_submit button_main" type="submit">Log In</button>
