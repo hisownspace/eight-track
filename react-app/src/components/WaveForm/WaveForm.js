@@ -36,7 +36,6 @@ export default function WaveForm({ songId }) {
   // On component mount and when url changes
   
   useEffect(() => {
-
     if (songUrl) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
@@ -45,7 +44,6 @@ export default function WaveForm({ songId }) {
           wavesurfer.current?.load(signedSongUrl)
         );
       }
-      
       wavesurfer.current.on("ready", async function () {
         setLoaded(true);
         wavesurfer.current.setMute(true);
@@ -71,11 +69,11 @@ export default function WaveForm({ songId }) {
         wavesurfer.current.seekTo(0);
         wavesurfer.current.pause();
       });
-
       return () => wavesurfer.current.destroy();
     }
   }, [songUrl]);
   
+
   useEffect(() => {
     if (!playState) {
       wavesurfer.current?.pause();
@@ -144,6 +142,7 @@ export default function WaveForm({ songId }) {
       wavesurfer.current.play();
     }
   };
+
 
   return (
     <div className="waveform">
