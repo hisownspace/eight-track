@@ -29,7 +29,6 @@ function DropZone() {
   const [errors, setErrors] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  console.log(errors);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +71,6 @@ function DropZone() {
       
       const res = await dispatch(addOneSong(formData));
       setSongLoading(false);
-      console.log(res);
       if (res.errors) {
         setErrors(res.errors);
         handleCancel();

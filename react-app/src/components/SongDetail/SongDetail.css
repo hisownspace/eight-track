@@ -102,7 +102,6 @@
 }
 
 .song-detail-player {
-    /* position: relative; */
     margin-bottom: 20px;
 }
 
@@ -111,6 +110,6 @@
     background-color: rgba(0, 0, 0, 0.397);
     height: 30px;
     width: auto;
-    bottom: -239px;
+    bottom: -254px;
     z-index: 3;
 }

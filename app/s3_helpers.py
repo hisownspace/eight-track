@@ -43,17 +43,11 @@ def get_unique_filename(filename):
 MUSIC_BUCKET = os.environ.get("S3_MUSIC_BUCKET")
 PHOTO_BUCKET = os.environ.get("S3_PHOTO_BUCKET")
 
-print(MUSIC_BUCKET)
-print(PHOTO_BUCKET)
-
 S3_MUSIC_LOCATION = f"https://{MUSIC_BUCKET}.s3.amazonaws.com/"
 S3_PHOTO_LOCATION = f"https://{PHOTO_BUCKET}.s3.amazonaws.com/"
 
-print(S3_MUSIC_LOCATION)
-print(S3_PHOTO_LOCATION)
 
 def upload_music_file_to_s3(file, acl="public-read"):
-    print(file)
     try:
         s3.upload_fileobj(
             file,
@@ -70,7 +64,6 @@ def upload_music_file_to_s3(file, acl="public-read"):
     return { "url": f"{S3_MUSIC_LOCATION}{file.filename}" }
 
 def upload_image_file_to_s3(file, acl="public-read"):
-    print(file)
     try:
         s3.upload_fileobj(
             file,

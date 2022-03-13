@@ -13,10 +13,14 @@ const formWaveSurferOptions = ref => ({
   waveColor: "#eee",
   progressColor: "OrangeRed",
   cursorColor: "OrangeRed",
-  barWidth: 1,
+  barWidth: 2,
+  barRadius: 2,
+  cursorWidth: 0,
   responsive: true,
   height: 100,
-  normalize: true,
+  partialRender: true,
+  pixelRatio: 1,
+  // normalize: true,
   interact: true,
 });
 
@@ -96,7 +100,11 @@ export default function WaveForm({ songId }) {
       if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
         player.current.audio.current.currentTime = surfTime;
       }
-    })
+    });
+    // this event listener can be used to toggle the
+    // traveling comments
+    wavesurfer.current?.on("audioprocess", function (e) {
+    });
   }, [songUrl, playerSong]);
 
 

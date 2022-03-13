@@ -66,7 +66,6 @@ export const getOneSong = (songId) => async (dispatch) => {
 }
 
 export const addOneSong = (songDetails) => async (dispatch) => {
-    console.log(songDetails);
     const res = await fetch('/api/songs/', {
         method: 'POST',
         body: songDetails
@@ -79,7 +78,6 @@ export const addOneSong = (songDetails) => async (dispatch) => {
     } else if (res.status < 500) {
         const data = await res.json();
         if (data.errors) {
-            console.log(data.errors);
           return data.errors;
         }
       } else {

@@ -28,6 +28,5 @@ def get_presigned_url(key):
             ExpiresIn=3600)
     except ClientError as e:
         return None
-    print(response)
     # The response contains the presigned URL
     return { "response": response }
