@@ -32,6 +32,7 @@ export default function WaveForm({ songId }) {
   const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
 
+
   // create new WaveSurfer instance
   // On component mount and when url changes
   
@@ -103,7 +104,6 @@ export default function WaveForm({ songId }) {
   // once it loads
   // if the player is playing and the songs are the same
   useEffect(() => {
-    console.log("I CHANGED");
     if (playerSong?.url === songUrl) {
       const currentTime  = player?.current?.audio.current.currentTime;
       const songLength = Object.values(song)[0]?.length;
@@ -117,7 +117,6 @@ export default function WaveForm({ songId }) {
 
   // seeks the waveform appropriately when the song changes
   useEffect(() => {
-    console.log("I CHANGED");
     if (songUrl !== playerSong?.url && wavesurfer) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.pause();
@@ -143,6 +142,10 @@ export default function WaveForm({ songId }) {
       wavesurfer.current.play();
     }
   };
+
+  useEffect(() => {
+
+  }, []);
 
 
   return (

@@ -107,6 +107,11 @@ function SongDetail() {
                             </div>
                         </div>
                     </div>
+                    <div className='traveling-comments'>
+                        {/* {Object.values(comments?.comments)).map(comment => {
+                            
+                        })} */}
+                    </div>
                     <div className="song-detail-player">
                         <WaveForm songId={songId} />
                     </div>
