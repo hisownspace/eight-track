@@ -44,7 +44,7 @@ export default function WaveForm({ songId }) {
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
         getPreSignedUrl(songUrl).then(signedSongUrl =>
-          wavesurfer.current.load(signedSongUrl)
+          wavesurfer.current?.load(signedSongUrl)
         );
       }
       
@@ -97,17 +97,21 @@ export default function WaveForm({ songId }) {
   // once it loads
   // if the player is playing and the songs are the same
   useEffect(() => {
-    console.log("I CHANGED")
+    console.log("I CHANGED");
     if (playerSong?.url === songUrl) {
       const currentTime  = player?.current?.audio.current.currentTime;
       const songLength = Object.values(song)[0]?.length;
-      wavesurfer.current?.seekTo(currentTime / songLength);
+      const seek = currentTime / songLength;
+      if (seek > 0 && seek < 1) {
+        wavesurfer.current?.seekTo(currentTime / songLength);
+      }
     }
   }, [playTime, player, song]);
 
 
   // seeks the waveform appropriately when the song changes
   useEffect(() => {
+    console.log("I CHANGED");
     if (songUrl !== playerSong?.url && wavesurfer) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.pause();

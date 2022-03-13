@@ -45,7 +45,6 @@ function Footer() {
     }, [waveformRef]);
 
     const setPlay = async () => {
-      dispatch(addSongToPlayer(song.id))
       dispatch(playingState(true));
     };
 
@@ -74,7 +73,7 @@ function Footer() {
         console.log(song);
         setPlay();
         dispatch(setPlayerTime(0));
-        dispatch(playingState(false));
+        dispatch(playingState(true));
       } else {
         console.log("------------------------- The impossible has happened! ------------------------------")
         console.log(randomSongIdx);
@@ -82,7 +81,7 @@ function Footer() {
         dispatch(addSongToPlayer(songs[1].id));
         setPlay();
         dispatch(setPlayerTime(0));
-        dispatch(playingState(false));
+        dispatch(playingState(true));
       }
     };
     
