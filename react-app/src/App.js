@@ -10,6 +10,7 @@ import User from './components/User';
 import DropZone from './components/DropZone';
 import SongDetail from "./components/SongDetail";
 import AllSongs from './components/AllSongs/AllSongs';
+import Footer from './components/FooterPlayer';
 import { authenticate } from './store/session';
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           </Switch>
         </div>
       )}
+      <Footer />
     </BrowserRouter>
   );
 }

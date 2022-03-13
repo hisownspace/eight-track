@@ -5,9 +5,9 @@ import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { getOneSong, getAllSongs } from '../../../store/song';
-import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../../store/player'
-import getPreSignedUrl from '../../../presignHelper';
+import { getOneSong, getAllSongs } from '../../store/song';
+import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
+import getPreSignedUrl from '../../presignHelper';
 
 
 function Footer() {

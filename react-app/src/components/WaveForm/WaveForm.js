@@ -97,6 +97,7 @@ export default function WaveForm({ songId }) {
   // once it loads
   // if the player is playing and the songs are the same
   useEffect(() => {
+    console.log("I CHANGED")
     if (playerSong?.url === songUrl) {
       const currentTime  = player?.current?.audio.current.currentTime;
       const songLength = Object.values(song)[0]?.length;
