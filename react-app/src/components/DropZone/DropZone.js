@@ -126,9 +126,17 @@ function DropZone() {
     const formErrors = {};
     if (submitted && !artist) {
       formErrors.artist = ("Please fill out artist field!")
+    } else if (submitted && artist.length > 255) {
+      formErrors.artist = "Artist name cannot be longer than 255 characters!";
+    } else if (submitted) {
+      formErrors.artist = null;
     }
     if (submitted && !title) {
       formErrors.title = ("Please fill out title field!")
+    } else if (submitted && title.length > 255) {
+      formErrors.title = "Title cannot be longer than 255 characters.";
+    } else if (submitted) {
+      formErrors.title = null;
     }
     if (Object.values(formErrors).length > 0) {
       setErrors(formErrors);
@@ -241,7 +249,7 @@ function DropZone() {
                 id="song-submit-form"
               >
                 <div className='song-form-content'>
-                  {Object.values(errors).length > 0 && errors.title ? <div>{errors.title}</div> : null}
+
                   <label htmlFor="title">Title</label>
                   <input
                     type="text"
@@ -251,9 +259,11 @@ function DropZone() {
                     value={title}
                     onChange={e => setTitle(e.target.value)}
                   />
+                  {Object.values(errors).length > 0 && errors.title ?
+                  <div className="upload-errors">{errors.title}</div> :
+                  <div className="upload-errors"></div>}
                 </div>
                 <div className='song-form-content'>
-                  {Object.values(errors).length > 0 && errors.artist ? <div>{errors.artist}</div> : null}
 
                   <label htmlFor="artist">Artist</label>
                   <input
@@ -264,6 +274,9 @@ function DropZone() {
                     value={artist}
                     onChange={e => setArtist(e.target.value)}
                   />
+                  {Object.values(errors).length > 0 && errors.artist ?
+                  <div className="upload-errors">{errors.artist}</div> :
+                  <div className="upload-errors"> </div>}
                 </div>
                 <div className='song-form-content'>
                   <label htmlFor="genre">Genre</label>
