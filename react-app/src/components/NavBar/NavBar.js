@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import './NavBar.css';
 import LoginFormModal from '../Modals/LoginFormModal'
 import SignupFormModal from '../Modals/SignupFormModal'
 import ProfileButton from './ProfileButton';
+import { search } from '../../store/search';
 
 
 function NavBar({ isLoaded }) {
     const history = useHistory();
+    const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearch = e => {
+    const handleSearch = async e => {
         e.preventDefault();
-        console.log(searchTerm);
+        await dispatch(search(searchTerm));
+        history.push(`/search?q=${searchTerm}`);
     };
 
     let sessionLinks;

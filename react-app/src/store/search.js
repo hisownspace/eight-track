@@ -1,31 +1,33 @@
 const SEARCH = "search/SONG"
 
-const search = songs => {
+const searchQuery = songs => {
     return {
         type: SEARCH,
         songs
     }
 }
 
-export const searchQuery = query => async dispatch => {
+export const search = query => async dispatch => {
     const res = await fetch(`/api/search?q=${query}`)
     if (res.ok) {
         const searchResults = await res.json();
-        dispatch(search(searchResults));
+        dispatch(searchQuery(searchResults));
         return searchResults;
     } else {
         return res.errors;
     };
 };
 
-const initialState = { songs: {} };
+const initialState = { artist: {}, title: {}, genre: {} };
 
 export default function searchReducer(state = initialState, action) {
     let newState;
     switch (action.type) {
         case SEARCH:
             newState = { ...state };
-            newState.songs = action.songs;
+            newState.artist = action.songs.artist
+            newState.title = action.songs.title;
+            newState.genre = action.songs.genre;
             return newState;
         default:
             return state;
