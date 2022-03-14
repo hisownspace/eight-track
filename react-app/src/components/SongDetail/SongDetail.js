@@ -98,7 +98,9 @@ function SongDetail() {
                             <div>{song?.artist}</div>
                             {(userId && (userId === song?.user?.id)) ?
                                 <>
-                                    <button className="song-detail-buttons" onClick={handleDelete}>Delete Song</button>
+                                    <button
+                                        className="song-detail-buttons"
+                                        onClick={handleDelete}>Delete Song</button>
                                     <UpdateSongForm />
                                 </> : null}
                         </div>
@@ -111,17 +113,18 @@ function SongDetail() {
                             </div>
                         </div>
                     </div>
-                    <div className='traveling-comments'>
-                        {/* {Object.values(comments?.comments)).map(comment => {
-                            
-                        })} */}
-                    </div>
+                    {/* <div className='traveling-comments'>
+                        {Object.values(comments?.comments).map(comment => {
+                            return null;
+                        })}
+                    </div> */}
                     <div className="song-detail-player">
                         <WaveForm songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
-                    <img alt={song?.title} src={song?.image_url || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
+                    <img alt={song?.title} src={song?.image_url ||
+                        "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
                 </div>
             </div>
             <div className='song-comments'>
@@ -143,7 +146,10 @@ function SongDetail() {
                                         onClick={handleDeleteComment}>
                                         Delete Comment
                                     </button>
-                                    <EditCommentModal commentId={comment?.id} commentContent={comment?.content} songId={songId} />
+                                    <EditCommentModal
+                                        commentId={comment?.id}
+                                        commentContent={comment?.content}
+                                        songId={songId} />
                                 </>
                                 : null}
                         </div>)

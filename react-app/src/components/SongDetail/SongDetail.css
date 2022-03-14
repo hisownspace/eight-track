@@ -11,6 +11,12 @@
 
 }
 
+.search-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .song-detail-album-art {
     width: 340px;
     margin: 20px;

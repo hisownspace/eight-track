@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,7 +12,12 @@ import ProfileButton from './ProfileButton';
 function NavBar({ isLoaded }) {
     const history = useHistory();
     const sessionUser = useSelector(state => state.session.user);
+    const [searchTerm, setSearchTerm] = useState('');
 
+    const handleSearch = e => {
+        e.preventDefault();
+        console.log(searchTerm);
+    };
 
     let sessionLinks;
     if (sessionUser) {
@@ -53,11 +58,18 @@ function NavBar({ isLoaded }) {
                         </div>
                     </div>
                     <div className="nav-search">
+                        <form
+                            className="search-form"
+                            onSubmit={handleSearch}
+                        >
                         <label
                             className="search-label">
                             <input
                                 className="searchbar"
-                                placeholder='Search'>
+                                placeholder="Search"
+                                value={searchTerm}
+                                onChange={e => setSearchTerm(e.target.value)}
+                                >
                             </input>
                             <button className="search-button">
                                 <FontAwesomeIcon
@@ -65,6 +77,7 @@ function NavBar({ isLoaded }) {
                                     icon={faMagnifyingGlass} />
                             </button>
                         </label>
+                        </form>
                     </div>
                     <div className='nav-right'>
                         {sessionUser &&
