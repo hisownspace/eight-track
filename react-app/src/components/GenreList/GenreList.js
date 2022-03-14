@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
-import getCloudFrontDomain from '../../presignHelper';
+import './GenreList.css';
 
 const responsive = {
     desktop: {
@@ -43,11 +43,14 @@ function GenreList({ genreId }) {
                 return (
                     <Link key={song.id} to={`/songs/${song.id}`}>
                         <div className='hide-image'>
-                            {song.title}
                             <div className='song-image-list-item-container'>
                                 <img alt={song.title} src={song.image_url
                                     || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}>
                                 </img>
+                                <div className='song-title-carousel'>
+                                    <div className='carousel-title'>{song.title}</div>
+                                    <div className='carousel-artist'>{song.artist}</div>
+                                </div>
                             </div>
                         </div>
                     </Link>

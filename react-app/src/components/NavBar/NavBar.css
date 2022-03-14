@@ -29,8 +29,9 @@ a:visited {
 
 .nav-right {
     display: grid;
-    grid-template-columns: 1fr 1fr .25fr;
+    grid-template-columns: 1fr 1fr;
     height: 100%;
+    margin-right: 0;
 }
 
 .down-caret {
@@ -40,7 +41,7 @@ a:visited {
 
 .nav-left {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     height: 100%;
 }
 
@@ -108,7 +109,6 @@ a:visited {
 
 .nav-bar-icon {
     height: 47px;
-    width: 200px;
     overflow: hidden;
 }
 
@@ -136,6 +136,11 @@ a:visited {
 
 .open-dropdown-button {
     background-color: #111111;
+    margin-right: 0;
+}
+
+.profile-dropdown-button {
+    width: 105px;
 }
 
 .github-link {
@@ -144,4 +149,57 @@ a:visited {
     justify-content: center;
     padding: auto;
     font-size: 13px;
+    border-right: solid 1px black;
+}
+
+.nav-search {
+    flex-grow: 3;
+    display: grid;
+}
+
+.searchbar {
+    border-radius: 7px;
+    line-height: 20px;
+    height: 25px;
+    width: 100%;
+    align-self: right;
+    padding-left: 10px;
+    position: relative;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
+}
+
+.search-button {
+    position: absolute;
+    right: -7px;
+    top: 5px;
+    background-color: transparent;
+    border: none;
+    color: #333333;
+}
+
+.search-button:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.searchbar:focus {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
+}
+
+.search-label {
+    position: relative;
+    display: inline-block;
 }

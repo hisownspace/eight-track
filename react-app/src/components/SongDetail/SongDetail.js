@@ -35,10 +35,14 @@ function SongDetail() {
         }
     }, [isLoaded, songId, song, dispatch, history]);
 
-    const handleDelete = () => {
-        dispatch(deleteOneSong(songId));
-        dispatch(getAllSongs());
-        history.push("/songs");
+    const handleDelete = async () => {
+        const confirm = window.confirm(
+            "This will permanently delete this song. Are you sure?");
+        if (confirm) {
+            await dispatch(deleteOneSong(songId));
+            await dispatch(getAllSongs());
+            history.push("/songs");
+        }
     };
     
     const handleDeleteComment = e => {

@@ -5,7 +5,7 @@ import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
 
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer, setRef, playingState } from "../../store/player";
+import { addSongToPlayer } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
 
 const formWaveSurferOptions = ref => ({

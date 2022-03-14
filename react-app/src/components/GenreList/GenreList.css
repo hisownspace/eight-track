@@ -1,0 +1,21 @@
+.song-image-list-item-container {
+    position: relative
+}
+
+.song-title-carousel {
+    position: relative;
+    bottom: 0;
+}
+
+.carousel-title {
+    font-size: 14px;
+    font-weight: 100;
+    line-height: 20px;
+}
+
+.carousel-artist {
+    font-size: 12px;
+    color: #333333;
+    line-height: 17px;
+    font-weight: 100;
+}

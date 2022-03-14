@@ -83,8 +83,8 @@ def upload_image_file_to_s3(file, acl="public-read"):
 def remove_file_from_s3(key):
     try:
         s3.delete_object(
-        Bucket=PHOTO_BUCKET,
+        Bucket=MUSIC_BUCKET,
         Key=key
         )
     except Exception as e:
-        return { "errors": str(e) }
+        return { "errors": str(e) }  
