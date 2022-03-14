@@ -22,6 +22,8 @@ const formWaveSurferOptions = ref => ({
   pixelRatio: 1,
   // normalize: true,
   interact: true,
+  hideScrollbar: true,
+  autoCenter: true,
 });
 
 export default function WaveForm({ songId }) {
