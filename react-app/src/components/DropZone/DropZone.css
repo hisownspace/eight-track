@@ -168,3 +168,11 @@
   line-height: 20px;
   cursor: pointer;
 }
+
+#bar {
+  width: 1%;
+  height: 30px;
+  background-color: magenta;
+  color: white;
+  font-weight: bold;
+}

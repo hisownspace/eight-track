@@ -313,6 +313,7 @@ function DropZone() {
     return (
       <div className="drop_zone_submit">
         <div className='song-loading'>Song Loading...</div>
+        <progress></progress>
       </div>
     )
   } else {
