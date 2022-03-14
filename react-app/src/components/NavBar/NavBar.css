@@ -15,6 +15,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-width: 730px;
 }
 
 a {
@@ -172,8 +173,9 @@ a:visited {
 }
 
 .nav-search {
-    flex-grow: 3;
-    display: grid;
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
 }
 
 .searchbar {
@@ -181,7 +183,6 @@ a:visited {
     line-height: 20px;
     height: 25px;
     width: 100%;
-    align-self: right;
     padding-left: 10px;
     position: relative;
     border: none;
@@ -195,11 +196,12 @@ a:visited {
 
 .search-button {
     position: absolute;
-    right: -7px;
+    right: 0px;
     top: 5px;
     background-color: transparent;
     border: none;
     color: #333333;
+    z-index: 10;
 }
 
 .search-button:hover {
@@ -220,5 +222,7 @@ a:visited {
 
 .search-label {
     position: relative;
-    display: inline-block;
+    display: flex;
+    width: 90%;
+    justify-content: center;
 }

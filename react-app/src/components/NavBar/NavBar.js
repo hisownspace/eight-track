@@ -34,33 +34,43 @@ function NavBar({ isLoaded }) {
                 <div className='occupied-nav-bar'>
                     <div className='nav-left'>
                         <div className="nav-bar-icon">
-                            <img alt="8-track-icon" src="https://eta-photobucket.s3.amazonaws.com/8-track-icon.png"></img>
+                            <img alt="8-track-icon"
+                            src="https://eta-photobucket.s3.amazonaws.com/8-track-icon.png">
+                            </img>
                         </div>
-                        <button onClick={() => history.push('/songs')} className="nav-bar-songs-button nav-button">
+                        <button
+                        onClick={() => history.push('/songs')}
+                        className="nav-bar-songs-button nav-button">
                             Home
                         </button>
                         <div className='github-link'>
-                            <a href='https://github.com/hisownspace/capstone-project' rel="noreferrer" target='_blank'>
+                            <a
+                            href='https://github.com/hisownspace/capstone-project'
+                            rel="noreferrer"
+                            target='_blank'>
                                 GitHub
                             </a>
                         </div>
                     </div>
                     <div className="nav-search">
                         <label
-                            className="search-label"
-                        >
+                            className="search-label">
                             <input
                                 className="searchbar"
-                                placeholder='Search'
-                            >
+                                placeholder='Search'>
                             </input>
-                            <button
-                            className="search-button"
-                            ><FontAwesomeIcon className="fa-solid" icon={faMagnifyingGlass} /></button>
+                            <button className="search-button">
+                                <FontAwesomeIcon
+                                    className="fa-solid"
+                                    icon={faMagnifyingGlass} />
+                            </button>
                         </label>
                     </div>
                     <div className='nav-right'>
-                        {sessionUser && <button onClick={() => history.push('/upload')} className='nav-bar-button nav-button'>
+                        {sessionUser &&
+                        <button
+                            onClick={() => history.push('/upload')}
+                            className='nav-bar-button nav-button'>
                             Upload
                         </button>}
                         <div className="open-dropdown-button">
