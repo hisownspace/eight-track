@@ -16,7 +16,10 @@ function Footer() {
     const waveformRef = useSelector(state => state.player.ref);
     const song = useSelector(state => state.player.currentSong);
     const songsObj = useSelector(state => state.songs.songs);
-    const songs = Object.values(songsObj);
+    let songs;
+    if (songsObj) {
+      songs = Object.values(songsObj);
+    }
     const player = useRef(null);
 
     const [signedSong, setSignedSong] = useState();
