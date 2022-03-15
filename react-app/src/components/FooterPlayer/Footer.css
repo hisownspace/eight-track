@@ -21,3 +21,7 @@ footer.footer {
  .rhap_container * {
    color:black;
  }
+
+ .player-button:hover {
+   cursor: pointer;
+ }

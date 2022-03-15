@@ -7,21 +7,24 @@ function LoginForm() {
     const history = useHistory()
     const dispatch = useDispatch();
     const [showModal, setShowModal] = useState(false);
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState([]);
 
     const onLogin = async (e) => {
         
         e.preventDefault();
-        const data = await dispatch(login(email, password));
+        const data = await dispatch(login(username, password));
         if (data) {
-        setErrors(data);
+            if (data.email) {
+                delete data.password
+            }
+            setErrors(data);
         }
     };
 
     const updateEmail = (e) => {
-    setEmail(e.target.value);
+    setUsername(e.target.value);
     };
 
     const updatePassword = (e) => {
@@ -30,7 +33,7 @@ function LoginForm() {
 
     const DemoLogin = async (e) => {
         e.preventDefault();
-        const data = await dispatch(login('demo@aa.io', 'password'));
+        const data = await dispatch(login('Demo', 'password'));
         if (data) {
         setErrors(data);
         }
@@ -45,21 +48,22 @@ function LoginForm() {
         <>
             <form onSubmit={onLogin}>
                 <div className='modal_ul_errors'>
-                    {errors.map((error, idx) => (
-                    <div key={idx}>{error}</div>
-                    ))}
+                    {errors.email}
                 </div>
-
                 <label>
                     <input
-                        id='email'
+                        id='username'
                         type="text"
-                        value={email}
+                        value={username}
                         onChange={updateEmail}
-                        placeholder='Email'
+                        placeholder='Enter Username or Email'
                         required
+                        autoComplete='username'
                     />
                 </label>
+                <div className='modal_ul_errors'>
+                    {errors.password}
+                </div>
                 <label>
                     <input
                         id='password'
@@ -67,7 +71,10 @@ function LoginForm() {
                         value={password}
                         onChange={updatePassword}
                         placeholder='Password'
-                        required
+                        // required
+                        readOnly={true}
+                        onFocus={e => e.target.removeAttribute('readonly')}
+                        autoComplete="current-password"
                     />
                 </label>
                 <button className="button_submit button_main" type="submit">Log In</button>

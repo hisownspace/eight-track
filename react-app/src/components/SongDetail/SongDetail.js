@@ -1,12 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteOneComment, getAllSongComments, editOneComment } from '../../store/comment';
+import { deleteOneComment, getAllSongComments } from '../../store/comment';
 import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
-import { addSongToPlayer } from '../../store/player';
 import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
-import WaveFormTEST from '../WaveForm';
+import WaveForm from '../WaveForm';
 import './SongDetail.css';
 import EditCommentModal from '../../context/EditComment';
 
@@ -36,10 +35,14 @@ function SongDetail() {
         }
     }, [isLoaded, songId, song, dispatch, history]);
 
-    const handleDelete = () => {
-        dispatch(deleteOneSong(songId));
-        dispatch(getAllSongs());
-        history.push("/songs");
+    const handleDelete = async () => {
+        const confirm = window.confirm(
+            "This will permanently delete this song. Are you sure?");
+        if (confirm) {
+            await dispatch(deleteOneSong(songId));
+            await dispatch(getAllSongs());
+            history.push("/songs");
+        }
     };
     
     const handleDeleteComment = e => {
@@ -95,7 +98,9 @@ function SongDetail() {
                             <div>{song?.artist}</div>
                             {(userId && (userId === song?.user?.id)) ?
                                 <>
-                                    <button className="song-detail-buttons" onClick={handleDelete}>Delete Song</button>
+                                    <button
+                                        className="song-detail-buttons"
+                                        onClick={handleDelete}>Delete Song</button>
                                     <UpdateSongForm />
                                 </> : null}
                         </div>
@@ -108,12 +113,18 @@ function SongDetail() {
                             </div>
                         </div>
                     </div>
+                    {/* <div className='traveling-comments'>
+                        {Object.values(comments?.comments).map(comment => {
+                            return null;
+                        })}
+                    </div> */}
                     <div className="song-detail-player">
-                        <WaveFormTEST songId={songId} />
+                        <WaveForm songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
-                    <img alt={song?.title} src={song?.image_url || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}></img>
+                    <img alt={song?.title} src={song?.image_url ||
+                        "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
                 </div>
             </div>
             <div className='song-comments'>
@@ -135,7 +146,10 @@ function SongDetail() {
                                         onClick={handleDeleteComment}>
                                         Delete Comment
                                     </button>
-                                    <EditCommentModal commentId={comment?.id} commentContent={comment?.content} songId={songId} />
+                                    <EditCommentModal
+                                        commentId={comment?.id}
+                                        commentContent={comment?.content}
+                                        songId={songId} />
                                 </>
                                 : null}
                         </div>)

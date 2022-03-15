@@ -4,7 +4,9 @@ from app.models import db, Song, User, Genre
 from app.forms import SongEditForm
 from datetime import datetime
 from app.s3_helpers import (
-    remove_file_from_s3, upload_file_to_s3, audio_file, get_unique_filename, image_file)
+    remove_file_from_s3, upload_image_file_to_s3,
+    upload_music_file_to_s3, audio_file,
+    get_unique_filename, image_file)
 
 song_routes = Blueprint('api/songs', __name__)
 
@@ -46,7 +48,7 @@ def add_songs():
         if not image_file(image.filename):
             return { "errors": "file type not permitted for submitted image" }
         image.filename = get_unique_filename(image.filename)
-        imageUpload = upload_file_to_s3(image)
+        imageUpload = upload_image_file_to_s3(image)
         if "url" not in imageUpload:
             return imageUpload, 400
         imageUrl = imageUpload["url"]
@@ -56,19 +58,19 @@ def add_songs():
     
     song.filename = get_unique_filename(song.filename)
 
-    upload = upload_file_to_s3(song)
+    upload = upload_music_file_to_s3(song)
 
     if "url" not in upload:
         # if the dictionary doesn't have a url key
         # it means that there was an error when we tried to upload
         # so we send back that error message
-        return upload, 400
+        return { "errors": upload }, 400
 
     columns = request.form.to_dict()
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     if imageUrl is None:
-        imageUrl = "https://hisownbucket.s3.amazonaws.com/play-button.svg"
+        imageUrl = "https://eta-photobucket.s3.amazonaws.com/play-button.svg"
     new_song = Song(
                 genre_id=columns["genreId"],
                 user_id=columns["userId"],

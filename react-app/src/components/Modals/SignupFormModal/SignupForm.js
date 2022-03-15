@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect, useHistory } from 'react-router-dom';
 import { signUp, login } from '../../../store/session';
-import LoginFormModal from '../LoginFormModal';
-import LoginForm from '../LoginFormModal/LoginForm';
+import validator from 'email-validator'
+
 
 
 const SignupForm = () => {
@@ -18,9 +18,16 @@ const SignupForm = () => {
     const user = useSelector(state => state.session.user);
     const dispatch = useDispatch();
 
-    const onSignUp = async (e) => {
+    const onSignUp = (e) => {
         e.preventDefault();
         const signupErrors = {};
+
+        if (password.length === 0) {
+            signupErrors.passwordLength = "Please provide a password."
+        }
+        else if (repeatPassword.length === 0) {
+            signupErrors.repeatPasswordLength = "Please confirm password your password."
+        }
         if (repeatPassword !== password) {
             signupErrors.passwordMismatch = "Passwords do not match!"
         }
@@ -30,11 +37,17 @@ const SignupForm = () => {
         if (username.length === 0) {
             signupErrors.usernameLength = "Username must not be empty."
         }
+        if (email.length === 0) {
+            signupErrors.emailLength = "Email must not be empty."
+        }
+        else if (!validator.validate(email)) {
+            signupErrors.emailValid = "Please provide a valid email address."
+        }
         if (Object.values(signupErrors).length > 0) {
             setErrors(signupErrors);
         } else {
             if (password === repeatPassword) {
-                const data = await dispatch(signUp(username, email, password, repeatPassword));
+                const data = dispatch(signUp(username, email, password, repeatPassword));
                 if (data) {
                     setErrors(data);
                 }
@@ -62,7 +75,8 @@ const SignupForm = () => {
         e.preventDefault();
         const data = await dispatch(login('demo@aa.io', 'password'));
         if (data) {
-        setErrors(data);
+            
+            setErrors(data);
         }
       }
       const handleRedirect = (e) => {
@@ -82,13 +96,11 @@ const SignupForm = () => {
             <form
             className="main_modal"
             onSubmit={onSignUp}>
-                <div className='modal_ul_errors'>
-                    {errors?.map((error, ind) => (
-                        <div key={ind}>{error}</div>
-                    ))}
-                </div>
                 <div>
-                {/* {errors ? <div>{errors.usernameLength}</div> : null} */}
+                    <div className='modal_ul_errors'>
+                        {errors ? <div>{errors.username}</div> : null}
+                        {errors ? <div>{errors.usernameLength}</div> : null}
+                    </div>
                     <label htmlFor='username'>
                         <input
                             id='username'
@@ -96,9 +108,14 @@ const SignupForm = () => {
                             value={username}
                             onChange={updateUsername}
                             placeholder='Username'
-                            required
+                            autoComplete='username'
                         />
                     </label>
+                    <div className='modal_ul_errors'>
+                        {errors ? <div>{errors.email}</div> : null}
+                        {errors ? <div>{errors.emailLength}</div> : null}
+                        {errors ? <div>{errors.emailValid}</div> : null}
+                    </div>
                     <label htmlFor='email'>
                         <input
                             id='email'
@@ -106,10 +123,13 @@ const SignupForm = () => {
                             value={email}
                             onChange={updateEmail}
                             placeholder='Email'
-                            required
+                            autoComplete='email'
                         />
                     </label>
-                    {/* {errors ? <div>{errors.passwordMismatch}</div> : null} */}
+                    <div className='modal_ul_errors'>
+                        {errors ? <div>{errors.passwordLength}</div> : null}
+                        {errors ? <div>{errors.passwordMismatch}</div> : null}
+                    </div>
                     <label htmlFor='password'>
                         <input
                             id='password'
@@ -117,9 +137,12 @@ const SignupForm = () => {
                             value={password}
                             onChange={updatePassword}
                             placeholder='Password'
-                            required
+                            autoComplete='new-password'
                         />
                     </label>
+                    <div className='modal_ul_errors'>
+                        {errors ? <div>{errors.repeatPasswordLength}</div> : null}
+                    </div>
                     <label htmlFor='confirm-password'>
                         <input
                             id='confirm-password'
@@ -127,7 +150,7 @@ const SignupForm = () => {
                             value={repeatPassword}
                             onChange={updateRepeatPassword}
                             placeholder='Confirm Password'
-                            required
+                            autoComplete='new-password'
                         />
                     </label>
                     <button className="button_submit button_main" type="submit">Sign Up</button>
@@ -138,8 +161,6 @@ const SignupForm = () => {
                     <button className="button_submit button_secondary"type="submit">Demo User</button>
                 </form>
                 <form onSubmit={handleRedirect}>
-                    {/* <button className="button_submit button_transfer" type="submit">Want to Login?</button> */}
-                    {/* <LoginFormModal /> */}
                 </form>
         </>
     )

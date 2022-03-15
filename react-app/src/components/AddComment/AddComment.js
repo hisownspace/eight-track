@@ -9,8 +9,9 @@ function AddComment({ songId, audioRef }) {
     const dispatch = useDispatch();
     const [content, setContent] = useState('');
     const [errors, setErrors] = useState();
+    const player = useSelector(state => state.player.player);
     const userId = useSelector(state => state.session.user.id);
-    const playTime = useSelector(state => state.player.time);
+    // const playTime = useSelector(state => state.player.time);
     const playerSong = useSelector(state => state.player.currentSong)
     const pageSong = useSelector(state => state.songs.song)
 
@@ -32,6 +33,12 @@ function AddComment({ songId, audioRef }) {
             return;
         };
 
+        let playTime;
+
+        if (player.current) {
+            playTime = player.current?.audio.current.currentTime;
+        }
+
         if (playTime && Object.values(pageSong)[0].url === playerSong.url) {
                 timestamp = playTime;
             } else {
@@ -49,6 +56,7 @@ function AddComment({ songId, audioRef }) {
         setErrors([]);
     };
 
+
     const checkErrors = e => {
         setContent(e.target.value);
     
@@ -65,6 +73,7 @@ function AddComment({ songId, audioRef }) {
         };
         
     };
+    
 
     return (
         <form onSubmit={handleSubmit}>

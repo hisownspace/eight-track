@@ -1,32 +1,64 @@
 .drop_zone {
-    height: 500px;
-    width: 50%;
-    border: 1px solid rgb(134, 134, 134);
-    display:flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 50px auto;
-  }
+  height: 500px;
+  width: 50%;
+  border: 1px solid rgb(134, 134, 134);
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 50px auto;
+  min-width:620px;
+}
+
 .drop_zone_submit {
-    height: 500px;
-    width: 50%;
-    border: 1px solid rgb(134, 134, 134);
-    display:flex;
-    flex-direction: column;
-    justify-content: space-around;
-    margin: 50px auto;
-  }
+  min-height: 500px;
+  width: 50%;
+  min-width: 620px;
+  border: 1px solid rgb(134, 134, 134);
+  display:flex;
+  flex-direction: column;
+  margin: 50px auto;
+}
 
-  label {
-    margin: 10px;
-  }
+.song-metadata {
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: #666666;
+  font-size: 12px;
+  line-height: 17px;
+  padding: 3px 5px
+}
 
-  .image-preview {
-    width: 200px;
-    height: 200px;
-  }
+.song-data  {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.image-preview-div {
+  padding: 10px;
+  width: 200px;
+  height: 200px;
+}
+
+
+.song-submit-form {
+  padding: 20px;
+}
+
+.image-preview {
+  background-color: #333333;
+  position: absolute;
+  object-fit: contain;
+  width: 200px;
+  height: 200px;
+}
 
 #choose-audio-file-button {
+  display:none;
+}
+
+#image {
   display:none;
 }
 
@@ -40,8 +72,105 @@
   height: 20px;
   width: 50%;
   align-self: center;
+  text-align: center;
+}
+
+.custom-image-upload {
+  background-color: #f2f2f2;
+  color: black;
+  border-radius: 2px;
+  border: 1px solid rgb(26, 26, 26);
+  display: inline-block;
+  padding: 5px 5px;
+  height: 12px;
+  width: 55%;
+  align-self: center;
+  text-align: center;
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.custom-image-upload:hover {
+  background-color: #e2e2e2;
+}
+
+.image-upload-button {
+  text-align: center;
+  position: relative;
+  bottom: -160px;
+  width: 100%;
 }
 
 .drop_zone:first-child {
   align-items: center;
+}
+
+.song-form-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-form-content select {
+  width: 50%
+}
+
+.song-form-content textarea {
+  resize: vertical;
+}
+
+.song-form-content label {
+  margin: 10px 0;
+  font-size: 12px;
+  color: #333333;
+  font-weight: bolder;
+}
+
+.button-hole {
+  padding-right: 0;
+  flex-grow: 20;
+  padding-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100%;
+}
+
+.button-hole .submit {
+  margin-right: 15px;
+  margin-left: 10px;
+  background-color: #FD5600;
+  color: white;
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.button-hole .cancel {
+  background-color: white;
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.upload-errors {
+  font-size: 12px;
+  color: red;
+  line-height: 17px;
+  height: 20px;
 }

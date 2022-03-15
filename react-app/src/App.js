@@ -3,13 +3,15 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/NavBar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
 import DropZone from './components/DropZone';
 import SongDetail from "./components/SongDetail";
 import AllSongs from './components/AllSongs/AllSongs';
+import Footer from './components/FooterPlayer';
+import Search from './components/Search';
 import { authenticate } from './store/session';
 
 function App() {
@@ -38,12 +40,13 @@ function App() {
             <Route path='/songs/:id'><SongDetail /></Route>
             <Route path='/songs' ><AllSongs /></Route>
             <ProtectedRoute path='/upload' ><DropZone /></ProtectedRoute>
+            <Route path='/search'><Search /></Route>
             <Route path='/' ><AllSongs /></Route>
             <Route path='' ><AllSongs /></Route>
-            <Route path='/signup'><SignUpForm /></Route>
           </Switch>
         </div>
       )}
+      <Footer />
     </BrowserRouter>
   );
 }

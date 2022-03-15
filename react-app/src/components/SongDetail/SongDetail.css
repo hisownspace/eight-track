@@ -11,6 +11,12 @@
 
 }
 
+.search-form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 .song-detail-album-art {
     width: 340px;
     margin: 20px;
@@ -99,4 +105,17 @@
 
 .song-detail-buttons:hover {
     cursor: pointer;
+}
+
+.song-detail-player {
+    margin-bottom: 20px;
+}
+
+.traveling-comments {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.397);
+    height: 30px;
+    width: auto;
+    bottom: -254px;
+    z-index: 3;
 }

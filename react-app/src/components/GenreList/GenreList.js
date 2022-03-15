@@ -3,19 +3,25 @@ import { useSelector } from 'react-redux';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { Link } from 'react-router-dom';
+import './GenreList.css';
 
 const responsive = {
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 5,
-      slidesToSlide: 2
+        breakpoint: { max: 3000, min: 1024 },
+        items: 5,
+        slidesToSlide: 2
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 3,
+        slidesToSlide: 3,
     },
     mobile: {
-        breakpoint: { max: 464, min: 400 },
-        items: 1,
-        slidesToSlide: 1,
+        breakpoint: { max: 464, min: 0 },
+        items: 3,
+        slidesToSlide: 3,
     }
-  };
+};
 
 function GenreList({ genreId }) {
     const id = +genreId;
@@ -37,11 +43,14 @@ function GenreList({ genreId }) {
                 return (
                     <Link key={song.id} to={`/songs/${song.id}`}>
                         <div className='hide-image'>
-                            {song.title}
                             <div className='song-image-list-item-container'>
                                 <img alt={song.title} src={song.image_url
-                                    || "https://hisownbucket.s3.amazonaws.com/play-button.svg"}>
+                                    || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}>
                                 </img>
+                                <div className='song-title-carousel'>
+                                    <div className='carousel-title'>{song.title}</div>
+                                    <div className='carousel-artist'>{song.artist}</div>
+                                </div>
                             </div>
                         </div>
                     </Link>

@@ -5,13 +5,15 @@ import songs from './song';
 import genres from "./genre";
 import comments from "./comment";
 import player from "./player"
+import search from './search';
 
 const rootReducer = combineReducers({
   session,
   songs,
   genres,
   comments,
-  player
+  player,
+  search
 });
 
 
