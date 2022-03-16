@@ -119,8 +119,16 @@ function SongDetail() {
                 <div className='song-detail-player-side'>
                     <div className="song-info-headline">
                         <div>
-                            <div>{song?.title}</div>
-                            <div>{song?.artist}</div>
+                            <div className='song-info-title'>
+                                <p>
+                                    {song?.title}
+                                </p>
+                            </div>
+                            <div className='song-info-artist'>
+                                <p>
+                                    {song?.artist}
+                                </p>
+                            </div>
                             {(userId && (userId === song?.user?.id)) ?
                                 <>
                                     <button
@@ -130,19 +138,14 @@ function SongDetail() {
                                 </> : null}
                         </div>
                         <div>
-                            <div>
+                            <div className="song-detail-timestamp">
                                 {isLoaded ? timeElapsed(song?.created_at) : null}
                             </div>
-                            <div>
-                                {song?.genre.name}
+                            <div className="song-detail-genre">
+                                # {song?.genre.name}
                             </div>
                         </div>
                     </div>
-                    {/* <div className='traveling-comments'>
-                        {Object.values(comments?.comments).map(comment => {
-                            return null;
-                        })}
-                    </div> */}
                     <div className="song-detail-player">
                         <WaveForm songId={songId} />
                     </div>

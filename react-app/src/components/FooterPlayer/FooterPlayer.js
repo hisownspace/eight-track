@@ -39,7 +39,6 @@ function Footer() {
 
     const changeSongPage = (e) => {
       e.preventDefault();
-      dispatch(getOneSong(song.id));
       history.push(`/songs/${song.id}`);
     };
 

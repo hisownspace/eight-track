@@ -47,8 +47,9 @@ export default function WaveForm({ songId }) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
-        getCloudFrontDomain(songUrl).then(signedSongUrl =>
-          wavesurfer.current?.load(signedSongUrl)
+        getCloudFrontDomain(songUrl).then(signedSongUrl =>{
+          wavesurfer.current?.load(signedSongUrl);
+        }
           
         );
       }

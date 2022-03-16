@@ -3,6 +3,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    color: white;
 }
 
 .song-comments {
@@ -51,6 +52,47 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.song-detail-timestamp {
+    margin: 40px 15px 0px 0px;
+    padding-right: 0;
+    text-align: right;
+}
+
+.song-detail-genre {
+    margin: 15px;
+    background: #999999;
+    padding: 4px 15px;
+    border-radius: 25px;
+    height: 25px;
+    line-height: 25px;;
+}
+
+.song-info-title p {
+    background: #13171E;
+    color: white;
+    margin-top: 25px;
+    margin-left: 20px;
+    margin-bottom: 0px;
+    padding: 3px 15px;
+    display: inline-block;
+    font-size: 24px;
+    line-height: 37px;
+    font-weight: 100;
+}
+
+.song-info-artist p {
+    background: #13181F;
+    margin-top: 5px;
+    margin-left: 20px;
+    padding: 3px 10px;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 19px;
+    font-weight: 100;
+    color: #cccccc;
+}
+
 
 .comment-list-item {
     width: 70%;

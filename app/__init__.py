@@ -46,7 +46,10 @@ db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app)
+CORS(app, expose_headers=[
+                        "Access-Control-Allow-Origin",
+                        "content-length"
+                        ])
 
 
 # Since we are deploying with Docker and Flask,
