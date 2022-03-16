@@ -103,18 +103,16 @@ function DropZone() {
     woExtArr.pop();
     const woExt = woExtArr.join(".");
     const digicheck = /\d{1,2}/
-    const letterCheck = /\w{1}/
+    const letterCheck = /[\w:']{1}/
     const guessArr = [];
     woExt.split(' ').forEach((word, idx) => {
       if (!(digicheck.test(word) && idx === 0) && (!(word === '-' && idx === 1))) {
         guessArr.push(word);
       } else if (letterCheck.test(word[word.length - 1])) {
         for (let i = word.length - 1; i >= 0; i--) {
-          console.log(word[i]);
           if ((word[i] === '.' || word[i] === '-' || word[i] === '_') && 
                 i !== word.length - 1) {
                   guessArr.push(word.slice(i + 1));
-                  console.log(word.slice(i+1));
                   break;
                 }
         }
