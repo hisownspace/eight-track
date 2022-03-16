@@ -3,6 +3,15 @@ from flask_login import login_required
 from app.models import db, Song, User, Genre
 from app.forms import SongEditForm
 from datetime import datetime
+import sys
+
+if sys.version_info < (3, 0):
+    from urllib2 import urlopen
+else:
+    from urllib.request import urlopen
+
+import io
+from colorthief import ColorThief
 from app.s3_helpers import (
     remove_file_from_s3, upload_image_file_to_s3,
     upload_music_file_to_s3, audio_file,
@@ -32,7 +41,13 @@ def get_all_songs():
 def get_one_song(id):
     song = Song.query.get(id)
     if song:
-        return song.to_dict()
+        fd = urlopen(song.image_url)
+        f = io.BytesIO(fd.read())
+        color_thief = ColorThief(f)
+        palette = color_thief.get_palette(color_count=2, quality=100)
+        song_info = song.to_dict()
+        song_info["palette"] = palette
+        return song_info
     else:
         return { "errors": "unkown error" }
 

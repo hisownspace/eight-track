@@ -11,7 +11,7 @@ import getCloudFrontDomain from "../../presignHelper";
 const formWaveSurferOptions = ref => ({
   container: ref,
   waveColor: "#eee",
-  progressColor: "OrangeRed",
+  progressColor: "#FF4500",
   cursorColor: "OrangeRed",
   barWidth: 2,
   barRadius: 2,
@@ -49,6 +49,7 @@ export default function WaveForm({ songId }) {
       if (songUrl) {
         getCloudFrontDomain(songUrl).then(signedSongUrl =>
           wavesurfer.current?.load(signedSongUrl)
+          
         );
       }
       wavesurfer.current.on("ready", async function () {
@@ -87,7 +88,7 @@ export default function WaveForm({ songId }) {
     } else {
       wavesurfer.current?.pause();
     }
-  }, [playState]);
+  }, [playState, songUrl, playerSong?.url]);
 
 
   // allows the waveform to control the position of the
@@ -107,7 +108,7 @@ export default function WaveForm({ songId }) {
     // traveling comments
     wavesurfer.current?.on("audioprocess", function (e) {
     });
-  }, [songUrl, playerSong]);
+  }, [songUrl, playerSong, player]);
 
 
   // causes the waveform to seek to the appropriate position
@@ -122,7 +123,7 @@ export default function WaveForm({ songId }) {
         wavesurfer.current?.seekTo(currentTime / songLength);
       }
     }
-  }, [playTime, player, song]);
+  }, [playTime, player, song, songUrl, playerSong?.url]);
 
 
   // seeks the waveform appropriately when the song changes
@@ -161,7 +162,7 @@ export default function WaveForm({ songId }) {
   return (
     <div className="waveform">
       <div className="controls">
-        {loaded ? ((!playState || (playerSong?.url !== songUrl)) ? 
+        {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ? 
         <button
           className="waveform-play"
           onClick={handlePlayPause}

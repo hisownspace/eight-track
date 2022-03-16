@@ -45,7 +45,6 @@ function DropZone() {
       formErrors["title"] = "Please fill out title field!";
     }
 
-
     if (Object.values(formErrors).length > 0) {
       setErrors(formErrors);
       setSubmitted(true);
@@ -89,15 +88,16 @@ function DropZone() {
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = function (e) {
         imagePreview.current.src = e.target.result;
       }
-
       reader.readAsDataURL(file);
     }
   };
 
+
+  // reads the filename of the audio file the user has chosen
+  // and autofills the song title form input
   const guessSongTitle = () => {
     const woExtArr = dropFile.name.split('.');
     woExtArr.pop();

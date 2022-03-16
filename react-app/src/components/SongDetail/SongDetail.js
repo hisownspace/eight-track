@@ -9,7 +9,6 @@ import WaveForm from '../WaveForm';
 import './SongDetail.css';
 import EditCommentModal from '../../context/EditComment';
 
-
 function SongDetail() {
     const { id } = useParams();
     const songId = +id;
@@ -18,7 +17,30 @@ function SongDetail() {
     const song = useSelector(state => state.songs.song[songId]);
     const comments = useSelector(state => state.comments.comments);
     const userId = useSelector(state => state.session.user?.id);
+    const  [backIdx, setBackIdx] = useState(0);
     const audioRef = useRef();
+    const palette = useSelector(state => state.songs?.song[songId]?.palette);
+    const [gradient, setGradient] = useState('');
+
+
+
+    // establishes the background of the song header
+    // based on color palette of song cover
+    useEffect(() => {
+        if (palette) {
+            const backgroundColor = `linear-gradient(135deg,
+                rgb(${palette[0][0]}, ${palette[0][1]}, ${palette[0][2]})
+                0%,
+                rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})
+                100%)`;
+            setGradient(backgroundColor);
+        }
+    }, [palette, gradient]);
+
+    useEffect(() => {
+        const songBackground = Math.floor(Math.random() * 10)
+        setBackIdx(songBackground);
+    }, [song]);
 
     const [isLoaded, setIsLoaded] = useState(false);
     
@@ -90,7 +112,10 @@ function SongDetail() {
 
     return (
         <>
-            <div className='song-detail'>
+            <div
+            className={`song-detail`}
+            style={{background: gradient}}
+            >
                 <div className='song-detail-player-side'>
                     <div className="song-info-headline">
                         <div>
@@ -123,8 +148,11 @@ function SongDetail() {
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
-                    <img alt={song?.title} src={song?.image_url ||
-                        "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
+                    <img
+                    alt={song?.title}
+                    src={song?.image_url ||
+                        "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
+                    ></img>
                 </div>
             </div>
             <div className='song-comments'>

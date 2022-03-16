@@ -1,7 +1,5 @@
 .song-detail {
     height: 380px;
-    /* background-color: #6B6D7A; */
-    background: linear-gradient(85deg, #8C5F50, 10%, #5A5560);
     width: 100%;
     display: flex;
     justify-content: space-between;
