@@ -215,6 +215,7 @@ export default function WaveForm({ songId }) {
     <div className="waveform">
       <div className="song-info-headline">
         <div>
+          <div className="controls-and-title">
           <div className="controls">
             {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ?
               <button
@@ -229,6 +230,7 @@ export default function WaveForm({ songId }) {
                 <FontAwesomeIcon icon={faPause} />
               </button>) : null}
           </div>
+          <div>
           <div className='song-info-title'>
             <p>
               {Object.values(song)[0]?.title}
@@ -239,6 +241,9 @@ export default function WaveForm({ songId }) {
               {Object.values(song)[0]?.artist}
             </p>
           </div>
+          </div>
+          </div>
+
           {(userId && (userId === Object.values(song)[0]?.user?.id)) ?
             <>
               <button
