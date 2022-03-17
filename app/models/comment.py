@@ -7,7 +7,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
 
     id = db.Column(db.Integer, primary_key=True)
-    song_id = db.Column(db.Integer, db.ForeignKey("songs.id"))
+    song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     content = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
