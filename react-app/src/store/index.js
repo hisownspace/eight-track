@@ -6,6 +6,7 @@ import genres from "./genre";
 import comments from "./comment";
 import player from "./player"
 import search from './search';
+import playlist from './playlist';
 
 const rootReducer = combineReducers({
   session,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   genres,
   comments,
   player,
-  search
+  search,
+  playlist
 });
 
 

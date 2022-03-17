@@ -7,6 +7,7 @@ import './WaveForm.css';
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
+import { clearPlaylist, addSongToPlaylist } from "../../store/playlist";
 
 const formWaveSurferOptions = ref => ({
   container: ref,
@@ -143,7 +144,9 @@ export default function WaveForm({ songId }) {
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
     if (playerSong?.url !== songUrl){
-      dispatch(addSongToPlayer(songId))
+      dispatch(clearPlaylist());
+      addSongToPlaylist(song.id)
+      dispatch(addSongToPlayer(songId));
       wavesurfer.current.play();
     } else if (playState){
       wavesurfer.current.pause();

@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../store/song';
+import { addSongToPlaylist, nextSong } from '../../store/playlist';
 import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
 import getCloudFrontDomain from '../../presignHelper';
+import playlistReducer from '../../store/playlist';
 
 
 function Footer() {
@@ -16,6 +18,9 @@ function Footer() {
     const waveformRef = useSelector(state => state.player.ref);
     const song = useSelector(state => state.player.currentSong);
     const songsObj = useSelector(state => state.songs.songs);
+    const playlist = useSelector(state => state.playlist.playlist);
+    const currentSongIdx = useSelector(state => state.playlist.currentSongIndex);
+
     let songs;
     if (songsObj) {
       songs = Object.values(songsObj);
@@ -44,7 +49,7 @@ function Footer() {
 
     useEffect(() => {
       dispatch(timeRequest());
-    }, [waveformRef]);
+    }, [waveformRef, dispatch]);
 
     const setPlay = async () => {
       dispatch(playingState(true));
@@ -54,30 +59,42 @@ function Footer() {
       dispatch(playingState(false));
     };
 
+    const previousSong = () => {
+      dispatch(nextSong("down"));
+      if (currentSongIdx > 0) {
+        dispatch(addSongToPlayer(playlist[currentSongIdx - 1]));
+      } else {
+        player.current.audio.current.currentTime = 0;
+        dispatch(setPlayerTime(0));
+      }
+    };
+
     const setTime = (e) => {
       if (e === 0) {
         dispatch(setPlayerTime(0));
       } else {
         dispatch(setPlayerTime(e.srcElement.currentTime));
       }
+
+      if (playlist.length === 0) {
+        dispatch(addSongToPlaylist(song.id));
+      }
+      if (currentSongIdx >= playlist.length - 1) {
+        const songsLength = songs.length;
+        const randomSongIdx = Math.floor(Math.random() * songsLength);
+        dispatch(addSongToPlaylist(songs[randomSongIdx].id))
+      }
       // e.srcElement.pause();
       // player.current.audio.current.pause()
     };
 
     const newSong = async () => {
-      const songsLength = songs.length;
-      const randomSongIdx = Math.floor(Math.random() * songsLength);
-      if (songs[randomSongIdx]) {
-        await dispatch(addSongToPlayer(songs[randomSongIdx].id));
-        setPlay();
-        dispatch(setPlayerTime(0));
-        dispatch(playingState(true));
-      } else {
-        dispatch(addSongToPlayer(songs[1].id));
-        setPlay();
-        dispatch(setPlayerTime(0));
-        dispatch(playingState(true));
-      }
+      await dispatch(nextSong("up"));
+      await dispatch(addSongToPlayer(playlist[currentSongIdx + 1]));
+      setPlay();
+      dispatch(setPlayerTime(0));
+      dispatch(playingState(true));
+
     };
     
 
@@ -95,6 +112,7 @@ function Footer() {
         onPause={setPause}
         onSeeked={setTime}
         onClickNext={newSong}
+        onClickPrevious={previousSong}
         onEnded={newSong}
         onCanPlay={e => setTime(0)}
       />

@@ -62,7 +62,7 @@ function SongDetail() {
             "This will permanently delete this song. Are you sure?");
         if (confirm) {
             await dispatch(deleteOneSong(songId));
-            await dispatch(getAllSongs());
+            // await dispatch(getAllSongs());
             history.push("/songs");
         }
     };
