@@ -60,16 +60,16 @@ export default function playlistReducer (state = intitialState, action) {
             newState = { ...state };
             if (action.direction === 'up') {
                 newState.currentSongIndex += 1;
-            } else {
+            } else if (newState.currentSongIndex > 0) {
                 newState.currentSongIndex -= 1;
             }
             return newState;
         case (CLEAR_PLAYLIST):
             newState = { ...state };
             newState.playlist = [];
+            newState.currentSongIndex = 0;
             return newState;
         default:
-            newState = { ...state };
-            return newState;
+            return state;
     }
 }

@@ -60,9 +60,8 @@ function Footer() {
     };
 
     const previousSong = () => {
-      dispatch(nextSong("down"));
       if (currentSongIdx > 0) {
-        dispatch(addSongToPlayer(playlist[currentSongIdx - 1]));
+        dispatch(nextSong("down"));
       } else {
         player.current.audio.current.currentTime = 0;
         dispatch(setPlayerTime(0));
@@ -84,19 +83,22 @@ function Footer() {
         const randomSongIdx = Math.floor(Math.random() * songsLength);
         dispatch(addSongToPlaylist(songs[randomSongIdx].id))
       }
-      // e.srcElement.pause();
-      // player.current.audio.current.pause()
     };
 
-    const newSong = async () => {
-      await dispatch(nextSong("up"));
-      await dispatch(addSongToPlayer(playlist[currentSongIdx + 1]));
+    const newSong = () => {
+      dispatch(nextSong("up"));
+    };
+
+
+    useEffect(() => {
+      console.log(playlist);
+      console.log(currentSongIdx)
+      dispatch(addSongToPlayer(playlist[currentSongIdx]));
       setPlay();
       dispatch(setPlayerTime(0));
       dispatch(playingState(true));
+    }, [currentSongIdx]);
 
-    };
-    
 
   return (
     <footer className={song ? "footer" : "footer-hidden"} >
