@@ -1,8 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { addPlaylist } from '../../store/playlist';
 
 function AddPlaylist () {
+    const dispatch = useDispatch();
     const songs = useSelector(state => state.songs.songs);
     const [playlistName, setPlaylistName] = useState('');
     const userId = useSelector(state => state.session.user.id)
@@ -30,22 +31,23 @@ function AddPlaylist () {
     
     const handleSubmit = async event => {
         event.preventDefault();
-        const playListIds = formValues.map(input => {
+        const playlistIds = formValues.map(input => {
             return input.id;
         });
-        alert(JSON.stringify(playListIds));
 
         const formData = new FormData();
         formData.append("name", playlistName);
         formData.append("userId", userId);
-        formData.append("songs", playListIds);
+        formData.append("songs", JSON.stringify(playlistIds));
+        console.log("submitted!!!");
 
+        const payload = { name: playlistName, userId, songs: playlistIds}
+        
+        
         setFormValues([]);
         setPlaylistName('');
-
-
-
-        const res = await addPlaylist(formData);
+        console.log(userId);
+        const res = await dispatch(addPlaylist(payload));
     }
     
     const moveSongUp = idx => {

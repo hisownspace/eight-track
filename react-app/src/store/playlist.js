@@ -54,7 +54,15 @@ export const addPlaylist = form => async dispatch => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(form)
-    })
+    });
+    if (res.ok) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An Error occurred. Please tray again."]
+    }
 };
 
 

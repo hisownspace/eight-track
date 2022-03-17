@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_required
+from app.forms import PlaylistForm
 from app.models import User
 
 user_routes = Blueprint('users', __name__)
@@ -17,3 +18,16 @@ def users():
 def user(id):
     user = User.query.get(id)
     return user.to_dict()
+
+@user_routes.route('/<int:id>/playlists', methods=["POST"])
+@login_required
+def add_playlist(id):
+    print("-------------------------------------- i'm in!!!")
+    form = PlaylistForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+
+    print(form.data["userId"])
+    print(form.data["name"])
+    print(form.data["songs"])
+    print(form.data)
+    return form.data["songs"]

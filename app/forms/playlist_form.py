@@ -7,3 +7,4 @@ v = [DataRequired()]
 class PlaylistForm(FlaskForm):
     userId = IntegerField("user_id", v)
     name = StringField("name", v)
+    songs = StringField("name", v)
