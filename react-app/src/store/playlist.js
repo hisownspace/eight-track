@@ -3,7 +3,7 @@ const GET_PLAYLIST = "playlist/GET_PLAYLIST";
 const ADD_TO_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
 const MOVE_TO_NEXT_SONG = "playlist/MOVE_TO_NEXT_SONG";
 const CLEAR_PLAYLIST = 'playlist/CLEAR_PLAYLIST'
-// const NEW_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
+const NEW_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
 
 
 // action creators
@@ -27,6 +27,13 @@ const emptyPlaylist = () => {
     }
 }
 
+const addToPlayLists = playlist => {
+    return {
+        type: NEW_PLAYLIST,
+        playlist
+    }
+};
+
 
 // thunks
 export const addSongToPlaylist = (songId) => dispatch => {
@@ -39,6 +46,15 @@ export const nextSong = (direction) => dispatch => {
 
 export const clearPlaylist = () => dispatch => {
     dispatch(emptyPlaylist());
+};
+
+export const addPlaylist = form => async dispatch => {
+    const userId = form.userId
+    const res = await fetch(`/api/users/${userId}/playlists`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(form)
+    })
 };
 
 

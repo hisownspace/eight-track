@@ -1,11 +1,12 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { addPlaylist } from '../../store/playlist';
 
 function AddPlaylist () {
     const songs = useSelector(state => state.songs.songs);
-    const [formValues, setFormValues] = useState([{ name: Object.values(songs)[0]?.title,
-                                                    id: Object.values(songs)[0]?.id }])
-
+    const [playlistName, setPlaylistName] = useState('');
+    const userId = useSelector(state => state.session.user.id)
+    const [formValues, setFormValues] = useState([])
 
     const handleChange = (i, e) => {
         const songId = e.target.value
@@ -13,27 +14,38 @@ function AddPlaylist () {
         newFormValues[i].id = songId;
         newFormValues[i].name = songs[songId].title
         setFormValues(newFormValues);
-        console.log(formValues);
     }
     
     const addFormFields = () => {
         setFormValues([...formValues,
             { name: Object.values(songs)[0].title,
-                id: Object.values(songs)[0].id }]);
-        console.log(formValues);
+                id: Object.values(songs)[0].id.toString() }]);
     }
     
     const removeFormFields = (i) => {
         const newFormValues = [...formValues];
         newFormValues.splice(i, 1);
         setFormValues(newFormValues)
-        console.log(formValues);
     }
     
-    const handleSubmit = (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        alert(JSON.stringify(formValues));
-        console.log(formValues);
+        const playListIds = formValues.map(input => {
+            return input.id;
+        });
+        alert(JSON.stringify(playListIds));
+
+        const formData = new FormData();
+        formData.append("name", playlistName);
+        formData.append("userId", userId);
+        formData.append("songs", playListIds);
+
+        setFormValues([]);
+        setPlaylistName('');
+
+
+
+        const res = await addPlaylist(formData);
     }
     
     const moveSongUp = idx => {
@@ -42,35 +54,43 @@ function AddPlaylist () {
         newFormValues[idx] = newFormValues[idx - 1];
         newFormValues[idx - 1] = placeholder;
         setFormValues(newFormValues);
-        console.log(formValues);
     };
 
     return (
-        <form  onSubmit={handleSubmit}>
-          {formValues.map((element, index) => (
-            <div className="form-inline" key={index}>
-              <label>Song #{index + 1}</label>
-              <select
-                value={formValues[index].id}
-                onChange={e => handleChange(index, e)}
-                >
-                    {Object.values(songs).map((song) => (
-                        <option key={song.id} value ={song.id}>{song.title}</option>
-                    ))}
-                </select>
-                {index ? 
-                <div>
-                  <button type="button"  className="button remove" onClick={() => removeFormFields(index)}>Remove</button> 
-                  <button type="button"  className="button remove" onClick={() => moveSongUp(index)}>Move Up</button> 
+        <form onSubmit={handleSubmit}>
+            <label>
+                Playlist Name:
+            </label>
+            <input
+                type="text"
+                value={playlistName}
+                placeholder="Enter a name for your playlist..."
+                onChange={e => setPlaylistName(e.target.value)}
+            ></input>
+            {formValues.map((element, index) => (
+                <div className="form-inline" key={index}>
+                    <label>Song #{index + 1}</label>
+                    <select
+                        value={formValues[index].id}
+                        onChange={e => handleChange(index, e)}
+                    >
+                        {Object.values(songs).map((song) => (
+                            <option key={song.id} value={song.id}>{song.title}</option>
+                        ))}
+                    </select>
+                    {formValues.length > 1 ?
+                        <div>
+                            <button type="button" className="button remove" onClick={() => removeFormFields(index)}>Remove</button>
+                            {index ? <button type="button" className="button remove" onClick={() => moveSongUp(index)}>Move Up</button> : null}
+                        </div>
+                        : null}
                 </div>
-                : null}
+            ))}
+            <div className="button-section">
+                <button className="button add" type="button" onClick={() => addFormFields()}>Add Song</button>
+                <button className="button submit" type="submit">Submit</button>
             </div>
-          ))}
-          <div className="button-section">
-              <button className="button add" type="button" onClick={() => addFormFields()}>Add</button>
-              <button className="button submit" type="submit">Submit</button>
-          </div>
-      </form>
+        </form>
     )
     // const [playlistName, setPlaylistName] = useState('');
     // const [playlistArr, setPlaylistArr] = useState(['']);
@@ -79,7 +99,6 @@ function AddPlaylist () {
 
     // const handleSubmit = e => {
     //     e.preventDefault();
-    //     console.log(playlistName);
     // }
 
 
