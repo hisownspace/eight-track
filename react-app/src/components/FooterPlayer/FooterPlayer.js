@@ -91,8 +91,6 @@ function Footer() {
 
 
     useEffect(() => {
-      console.log(playlist);
-      console.log(currentSongIdx)
       dispatch(addSongToPlayer(playlist[currentSongIdx]));
       setPlay();
       dispatch(setPlayerTime(0));
