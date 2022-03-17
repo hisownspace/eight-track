@@ -113,55 +113,27 @@ function SongDetail() {
     return (
         <>
             <div
-            className={`song-detail`}
-            style={{background: gradient}}
+                className={`song-detail`}
+                style={{ background: gradient }}
             >
                 <div className='song-detail-player-side'>
-                    <div className="song-info-headline">
-                        <div>
-                            <div className='song-info-title'>
-                                <p>
-                                    {song?.title}
-                                </p>
-                            </div>
-                            <div className='song-info-artist'>
-                                <p>
-                                    {song?.artist}
-                                </p>
-                            </div>
-                            {(userId && (userId === song?.user?.id)) ?
-                                <>
-                                    <button
-                                        className="song-detail-buttons"
-                                        onClick={handleDelete}>Delete Song</button>
-                                    <UpdateSongForm />
-                                </> : null}
-                        </div>
-                        <div>
-                            <div className="song-detail-timestamp">
-                                {isLoaded ? timeElapsed(song?.created_at) : null}
-                            </div>
-                            <div className="song-detail-genre">
-                                # {song?.genre.name}
-                            </div>
-                        </div>
-                    </div>
                     <div className="song-detail-player">
                         <WaveForm songId={songId} />
                     </div>
                 </div>
                 <div className='song-detail-album-art'>
                     <img
-                    alt={song?.title}
-                    src={song?.image_url ||
-                        "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
+                        alt={song?.title}
+                        src={song?.image_url ||
+                            "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
                     ></img>
                 </div>
             </div>
             <div className='song-comments'>
                 <div className="song-description">{song?.description}</div>
                 {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
-                {isLoaded && comments?.comments && (Object.values(comments?.comments)).reverse().map(comment => {
+                {isLoaded && comments?.comments &&
+                    (Object.values(comments?.comments)).reverse().map(comment => {
                     return (
                         <div key={comment.id} className='comment-list-item'>
                             <div>{comment.user.image_url}</div>

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
-
+import UpdateSongForm from '../Modals/UpdateSongModal';
+import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
@@ -28,10 +30,12 @@ const formWaveSurferOptions = ref => ({
 });
 
 export default function WaveForm({ songId }) {
-  const playerSong = useSelector(state => state.player.currentSong);
   const dispatch = useDispatch();
+  const history = useHistory();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
+  const userId = useSelector(state => state.session.user?.id);
+  const playerSong = useSelector(state => state.player.currentSong);
   const playTime = useSelector(state => state.player.time);
   const song = useSelector(state => Object.values(state.songs.song));
   const playState = useSelector(state => state?.player.playing);
@@ -141,6 +145,16 @@ export default function WaveForm({ songId }) {
   }, [songUrl, playerSong?.url]);
 
 
+  const handleDelete = async () => {
+    const confirm = window.confirm(
+        "This will permanently delete this song. Are you sure?");
+    if (confirm) {
+        await dispatch(deleteOneSong(songId));
+        // await dispatch(getAllSongs());
+        history.push("/songs");
+    }
+};
+
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
     if (playerSong?.url !== songUrl){
@@ -157,6 +171,41 @@ export default function WaveForm({ songId }) {
     }
   };
 
+  const timeElapsed = (time) => {
+    const postDate = new Date(time);
+    const rightNow = new Date(Date.now());
+    const elapsedTime = rightNow - postDate
+    const seconds = elapsedTime / 1000;
+    const minutes = seconds / 60;
+    if (minutes < 5) {
+        return "Just moments ago...";
+    }
+    const hours = minutes / 60;
+    if (hours < 1) {
+        return `${Math.floor(minutes)} minutes ago`
+    } else if (Math.floor(hours) === 1) {
+        return `1 hour ago`;
+    }
+    const days = hours / 24;
+    if ( days < 1) {
+        return `${Math.floor(hours)} hours ago`;
+    } else if (Math.floor(days) ===1) {
+        return `1 day ago`
+    }
+    const months = days / 30;
+    if (months < 1) {
+        return `${Math.floor(days)} days ago`;
+    }
+    const years = months / 12
+    if (years < 1) {
+        return `${Math.floor(months)} months ago`;
+    } else if (Math.floor(years) === 1) {
+        return `1 year ago`;
+    } else {
+        return `${Math.floor(years)} years ago`;
+    }
+};
+
   useEffect(() => {
 
   }, []);
@@ -164,20 +213,55 @@ export default function WaveForm({ songId }) {
 
   return (
     <div className="waveform">
-      <div className="controls">
-        {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ? 
-        <button
-          className="waveform-play"
-          onClick={handlePlayPause}
-        >
-            <FontAwesomeIcon icon={faPlay} />
-        </button> : <button
-          className="waveform-play"
-          onClick={handlePlayPause}
-        >
-            <FontAwesomeIcon icon={faPause} />
-        </button>) : null}
+      <div className="song-info-headline">
+        <div>
+          <div className="controls-and-title">
+          <div className="controls">
+            {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ?
+              <button
+                className="waveform-play"
+                onClick={handlePlayPause}
+              >
+                <FontAwesomeIcon icon={faPlay} />
+              </button> : <button
+                className="waveform-play"
+                onClick={handlePlayPause}
+              >
+                <FontAwesomeIcon icon={faPause} />
+              </button>) : null}
+          </div>
+          <div>
+          <div className='song-info-title'>
+            <p>
+              {Object.values(song)[0]?.title}
+            </p>
+          </div>
+          <div className='song-info-artist'>
+            <p>
+              {Object.values(song)[0]?.artist}
+            </p>
+          </div>
+          </div>
+          </div>
+
+          {(userId && (userId === Object.values(song)[0]?.user?.id)) ?
+            <>
+              <button
+                className="song-detail-buttons"
+                onClick={handleDelete}>Delete Song</button>
+              <UpdateSongForm />
+            </> : null}
+        </div>
+        <div>
+          <div className="song-detail-timestamp">
+            {loaded ? timeElapsed(Object.values(song)[0]?.created_at) : null}
+          </div>
+          <div className="song-detail-genre">
+            # {Object.values(song)[0]?.genre.name}
+          </div>
+        </div>
       </div>
+
       <div id="waveform" ref={waveformRef} />
     </div>
   );
