@@ -37,10 +37,10 @@ export default function WaveForm({ songId }) {
   const userId = useSelector(state => state.session.user?.id);
   const playerSong = useSelector(state => state.player.currentSong);
   const playTime = useSelector(state => state.player.time);
-  const song = useSelector(state => state.songs.song[songId]);
+  const song = useSelector(state => Object.values(state.songs.song));
   const playState = useSelector(state => state?.player.playing);
   const player = useSelector(state => state.player.player);
-  const songUrl = song?.url
+  const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
 
 
@@ -123,7 +123,7 @@ export default function WaveForm({ songId }) {
   useEffect(() => {
     if (playerSong?.url === songUrl) {
       const currentTime  = player?.current?.audio.current.currentTime;
-      const songLength = song?.length;
+      const songLength = Object.values(song)[0]?.length;
       const seek = currentTime / songLength;
       if (seek > 0 && seek < 1) {
         wavesurfer.current?.seekTo(currentTime / songLength);
@@ -231,15 +231,15 @@ export default function WaveForm({ songId }) {
           </div>
           <div className='song-info-title'>
             <p>
-              {song?.title}
+              {Object.values(song)[0]?.title}
             </p>
           </div>
           <div className='song-info-artist'>
             <p>
-              {song?.artist}
+              {Object.values(song)[0]?.artist}
             </p>
           </div>
-          {(userId && (userId === song?.user?.id)) ?
+          {(userId && (userId === Object.values(song)[0]?.user?.id)) ?
             <>
               <button
                 className="song-detail-buttons"
@@ -249,10 +249,10 @@ export default function WaveForm({ songId }) {
         </div>
         <div>
           <div className="song-detail-timestamp">
-            {loaded ? timeElapsed(song?.created_at) : null}
+            {loaded ? timeElapsed(Object.values(song)[0]?.created_at) : null}
           </div>
           <div className="song-detail-genre">
-            # {song?.genre.name}
+            # {Object.values(song)[0]?.genre.name}
           </div>
         </div>
       </div>
