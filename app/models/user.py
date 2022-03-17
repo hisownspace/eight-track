@@ -16,7 +16,10 @@ class User(db.Model, UserMixin):
     header_url = db.Column(db.String(255))
     bio = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.now(),
+                            onupdate=datetime.now())
 
     songs = db.relationship("Song", back_populates="user", cascade="all, delete-orphan")
     comments = db.relationship("Comment", back_populates="user")

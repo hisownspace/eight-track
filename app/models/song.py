@@ -17,7 +17,10 @@ class Song(db.Model):
     description = db.Column(db.String(1000))
     public = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.now(),
+                            onupdate=datetime.now())
 
     genre = db.relationship('Genre', back_populates="songs")
     user = db.relationship('User', back_populates="songs")
