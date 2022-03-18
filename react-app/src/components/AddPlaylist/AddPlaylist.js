@@ -105,8 +105,8 @@ function AddPlaylist () {
                         value={formValues[index].id}
                         onChange={e => handleChange(index, e)}
                     >
-                        {Object.values(songs).map((song) => (
-                            <option key={song.id} value={song.id}>{song.title}</option>
+                        {Object.values(songs).map((song, idx) => (
+                            <option key={idx} value={song.id}>{song.title}</option>
                         ))}
                     </select>
                     {formValues.length > 1 ?

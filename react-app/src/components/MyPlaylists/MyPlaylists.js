@@ -31,7 +31,6 @@ function MyPlaylists() {
 
     useEffect(() => {
         dispatch(myPlaylists(userId));
-        console.log(playlists);
     }, [dispatch, userId])
 
     return (

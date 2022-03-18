@@ -72,6 +72,10 @@ def add_songs():
         return { "errors": upload }, 400
 
     columns = request.form.to_dict()
+    if float(columns["length"]) >= 1000:
+        return { "errors": "There was a problem with the song metadata. \
+            Try a different song."}
+        # columns["length"] = 999
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     if imageUrl is None:

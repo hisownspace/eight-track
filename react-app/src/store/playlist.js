@@ -69,9 +69,26 @@ export const addPlaylist = form => async dispatch => {
             return data.errors;
         }
     } else {
-        return ["An Error occurred. Please tray again."]
+        return ["An Error occurred. Please try again."]
     };
 };
+
+export const editPlaylist = form => async dispatch => {
+    const playlistId = form.playlistId
+    const res = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(form)
+    });
+    if (res.ok) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An Error occurred. Please try again."]
+    };
+}
 
 export const removePlaylist = id => async dispatch => {
     const res = await fetch(`/api/playlists/${id}`, {
