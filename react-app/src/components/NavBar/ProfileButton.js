@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory, Link} from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faArrowCircleLeft, faUser, faListSquares } from '@fortawesome/free-solid-svg-icons'
@@ -8,7 +8,8 @@ import { faAngleDown, faArrowCircleLeft, faUser, faListSquares } from '@fortawes
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
-  const history = useHistory()
+  const history = useHistory();
+  const sessionUser = useSelector(state =>state.session.user)
   const [showMenu, setShowMenu] = useState(false);
   const openMenu = () => {
     if (showMenu) return;
@@ -44,7 +45,7 @@ function ProfileButton({ user }) {
       {showMenu && (
         <ul className="profile-dropdown">
           <li>
-            <Link to='/profile'>
+            <Link to={`/users/${sessionUser.id}`}>
               <FontAwesomeIcon className="fa-solid profile-icon" icon={faUser} />
               Profile
             </Link>

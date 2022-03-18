@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Modal } from '../Modal';
+import { Modal } from '../../../context/Modal';
 // import AddPostForm from "../../components/Forms/AddPostForm.js"
-import EditCommentForm from '../../components/EditCommentForm';
-import "../Modal.css"
+import EditCommentForm from './EditCommentForm';
+import "../../../context/Modal.css";
 
 function EditCommentModal({ commentId, commentContent, songId }) {
     const [showModal, setShowModal] = useState(false);

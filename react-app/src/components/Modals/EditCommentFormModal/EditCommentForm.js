@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { editOneComment, getAllSongComments } from '../store/comment';
+import { editOneComment, getAllSongComments } from '../../../store/comment';
 
 const EditCommentForm = ({ showModal, commentId, setShowModal, commentContent, songId }) => {
     const dispatch = useDispatch();
-    // const comment = useSelector(state => state.comments.comments.comments)
     const [ content, setContent] = useState(commentContent);
     const [errors, setErrors] = useState([]);
 

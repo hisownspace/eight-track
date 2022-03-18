@@ -7,7 +7,7 @@ import UpdateSongForm from '../Modals/UpdateSongModal';
 import AddComment from '../AddComment';
 import WaveForm from '../WaveForm';
 import './SongDetail.css';
-import EditCommentModal from '../../context/EditComment';
+import EditCommentModal from '../Modals/EditCommentFormModal';
 
 function SongDetail() {
     const { id } = useParams();
