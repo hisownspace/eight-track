@@ -143,6 +143,7 @@ export default function songReducer(state = initialState, action) {
             delete newState.songs[id]
             return newState;
         default:
-            return state;
+            newState = { ...state }
+            return newState;
     }
 }
