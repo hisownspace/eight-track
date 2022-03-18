@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { addSongToPlayer } from "../../store/player";
 import { myPlaylists, loadPlaylist, clearPlaylist, removePlaylist } from '../../store/playlist';
 
 function MyPlaylists() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const userId = useSelector(state => state.session.user.id);
     const playlists = useSelector(state => state.playlist.playlists);
 
@@ -23,8 +24,14 @@ function MyPlaylists() {
         await dispatch(myPlaylists(userId))
     };
 
+    const handleEdit = (idx) => {
+        const playlistId = playlists[idx].id
+        history.push(`/playlists/${playlistId}`)
+    };
+
     useEffect(() => {
         dispatch(myPlaylists(userId));
+        console.log(playlists);
     }, [dispatch, userId])
 
     return (
@@ -41,13 +48,15 @@ function MyPlaylists() {
                     {playlist.songs.map(song => {
                     return (
                     <div key={song.id.toString() + playlist.id}>
-                        <div>{song.title}</div>
+                        <Link to={`/songs/${song.id}`}>
+                            <div>{song.title}</div>
+                        </Link>
                         <div>- {song.artist}</div>
                     </div>
                     )
                 })}
                 <button onClick={() => handlePlay(idx)}>Play</button>
-                <button>Edit</button>
+                <button onClick={() => handleEdit(idx)}>Edit</button>
                 <button onClick={() => handleDelete(idx)}>Delete</button>
                 </div>)
             })}
