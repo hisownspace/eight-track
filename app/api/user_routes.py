@@ -52,4 +52,5 @@ def add_playlist(id):
 @user_routes.route('/<int:id>/playlists')
 def get_user_playlists(id):
     playlists = Playlist.query.filter_by(user_id=id).all()
-    return playlists.to_dict()
+    print(playlists[0].to_dict())
+    return {"playlists": [playlist.to_dict() for playlist in playlists] }

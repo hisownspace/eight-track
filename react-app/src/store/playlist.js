@@ -4,6 +4,7 @@ const ADD_TO_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
 const MOVE_TO_NEXT_SONG = "playlist/MOVE_TO_NEXT_SONG";
 const CLEAR_PLAYLIST = 'playlist/CLEAR_PLAYLIST'
 const GET_MY_PLAYLISTS = "playlist/GET_MY_PLAYLISTS";
+const LOAD_PLAYLIST = "playlist/LOAD_PLAYLIST";
 
 
 // action creators
@@ -34,6 +35,13 @@ const getMyPlayLists = playlists => {
     }
 };
 
+const loadNewPlaylist = playlist => {
+    return {
+        type:LOAD_PLAYLIST,
+        playlist
+    }
+}
+
 
 // thunks
 export const addSongToPlaylist = (songId) => dispatch => {
@@ -42,7 +50,7 @@ export const addSongToPlaylist = (songId) => dispatch => {
 
 export const nextSong = (direction) => dispatch => {
     dispatch(moveToNextSong(direction));
-}
+};
 
 export const clearPlaylist = () => dispatch => {
     dispatch(emptyPlaylist());
@@ -62,16 +70,20 @@ export const addPlaylist = form => async dispatch => {
         }
     } else {
         return ["An Error occurred. Please tray again."]
-    }
+    };
 };
 
 export const myPlaylists = userId => async dispatch => {
     const res = await fetch(`/api/users/${userId}/playlists`);
     if (res.ok) {
         const data = await res.json();
-        dispatch(getMyPlayLists(data));
+        dispatch(getMyPlayLists(data.playlists));
     }
-}
+};
+
+export const loadPlaylist = (playlist) => dispatch => {
+    dispatch(loadNewPlaylist(playlist));
+};
 
 
 // reducer
@@ -104,6 +116,11 @@ export default function playlistReducer (state = intitialState, action) {
             newState = { ...state };
             newState.playlist = [];
             newState.currentSongIndex = 0;
+            return newState;
+        case LOAD_PLAYLIST:
+            newState = { ...state };
+            newState.currentSongIndex = 0;
+            newState.playlist = action.playlist;
             return newState;
         default:
             return state;
