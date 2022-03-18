@@ -1,21 +1,18 @@
 from flask import Blueprint, request
 from flask_login import login_required
-from app.models import Playlist
+from app.models import db, Playlist
 from app.forms import PlaylistForm
 from .user_routes import user_routes
 
 
-playlist_routes = Blueprint('playlists', __name__)
+playlist_routes = Blueprint('api/playlists', __name__)
 
-@user_routes.route('/<int:id>/playlists', methods=["POST"])
-@login_required
-def add_playlist(id):
-    print("-------------------------------------- i'm in!!!")
-    form = PlaylistForm()
-    form['csrf_token'].data = request.cookies['csrf_token']
-
-    print(form.data["userId"])
-    print(form.data["name"])
-    print(form.data["songs"])
-    print(form.data)
-    return form.data["songs"]
+@playlist_routes.route('/<int:id>', methods=['DELETE'])
+def remove_playlist(id):
+    try:
+        playlist = Playlist.query.get(id)
+        db.session.delete(playlist)
+        db.session.commit()
+        return { "message": "Playlist successfully deleted!"}
+    except Exception as e:
+        return { "message": str(e)}

@@ -2,14 +2,12 @@ import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addSongToPlayer } from "../../store/player";
-import { myPlaylists, loadPlaylist, clearPlaylist } from '../../store/playlist';
+import { myPlaylists, loadPlaylist, clearPlaylist, removePlaylist } from '../../store/playlist';
 
 function MyPlaylists() {
     const dispatch = useDispatch();
     const userId = useSelector(state => state.session.user.id);
     const playlists = useSelector(state => state.playlist.playlists);
-    const player = useSelector(state => state.player.player);
-
 
     const handlePlay = idx => {
         const songIds = playlists[idx].songs.map(song => {
@@ -18,6 +16,11 @@ function MyPlaylists() {
         dispatch(clearPlaylist());
         dispatch(loadPlaylist(songIds));
         dispatch(addSongToPlayer(songIds[0]));
+    };
+
+    const handleDelete = async idx => {
+        await dispatch(removePlaylist(playlists[idx].id));
+        await dispatch(myPlaylists(userId))
     };
 
     useEffect(() => {
@@ -43,9 +46,9 @@ function MyPlaylists() {
                     </div>
                     )
                 })}
-                <button onClick={() => handlePlay(idx)}>Play {idx}</button>
+                <button onClick={() => handlePlay(idx)}>Play</button>
                 <button>Edit</button>
-                <button>Delete</button>
+                <button onClick={() => handleDelete(idx)}>Delete</button>
                 </div>)
             })}
             <Link to="/playlists/add">Create a playlist!</Link>

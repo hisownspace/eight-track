@@ -23,7 +23,7 @@ class Playlist(db.Model):
                             default=datetime.now(),
                             onupdate=datetime.now())
 
-    songs = db.relationship('PlayListSong', back_populates='playlist')
+    songs = db.relationship('PlayListSong', back_populates='playlist', cascade="all, delete-orphan")
 
     def to_dict(self):
         return {

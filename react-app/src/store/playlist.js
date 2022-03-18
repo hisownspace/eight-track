@@ -73,6 +73,20 @@ export const addPlaylist = form => async dispatch => {
     };
 };
 
+export const removePlaylist = id => async dispatch => {
+    const res = await fetch(`/api/playlists/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+          }
+    });
+    if (res.ok) {
+        return "Playlist successfully deleted!";
+    } else {
+        return res.error;
+    }
+};
+
 export const myPlaylists = userId => async dispatch => {
     const res = await fetch(`/api/users/${userId}/playlists`);
     if (res.ok) {

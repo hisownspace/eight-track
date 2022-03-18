@@ -13,6 +13,7 @@ from .api.genre_routes import genre_routes
 from .api.comment_routes import comment_routes
 from .api.presign_routes import presign_routes
 from .api.search_routes import search_routes
+from .api.playlist_routes import playlist_routes
 
 from .seeds import seed_commands
 
@@ -29,6 +30,7 @@ app.register_blueprint(genre_routes, url_prefix="/api/genres")
 app.register_blueprint(comment_routes, url_prefix="/api/comments")
 app.register_blueprint(presign_routes, url_prefix="/api/presign")
 app.register_blueprint(search_routes, url_prefix="/api/search")
+app.register_blueprint(playlist_routes, url_prefix="/api/playlists")
 
 
 @login.user_loader
