@@ -25,6 +25,8 @@ class Song(db.Model):
     genre = db.relationship('Genre', back_populates="songs")
     user = db.relationship('User', back_populates="songs")
     comments = db.relationship("Comment", back_populates="song", cascade="all, delete-orphan")
+    playlists = db.relationship('PlayListSong', back_populates='song')
+
 
     def to_dict(self):
         return {

@@ -38,10 +38,10 @@ function AddPlaylist () {
         const formData = new FormData();
         formData.append("name", playlistName);
         formData.append("userId", userId);
-        formData.append("songs", JSON.stringify(playlistIds));
+        formData.append("songs", playlistIds.join(','));
         console.log("submitted!!!");
 
-        const payload = { name: playlistName, userId, songs: playlistIds}
+        const payload = { name: playlistName, userId, songs: JSON.stringify(playlistIds)}
         
         
         setFormValues([]);

@@ -50,6 +50,7 @@ export const clearPlaylist = () => dispatch => {
 
 export const addPlaylist = form => async dispatch => {
     const userId = form.userId
+    console.log(form.songs);
     const res = await fetch(`/api/users/${userId}/playlists`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},

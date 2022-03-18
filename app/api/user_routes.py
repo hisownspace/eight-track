@@ -1,7 +1,10 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.forms import PlaylistForm
-from app.models import User
+from app.models import db, User, Playlist, Song
+import json
+
+from app.models.playlist import PlayListSong
 
 user_routes = Blueprint('users', __name__)
 
@@ -26,8 +29,22 @@ def add_playlist(id):
     form = PlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
-    print(form.data["userId"])
-    print(form.data["name"])
-    print(form.data["songs"])
-    print(form.data)
-    return form.data["songs"]
+    playlist = Playlist(
+        user_id=form.data["userId"],
+        name=form.data["name"]
+    )
+
+    songList = json.loads(form.data["songs"])
+
+    for index in range(len(songList)):
+        song = Song.query.get(int(songList[index]))
+        song_in_playlist = PlayListSong(order=index)
+        song_in_playlist.song = song
+        playlist.songs.append(song_in_playlist)
+        
+    try:
+        db.session.add(playlist)
+        db.session.commit()
+        return playlist.to_dict()
+    except Exception as e:
+        return  { "errors": e}

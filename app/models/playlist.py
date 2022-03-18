@@ -1,19 +1,15 @@
 from .db import db
 from datetime import datetime
 
-playlist_songs = db.Table('playlist_songs',
-    db.Column('song_id',
-        db.Integer,
-        db.ForeignKey("songs.id"),
-        nullable=False),
-    db.Column('playlist_id',
-        db.Integer,
-        db.ForeignKey("playlists.id"),
-        nullable=False),
-    db.Column('order',
-        db.Integer,
-        nullable=False),
-)
+class PlayListSong(db.Model):
+    __tablename__ = 'playlist_songs'
+
+    song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey("playlists.id"), primary_key=True)
+    order = db.Column(db.Integer, nullable=False)
+
+    playlist = db.relationship("Playlist", back_populates="songs")
+    song = db.relationship("Song", back_populates="playlists")
 
 class Playlist(db.Model):
     __tablename__ = "playlists"
@@ -27,13 +23,11 @@ class Playlist(db.Model):
                             default=datetime.now(),
                             onupdate=datetime.now())
 
-    songs = db.relationship('Song',
-                            secondary=playlist_songs,
-                            backref='playlists')
+    songs = db.relationship('PlayListSong', back_populates='playlist')
 
     def to_dict(self):
         return {
             "id": self.id,
             "name": self.name,
-            "songs": [song.id for song in self.songs],
+            "songs": [song.song.id for song in self.songs],
         }
