@@ -13,6 +13,9 @@ import AllSongs from './components/AllSongs/AllSongs';
 import Footer from './components/FooterPlayer';
 import Search from './components/Search';
 import { authenticate } from './store/session';
+import AddPlaylist from './components/AddPlaylist';
+import MyPlaylists from './components/MyPlaylists';
+import EditPlaylist from './components/EditPlaylist';
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -41,6 +44,9 @@ function App() {
             <Route path='/songs' ><AllSongs /></Route>
             <ProtectedRoute path='/upload' ><DropZone /></ProtectedRoute>
             <Route path='/search'><Search /></Route>
+            <ProtectedRoute path='/playlists/add' ><AddPlaylist /></ProtectedRoute>
+            <ProtectedRoute exact path='/playlists'><MyPlaylists /></ProtectedRoute>
+            <ProtectedRoute path='/playlists/:playlistId'><EditPlaylist /></ProtectedRoute>
             <Route path='/' ><AllSongs /></Route>
             <Route path='' ><AllSongs /></Route>
           </Switch>

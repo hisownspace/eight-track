@@ -156,13 +156,14 @@ function DropZone() {
   const handleCancel = (e) => {
     if (e) {
       e.preventDefault();
+      setErrors(false)
     }
-    setErrors(false)
     setDropFile("");
     setSubmitted(false);
     setArtist("");
     setTitle("");
   };
+  
 
   const convertToMinutes = (length) => {
     const minutes = Math.floor(length / 60);

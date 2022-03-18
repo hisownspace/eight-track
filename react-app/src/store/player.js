@@ -64,8 +64,6 @@ export const setRef = ref => async dispatch => {
     await dispatch(setReference(ref));
 };
 
-export const timeRequest = requestState => async dispatch => {
-};
 
 export const setPlayerTime = time => dispatch => {
     dispatch(setTime(time));

@@ -157,7 +157,7 @@ export default function WaveForm({ songId }) {
 
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
-    if (playerSong?.url !== songUrl){
+    if (playerSong?.url !== songUrl && songId){
       dispatch(clearPlaylist());
       addSongToPlaylist(song.id)
       dispatch(addSongToPlayer(songId));

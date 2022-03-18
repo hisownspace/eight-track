@@ -52,20 +52,9 @@ function SongDetail() {
     
     useEffect(() => {
         if (isLoaded && song && !(song.id) && history && songId) {
-            window.alert(song?.id);
             history.push("/songs");
         }
     }, [isLoaded, songId, song, dispatch, history]);
-
-    const handleDelete = async () => {
-        const confirm = window.confirm(
-            "This will permanently delete this song. Are you sure?");
-        if (confirm) {
-            await dispatch(deleteOneSong(songId));
-            // await dispatch(getAllSongs());
-            history.push("/songs");
-        }
-    };
     
     const handleDeleteComment = e => {
         e.preventDefault();

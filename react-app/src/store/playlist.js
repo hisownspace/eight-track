@@ -3,7 +3,8 @@ const GET_PLAYLIST = "playlist/GET_PLAYLIST";
 const ADD_TO_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
 const MOVE_TO_NEXT_SONG = "playlist/MOVE_TO_NEXT_SONG";
 const CLEAR_PLAYLIST = 'playlist/CLEAR_PLAYLIST'
-// const NEW_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
+const GET_MY_PLAYLISTS = "playlist/GET_MY_PLAYLISTS";
+const LOAD_PLAYLIST = "playlist/LOAD_PLAYLIST";
 
 
 // action creators
@@ -27,6 +28,20 @@ const emptyPlaylist = () => {
     }
 }
 
+const getMyPlayLists = playlists => {
+    return {
+        type: GET_MY_PLAYLISTS,
+        playlists
+    }
+};
+
+const loadNewPlaylist = playlist => {
+    return {
+        type:LOAD_PLAYLIST,
+        playlist
+    }
+}
+
 
 // thunks
 export const addSongToPlaylist = (songId) => dispatch => {
@@ -35,15 +50,75 @@ export const addSongToPlaylist = (songId) => dispatch => {
 
 export const nextSong = (direction) => dispatch => {
     dispatch(moveToNextSong(direction));
-}
+};
 
 export const clearPlaylist = () => dispatch => {
     dispatch(emptyPlaylist());
 };
 
+export const addPlaylist = form => async dispatch => {
+    const userId = form.userId
+    const res = await fetch(`/api/users/${userId}/playlists`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(form)
+    });
+    if (res.ok) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An Error occurred. Please try again."]
+    };
+};
+
+export const editPlaylist = form => async dispatch => {
+    const playlistId = form.playlistId
+    const res = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(form)
+    });
+    if (res.ok) {
+        const data = await res.json();
+        if (data.errors) {
+            return data.errors;
+        }
+    } else {
+        return ["An Error occurred. Please try again."]
+    };
+}
+
+export const removePlaylist = id => async dispatch => {
+    const res = await fetch(`/api/playlists/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+          }
+    });
+    if (res.ok) {
+        return "Playlist successfully deleted!";
+    } else {
+        return res.error;
+    }
+};
+
+export const myPlaylists = userId => async dispatch => {
+    const res = await fetch(`/api/users/${userId}/playlists`);
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(getMyPlayLists(data.playlists));
+    }
+};
+
+export const loadPlaylist = (playlist) => dispatch => {
+    dispatch(loadNewPlaylist(playlist));
+};
+
 
 // reducer
-const intitialState = { playlist: [], currentSongIndex: 0 }
+const intitialState = { playlist: [], currentSongIndex: 0, playlists: [] }
 
 export default function playlistReducer (state = intitialState, action) {
     let newState;
@@ -64,10 +139,19 @@ export default function playlistReducer (state = intitialState, action) {
                 newState.currentSongIndex -= 1;
             }
             return newState;
+        case GET_MY_PLAYLISTS:
+            newState = { ...state }
+            newState.playlists = action.playlists
+            return newState;
         case (CLEAR_PLAYLIST):
             newState = { ...state };
             newState.playlist = [];
             newState.currentSongIndex = 0;
+            return newState;
+        case LOAD_PLAYLIST:
+            newState = { ...state };
+            newState.currentSongIndex = 0;
+            newState.playlist = action.playlist;
             return newState;
         default:
             return state;

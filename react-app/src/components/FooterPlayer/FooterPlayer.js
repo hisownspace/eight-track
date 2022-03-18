@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../store/song';
 import { addSongToPlaylist, nextSong } from '../../store/playlist';
-import { playingState, timeRequest, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
+import { playingState, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
 import getCloudFrontDomain from '../../presignHelper';
 import playlistReducer from '../../store/playlist';
 
@@ -46,10 +46,6 @@ function Footer() {
       e.preventDefault();
       history.push(`/songs/${song.id}`);
     };
-
-    useEffect(() => {
-      dispatch(timeRequest());
-    }, [waveformRef, dispatch]);
 
     const setPlay = async () => {
       dispatch(playingState(true));
@@ -91,10 +87,12 @@ function Footer() {
 
 
     useEffect(() => {
-      dispatch(addSongToPlayer(playlist[currentSongIdx]));
-      setPlay();
-      dispatch(setPlayerTime(0));
-      dispatch(playingState(true));
+      if (currentSongIdx) {
+        dispatch(addSongToPlayer(playlist[currentSongIdx]));
+        setPlay();
+        dispatch(setPlayerTime(0));
+        dispatch(playingState(true));
+      }
     }, [currentSongIdx]);
 
 

@@ -17,11 +17,16 @@ class Song(db.Model):
     description = db.Column(db.String(1000))
     public = db.Column(db.Boolean, nullable=False, default=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    updated_at = db.Column(db.DateTime,
+                            nullable=False,
+                            default=datetime.now(),
+                            onupdate=datetime.now())
 
     genre = db.relationship('Genre', back_populates="songs")
     user = db.relationship('User', back_populates="songs")
-    comments = db.relationship("Comment", back_populates="song")
+    comments = db.relationship("Comment", back_populates="song", cascade="all, delete-orphan")
+    playlists = db.relationship('PlayListSong', back_populates='song', cascade="all, delete-orphan")
+
 
     def to_dict(self):
         return {
@@ -36,5 +41,7 @@ class Song(db.Model):
             "created_at": time.mktime(self.created_at.timetuple()) * 1000,
             # these keys are associated with other tables
             "user": self.user.to_dict(),
-            "genre": self.genre.to_dict()
+            "genre": self.genre.to_dict(),
+            # playlists is backrefed in the playlist model
+            # "playlists": [playlist.to_dict() for playlist in self.playlists]
         }

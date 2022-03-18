@@ -19,16 +19,6 @@ from app.s3_helpers import (
 
 song_routes = Blueprint('api/songs', __name__)
 
-def validation_errors_to_error_messages(validation_errors):
-    """
-    Simple function that turns the WTForms validation errors into a simple list
-    """
-    errorMessages = []
-    for field in validation_errors:
-        for error in validation_errors[field]:
-            errorMessages.append(f'{field} : {error}')
-    return errorMessages
-
 @song_routes.route("/")
 def get_all_songs():
     songs = Song.query.join(User).join(Genre).all()
@@ -82,6 +72,10 @@ def add_songs():
         return { "errors": upload }, 400
 
     columns = request.form.to_dict()
+    if float(columns["length"]) >= 1000:
+        return { "errors": "There was a problem with the song metadata. \
+            Try a different song."}
+        # columns["length"] = 999
     url = upload["url"]
     # flask_login allows us to get the current user from the request
     if imageUrl is None:
