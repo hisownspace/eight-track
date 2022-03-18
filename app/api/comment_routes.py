@@ -12,7 +12,8 @@ comment_routes = Blueprint('api/comments', __name__)
 
 @song_routes.route('/<int:songId>/comments')
 def get_song_comments(songId):
-    comments = Comment.query.filter_by(song_id=songId).order_by(Comment.created_at).all()
+    comments = Comment.query.filter_by(song_id=songId)\
+        .order_by(Comment.created_at).all()
     if comments:
         return { "comments": [comment.to_dict() for comment in comments] }
     else:

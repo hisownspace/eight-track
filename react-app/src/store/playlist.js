@@ -3,7 +3,7 @@ const GET_PLAYLIST = "playlist/GET_PLAYLIST";
 const ADD_TO_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
 const MOVE_TO_NEXT_SONG = "playlist/MOVE_TO_NEXT_SONG";
 const CLEAR_PLAYLIST = 'playlist/CLEAR_PLAYLIST'
-const NEW_PLAYLIST = "playlist/ADD_TO_PLAYLIST";
+const GET_MY_PLAYLISTS = "playlist/GET_MY_PLAYLISTS";
 
 
 // action creators
@@ -27,10 +27,10 @@ const emptyPlaylist = () => {
     }
 }
 
-const addToPlayLists = playlist => {
+const getMyPlayLists = playlists => {
     return {
-        type: NEW_PLAYLIST,
-        playlist
+        type: GET_MY_PLAYLISTS,
+        playlists
     }
 };
 
@@ -50,7 +50,6 @@ export const clearPlaylist = () => dispatch => {
 
 export const addPlaylist = form => async dispatch => {
     const userId = form.userId
-    console.log(form.songs);
     const res = await fetch(`/api/users/${userId}/playlists`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
@@ -66,9 +65,17 @@ export const addPlaylist = form => async dispatch => {
     }
 };
 
+export const myPlaylists = userId => async dispatch => {
+    const res = await fetch(`/api/users/${userId}/playlists`);
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(getMyPlayLists(data));
+    }
+}
+
 
 // reducer
-const intitialState = { playlist: [], currentSongIndex: 0 }
+const intitialState = { playlist: [], currentSongIndex: 0, playlists: [] }
 
 export default function playlistReducer (state = intitialState, action) {
     let newState;
@@ -88,6 +95,10 @@ export default function playlistReducer (state = intitialState, action) {
             } else if (newState.currentSongIndex > 0) {
                 newState.currentSongIndex -= 1;
             }
+            return newState;
+        case GET_MY_PLAYLISTS:
+            newState = { ...state }
+            newState.playlists = action.playlists
             return newState;
         case (CLEAR_PLAYLIST):
             newState = { ...state };

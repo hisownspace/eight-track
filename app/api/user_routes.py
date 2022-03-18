@@ -25,7 +25,6 @@ def user(id):
 @user_routes.route('/<int:id>/playlists', methods=["POST"])
 @login_required
 def add_playlist(id):
-    print("-------------------------------------- i'm in!!!")
     form = PlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -48,3 +47,9 @@ def add_playlist(id):
         return playlist.to_dict()
     except Exception as e:
         return  { "errors": e}
+
+
+@user_routes.route('/<int:id>/playlists')
+def get_user_playlists(id):
+    playlists = Playlist.query.filter_by(user_id=id).all()
+    return playlists.to_dict()
