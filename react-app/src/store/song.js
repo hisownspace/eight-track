@@ -46,15 +46,6 @@ export const getAllSongs = () => async (dispatch) => {
     }
 }
 
-// export const getTopSongs = () => async (dispatch) => {
-//     const res = await fetch('api/songs/top/');
-//     if (res.ok) {
-//         const songsObj = await res.json();
-//         dispatch(getSongs(songsObj.songs));
-//         return songsObj.songs
-//     }
-// }
-
 
 export const getOneSong = (songId) => async (dispatch) => {
     const res = await fetch(`/api/songs/${songId}`);
@@ -133,10 +124,6 @@ export default function songReducer(state = initialState, action) {
             newState.song = {};
             newState.song[action.song.id] = action.song
             return newState;
-        // case ADD_SONG:
-        //     newState = {...state};
-        //     newState.songs[action.song.id] = action.song;
-        //     return newState;
         case DELETE_SONG:
             newState = {...state};
             const id = +action.id
