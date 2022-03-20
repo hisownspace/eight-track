@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addPlaylist } from '../../store/playlist';
 import { useHistory } from 'react-router-dom';
+import { getAllSongs } from '../../store/song';
 
 function AddPlaylist () {
     const dispatch = useDispatch();
@@ -54,15 +55,10 @@ function AddPlaylist () {
         const playlistIds = formValues.map(input => {
             return input.id;
         });
-        
 
-        const formData = new FormData();
-        formData.append("name", playlistName);
-        formData.append("userId", userId);
-        formData.append("songs", playlistIds.join(','));
-
-        const payload = { name: playlistName, userId, songs: JSON.stringify(playlistIds)}
-        
+        const payload = { name: playlistName,
+                        userId,
+                        songs: JSON.stringify(playlistIds) };
         
         setFormValues([]);
         setPlaylistName('');
@@ -106,7 +102,7 @@ function AddPlaylist () {
                         onChange={e => handleChange(index, e)}
                     >
                         {Object.values(songs).map((song, idx) => (
-                            <option key={idx} value={song.id}>{song.title}</option>
+                                <option key={idx} value={song.id}>{song.title}</option>
                         ))}
                     </select>
                     {formValues.length > 1 ?

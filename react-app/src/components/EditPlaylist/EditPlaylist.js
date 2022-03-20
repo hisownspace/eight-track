@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { editPlaylist } from '../../store/playlist';
+import { getAllSongs } from '../../store/song';
 
 function EditPlaylist() {
     const dispatch = useDispatch();
@@ -23,11 +24,12 @@ function EditPlaylist() {
             const list = playlists.find(playlist => {
                 return playlist.id === +playlistId;
             });
+            dispatch(getAllSongs());
             setPlaylist(list);
             setPlaylistLoaded(true);
             setPlaylistName(playlist.name)
         }
-    }, [playlists, playlistId, playlistLoaded, history, playlist]);
+    }, [playlists, playlistId, playlistLoaded, history, playlist, dispatch]);
 
     const handleSongChange = (idx, e) => {
         const songId = +e.target.value
@@ -108,7 +110,7 @@ function EditPlaylist() {
             {playlist?.songs.map((song, idx) => {
                return (
                    <div key={idx}>
-                    <label>{song.title}</label>
+                    <label>Song #{idx + 1}</label>
                     <select
                         value={song.id}
                         onChange={e => handleSongChange(idx, e)}

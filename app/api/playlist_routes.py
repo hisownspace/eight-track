@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import login_required
 from app.models import db, Playlist, Song, PlayListSong
-from app.forms import PlaylistForm
+from app.forms import PlaylistForm, EditPlaylistForm
 from .user_routes import user_routes
 import json
 
@@ -20,10 +20,11 @@ def remove_playlist(id):
 
 @playlist_routes.route('/<int:id>', methods=['PUT'])
 def update_playlist(id):
-    form = PlaylistForm()
+    form = EditPlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     playlist = Playlist.query.get(id)
-    if playlist:
+    print(form)
+    if form.validate_on_submit():
         playlist.name = form.data["name"]
         playlist.songs = []
         songList = json.loads(form.data["songs"])

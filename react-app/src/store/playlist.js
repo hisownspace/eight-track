@@ -74,7 +74,8 @@ export const addPlaylist = form => async dispatch => {
 };
 
 export const editPlaylist = form => async dispatch => {
-    const playlistId = form.playlistId
+    const playlistId = form.playlistId;
+    console.log(playlistId);
     const res = await fetch(`/api/playlists/${playlistId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json'},
