@@ -3,8 +3,10 @@
     border: none;
     cursor: pointer;
     color: #E05107;
+    font-size: 18px;
 }
 
 .playlist-buttons:hover {
     color: black;
 }
+

@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-
 import { addPlaylist } from '../../store/playlist';
 import { useHistory } from 'react-router-dom';
 import './AddPlaylist.css';
@@ -15,25 +15,39 @@ function AddPlaylist () {
     const userId = useSelector(state => state.session.user.id);
     const [formValues, setFormValues] = useState([]);
     const [errors, setErrors] = useState([]);
+    const [options, setOptions] = useState({});
 
     const handleChange = (i, e) => {
-        const songId = e.target.value
+        console.log(i);
+        console.log(e);
+        const songId = e.value
         const newFormValues = [...formValues];
         newFormValues[i].id = songId;
         newFormValues[i].name = songs[songId].title
         setFormValues(newFormValues);
     }
+
+    useEffect(() => {
+        const newOptions = Object.values(songs).reduce((acc, currentValue) => {
+            return [...acc, { label: currentValue.title, value: currentValue.id }]
+        }, []);
+        setOptions(newOptions);
+    }, [formValues, songs]);
     
     const addFormFields = () => {
         setFormValues([...formValues,
             { name: Object.values(songs)[0].title,
                 id: Object.values(songs)[0].id.toString() }]);
     }
+
+    useEffect(() => {
+        console.log(formValues);
+    }, [formValues]);
     
     const removeFormFields = (i) => {
         const newFormValues = [...formValues];
         newFormValues.splice(i, 1);
-        setFormValues(newFormValues)
+        setFormValues(newFormValues);
     }
     
     const handleSubmit = async event => {
@@ -109,14 +123,11 @@ function AddPlaylist () {
                 {formValues.map((element, index) => (
                     <div className="form-inline" key={index}>
                         <label>Song #{index + 1}</label>
-                        <select
-                            value={formValues[index].id}
+                        <Select 
+                            defaultValue={options[0]}
                             onChange={e => handleChange(index, e)}
-                        >
-                            {Object.values(songs).map((song, idx) => (
-                                <option key={idx} value={song.id}>{song.title}</option>
-                            ))}
-                        </select>
+                            options={options}
+                        />
                         {formValues.length > 1 ?
                             <div className="playlist-song-buttons">
                                 <button type="button" className="button remove" onClick={() => removeFormFields(index)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>

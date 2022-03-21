@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import Select from 'react-select';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { editPlaylist } from '../../store/playlist';
 import { getAllSongs } from '../../store/song';
 
@@ -14,8 +17,17 @@ function EditPlaylist() {
     const userId = useSelector(state => state.session.user.id);
     const [errors, setErrors] = useState();
     const [playlistLoaded, setPlaylistLoaded] = useState(false);
-    const [playlistName, setPlaylistName] = useState('')
+    const [playlistName, setPlaylistName] = useState('');
+    const [options, setOptions] = useState({});
 
+
+    useEffect(() => {
+        const newOptions = Object.values(songs).reduce((acc, currentValue) => {
+            return [...acc, { label: currentValue.title, value: currentValue.id }]
+        }, []);
+        setOptions(newOptions);
+        console.log(newOptions);
+    }, [songs]);
 
     useEffect(() => {
         if (playlistLoaded && !playlist) {
@@ -32,10 +44,11 @@ function EditPlaylist() {
     }, [playlists, playlistId, playlistLoaded, history, playlist, dispatch]);
 
     const handleSongChange = (idx, e) => {
-        const songId = +e.target.value
+        const songId = e.value;
         const newPlaylistValues = { ...playlist };
         newPlaylistValues.songs[idx] = songs[songId];
         setPlaylist(newPlaylistValues);
+        console.log(newPlaylistValues);
     }
 
     const handleTitleChange = e => {
@@ -87,14 +100,21 @@ function EditPlaylist() {
 
     const moveSongUp = idx => {
         const newPlaylistValues = { ...playlist };
+        console.log(newPlaylistValues);
+        console.log(idx);
         const placeholder = newPlaylistValues.songs[idx];
+        console.log(placeholder);
         newPlaylistValues.songs[idx] = newPlaylistValues.songs[idx - 1];
         newPlaylistValues.songs[idx - 1] = placeholder;
+        console.log(newPlaylistValues.songs[idx]);
+        console.log(newPlaylistValues.songs[idx - 1]);
         setPlaylist(newPlaylistValues);
     };
 
     return (
+        <div className="playlist-form-div">
         <form
+            className="playlist-form"
             onSubmit={handleSubmit}
         >
             <label
@@ -119,8 +139,15 @@ function EditPlaylist() {
                             <option key={song.id} value={song.id}>{song.title}</option>
                         ))}
                     </select>
-                    <button type="button" className="button remove" onClick={() => removeFormFields(idx)}>Remove</button>
-                            {idx ? <button type="button" className="button remove" onClick={() => moveSongUp(idx)}>Move Up</button> : null}
+                    <Select
+                    defaultValue={options.find(elem => {
+                        return elem.value === playlist.songs[idx].id})}
+                    onChange={e => handleSongChange(idx, e)}
+                    options={options}
+                    />
+                                <button type="button" className="button remove" onClick={() => removeFormFields(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
+                                {idx ? <button type="button" className="button remove" onClick={() => moveSongUp(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
+                                {/* {idx < playlist.songs.length - 1 ? <button type="button" className="button remove" onClick={() => moveSongDown(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowDown} /></button> : null} */}
 
                    </div>
                ) 
@@ -129,6 +156,7 @@ function EditPlaylist() {
             <button type='submit'>Edit Playlist</button>
             <button type='reset' onClick={handleCancel}>Cancel</button>
         </form>
+        </div>
     )
 }
 

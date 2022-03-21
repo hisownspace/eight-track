@@ -14,7 +14,9 @@ function MyPlaylists() {
     const playlists = useSelector(state => state.playlist.myPlaylists);
     const player = useSelector(state => state.player.player);
 
+    
     const handlePlay = idx => {
+        console.log(playlists);
         const songIds = playlists[idx].songs.map(song => {
             return song.id
         });
@@ -51,33 +53,37 @@ function MyPlaylists() {
             {playlists?.map((playlist, idx) => {
                 return (
                     <div key={idx}>
-                        <div style={{marginTop: "10px"}}>
+                        <div style={{ marginTop: "10px" }}>
                             <h1>
-                                {playlist.name}
+                                <Link to={`/playlists/${playlist.id}`}>
+                                    {playlist.name}
+                                </Link>
                             </h1>
-                            </div>
+                        </div>
                     {playlist.songs.map((song, idx) => {
                     return (
-<div
-                        key={song.id.toString() + playlists?.id + idx}
-                        className="playlist-item-container">
-                        <Link to={`/songs/${song.id}`}>
+                        <div
+                            key={song.id.toString() + playlists?.id + idx}
+                            className="playlist-item-container">
                             <div className='playlist-item'>
                                 <div
                                     className="playlist-thumbnail"
                                 >
-                                    <img
-                                        alt={song.title}
-                                        src={song.image_url}
-                                    ></img>
+                                    <Link to={`/songs/${song.id}`}>
+                                        <img
+                                            alt={song.title}
+                                            src={song.image_url}
+                                        ></img>
+                                    </Link>
                                 </div>
                                 <div className="playlist-text-side">
-                                    <div className='playlist-song-title'>{song.title}</div>
-                                    <div className="playlist-artist-name">- {song.artist}</div>
+                                    <Link to={`/songs/${song.id}`}>
+                                        <div className='playlist-song-title'>{song.title}</div>
+                                        <div className="playlist-artist-name">- {song.artist}</div>
+                                    </Link>
                                 </div>
                             </div>
-                        </Link>
-                    </div>
+                        </div>
                     )
                 })}
                 <button className="playlist-buttons" onClick={() => handlePlay(idx)}><FontAwesomeIcon className="fa-solid" icon={faPlay} /></button>
