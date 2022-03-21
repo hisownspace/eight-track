@@ -9,7 +9,7 @@ function SinglePlaylist() {
     const history = useHistory();
     const { playlistId }  = useParams();
     const id = +playlistId
-    const userId = useSelector(state => state.session.user.id);
+    const userId = useSelector(state => state.session.user?.id);
     const playlists = useSelector(state => state.playlist.allPlaylists);
     const minePlaylists = useSelector(state => state.playlist.myPlaylists)
     const [loaded, setLoaded] = useState(false);
