@@ -5,6 +5,7 @@ const MOVE_TO_NEXT_SONG = "playlist/MOVE_TO_NEXT_SONG";
 const CLEAR_PLAYLIST = 'playlist/CLEAR_PLAYLIST'
 const GET_MY_PLAYLISTS = "playlist/GET_MY_PLAYLISTS";
 const LOAD_PLAYLIST = "playlist/LOAD_PLAYLIST";
+const GET_ALL_PLAYLISTS = "playlist/GET_ALL_PLAYLISTS";
 
 
 // action creators
@@ -28,22 +29,38 @@ const emptyPlaylist = () => {
     }
 }
 
-const getMyPlayLists = playlists => {
+const getMyPlaylists = playlists => {
     return {
         type: GET_MY_PLAYLISTS,
         playlists
     }
 };
 
+const getPlaylists = playlists => {
+    return {
+        type: GET_ALL_PLAYLISTS,
+        playlists
+    }
+}
+
 const loadNewPlaylist = playlist => {
     return {
-        type:LOAD_PLAYLIST,
+        type: LOAD_PLAYLIST,
         playlist
     }
 }
 
 
 // thunks
+
+export const getAllPlaylists = () => async dispatch => {
+    const res = await fetch('/api/playlists');
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(getPlaylists(data.playlists));
+    }
+};
+
 export const addSongToPlaylist = (songId) => dispatch => {
     dispatch(addSong(songId));
 };
@@ -109,7 +126,7 @@ export const myPlaylists = userId => async dispatch => {
     const res = await fetch(`/api/users/${userId}/playlists`);
     if (res.ok) {
         const data = await res.json();
-        dispatch(getMyPlayLists(data.playlists));
+        dispatch(getMyPlaylists(data.playlists));
     }
 };
 
@@ -119,7 +136,7 @@ export const loadPlaylist = (playlist) => dispatch => {
 
 
 // reducer
-const intitialState = { playlist: [], currentSongIndex: 0, playlists: [] }
+const intitialState = { playlist: [], currentSongIndex: 0, myPlaylists: [], allPlaylists: [] }
 
 export default function playlistReducer (state = intitialState, action) {
     let newState;
@@ -142,7 +159,11 @@ export default function playlistReducer (state = intitialState, action) {
             return newState;
         case GET_MY_PLAYLISTS:
             newState = { ...state }
-            newState.playlists = action.playlists
+            newState.myPlaylists = action.playlists;
+            return newState;
+        case GET_ALL_PLAYLISTS:
+            newState = { ...state }
+            newState.allPlaylists = action.playlists;
             return newState;
         case (CLEAR_PLAYLIST):
             newState = { ...state };

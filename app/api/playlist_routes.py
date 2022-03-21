@@ -39,3 +39,13 @@ def update_playlist(id):
             return playlist.to_dict()
         except Exception as e:
             return  { "errors": e}
+
+@playlist_routes.route('/')
+def getAllPlaylists():
+    try:
+        playlists = Playlist.query.all()
+        return { "playlists":{ playlist.id:playlist.to_dict() for playlist in playlists } }
+    except Exception as e:
+        return  { "errors": e}
+
+ 

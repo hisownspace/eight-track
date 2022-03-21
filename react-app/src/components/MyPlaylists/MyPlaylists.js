@@ -8,7 +8,7 @@ function MyPlaylists() {
     const dispatch = useDispatch();
     const history = useHistory();
     const userId = useSelector(state => state.session.user.id);
-    const playlists = useSelector(state => state.playlist.playlists);
+    const playlists = useSelector(state => state.playlist.myPlaylists);
 
     const handlePlay = idx => {
         const songIds = playlists[idx].songs.map(song => {
@@ -26,7 +26,7 @@ function MyPlaylists() {
 
     const handleEdit = (idx) => {
         const playlistId = playlists[idx].id
-        history.push(`/playlists/${playlistId}`)
+        history.push(`/playlists/${playlistId}/edit`)
     };
 
     useEffect(() => {
@@ -44,9 +44,9 @@ function MyPlaylists() {
                         <div style={{marginTop: "10px"}}>
                             {playlist.name}
                             </div>
-                    {playlist.songs.map(song => {
+                    {playlist.songs.map((song, idx) => {
                     return (
-                    <div key={song.id.toString() + playlist.id}>
+                    <div key={song.id.toString() + playlist.id + idx}>
                         <Link to={`/songs/${song.id}`}>
                             <div>{song.title}</div>
                         </Link>

@@ -4,6 +4,7 @@
   border: 1px solid rgb(212, 212, 212);
   bottom: 0;
   width: 100%;
+  background-color: white;
   height: 55px;
   display:flex;
   z-index: 100;

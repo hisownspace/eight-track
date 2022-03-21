@@ -8,7 +8,7 @@ function EditPlaylist() {
     const dispatch = useDispatch();
     const history = useHistory();
     const { playlistId } = useParams();
-    const playlists = useSelector(state => state.playlist.playlists);
+    const playlists = useSelector(state => state.playlist.myPlaylists);
     const [playlist, setPlaylist] = useState({ songs: []})
     const songs = useSelector(state => state.songs.songs);
     const userId = useSelector(state => state.session.user.id);

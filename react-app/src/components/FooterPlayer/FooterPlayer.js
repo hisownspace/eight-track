@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getOneSong, getAllSongs } from '../../store/song';
-import { addSongToPlaylist, nextSong } from '../../store/playlist';
+import { addSongToPlaylist, nextSong, loadPlaylist } from '../../store/playlist';
 import { playingState, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
 import getCloudFrontDomain from '../../presignHelper';
 import playlistReducer from '../../store/playlist';
@@ -71,10 +71,10 @@ function Footer() {
         dispatch(setPlayerTime(e.srcElement.currentTime));
       }
 
-      if (playlist.length === 0) {
+      if (playlist?.length === 0) {
         dispatch(addSongToPlaylist(song.id));
       }
-      if (currentSongIdx >= playlist.length - 1) {
+      if (currentSongIdx >= playlist?.length - 1) {
         const songsLength = songs.length;
         const randomSongIdx = Math.floor(Math.random() * songsLength);
         dispatch(addSongToPlaylist(songs[randomSongIdx].id))

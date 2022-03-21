@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
@@ -42,9 +42,11 @@ function NavBar({ isLoaded }) {
                 <div className='occupied-nav-bar'>
                     <div className='nav-left'>
                         <div className="nav-bar-icon">
-                            <img alt="8-track-icon"
-                            src="https://eta-photobucket.s3.amazonaws.com/8-track-icon.png">
-                            </img>
+                            <NavLink to="/">
+                                <img alt="8-track-icon"
+                                src="https://eta-photobucket.s3.amazonaws.com/8-track-icon.png">
+                                </img>
+                            </NavLink>
                         </div>
                         <button
                         onClick={() => history.push('/songs')}
