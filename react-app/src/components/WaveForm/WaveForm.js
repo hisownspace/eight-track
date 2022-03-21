@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './WaveForm.css';
 import UpdateSongForm from '../Modals/UpdateSongModal';
-import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
+import { deleteOneSong } from '../../store/song';
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
@@ -159,7 +159,7 @@ export default function WaveForm({ songId }) {
   const handlePlayPause = async () => {
     if (playerSong?.url !== songUrl && songId){
       dispatch(clearPlaylist());
-      addSongToPlaylist(song.id)
+      dispatch(addSongToPlaylist(song.id));
       dispatch(addSongToPlayer(songId));
       wavesurfer.current.play();
     } else if (playState){

@@ -1,0 +1,27 @@
+.playlist-form-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.playlist-form {
+    width: 25%;
+}
+
+.playlist-form input {
+    width: 98.8%;
+}
+
+.playlist-form select {
+    width: 100%;
+}
+
+.playlist-song-buttons button {
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.button-section {
+    margin-top: 30px;
+}

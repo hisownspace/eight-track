@@ -43,7 +43,7 @@ function EditPlaylist() {
     };
 
     const handleCancel = () => {
-        history.push('/playlists');
+        history.goBack();
     }
 
     const handleSubmit = async e => {

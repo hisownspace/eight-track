@@ -1,0 +1,29 @@
+.playlist-thumbnail img {
+    width: 35px;
+    /* object-fit: contain; */
+}
+
+.playlist-song-title {
+    font-size: 14px;
+}
+
+.playlist-artist-name {
+    font-size: 12px;
+}
+
+.playlist-item {
+    display: flex;
+    flex-direction: row;
+}
+
+.playlist-item-container {
+    margin: 5px -38px;
+}
+
+.playlist-text-side {
+    margin-left: 8px;
+}
+
+li {
+    list-style-type: none;
+}

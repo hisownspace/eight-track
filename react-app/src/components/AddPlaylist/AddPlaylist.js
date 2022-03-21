@@ -1,8 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+
 import { addPlaylist } from '../../store/playlist';
 import { useHistory } from 'react-router-dom';
-import { getAllSongs } from '../../store/song';
+import './AddPlaylist.css';
 
 function AddPlaylist () {
     const dispatch = useDispatch();
@@ -78,47 +81,58 @@ function AddPlaylist () {
         setFormValues(newFormValues);
     };
 
+    const moveSongDown = idx => {
+        const newFormValues = [...formValues];
+        const placeholder = newFormValues[idx];
+        newFormValues[idx] = newFormValues[idx + 1];
+        newFormValues[idx + 1] = placeholder;
+        setFormValues(newFormValues);
+    };
+
     return (
-        <form onSubmit={handleSubmit}>
-            <ul>
-            {errors ? errors.map((error, idx) => {
-                return (<li key={idx}>{error}</li>)
-            }) : null}
-            </ul>
-            <label>
-                Playlist Name:
-            </label>
-            <input
-                type="text"
-                value={playlistName}
-                placeholder="Enter a name for your playlist..."
-                onChange={e => setPlaylistName(e.target.value)}
-            ></input>
-            {formValues.map((element, index) => (
-                <div className="form-inline" key={index}>
-                    <label>Song #{index + 1}</label>
-                    <select
-                        value={formValues[index].id}
-                        onChange={e => handleChange(index, e)}
-                    >
-                        {Object.values(songs).map((song, idx) => (
+        <div className="playlist-form-div">
+            <form className="playlist-form" onSubmit={handleSubmit}>
+                <ul>
+                    {errors ? errors.map((error, idx) => {
+                        return (<li key={idx}>{error}</li>)
+                    }) : null}
+                </ul>
+                <label>
+                    Playlist Name:
+                </label>
+                <input
+                    type="text"
+                    value={playlistName}
+                    placeholder="Enter a name for your playlist..."
+                    onChange={e => setPlaylistName(e.target.value)}
+                ></input>
+                {formValues.map((element, index) => (
+                    <div className="form-inline" key={index}>
+                        <label>Song #{index + 1}</label>
+                        <select
+                            value={formValues[index].id}
+                            onChange={e => handleChange(index, e)}
+                        >
+                            {Object.values(songs).map((song, idx) => (
                                 <option key={idx} value={song.id}>{song.title}</option>
-                        ))}
-                    </select>
-                    {formValues.length > 1 ?
-                        <div>
-                            <button type="button" className="button remove" onClick={() => removeFormFields(index)}>Remove</button>
-                            {index ? <button type="button" className="button remove" onClick={() => moveSongUp(index)}>Move Up</button> : null}
-                        </div>
-                        : null}
+                            ))}
+                        </select>
+                        {formValues.length > 1 ?
+                            <div className="playlist-song-buttons">
+                                <button type="button" className="button remove" onClick={() => removeFormFields(index)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
+                                {index ? <button type="button" className="button remove" onClick={() => moveSongUp(index)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
+                                {index < formValues.length - 1 ? <button type="button" className="button remove" onClick={() => moveSongDown(index)}><FontAwesomeIcon className="fa-solid" icon={faArrowDown} /></button> : null}
+                            </div>
+                            : null}
+                    </div>
+                ))}
+                <div className="button-section">
+                    <button className="button add" type="button" onClick={() => addFormFields()}>Add Song</button>
+                    <button className="button submit" type="submit">Submit</button>
+                    <button className="button cancel" type="reset" onClick={cancelSubmit}>Cancel</button>
                 </div>
-            ))}
-            <div className="button-section">
-                <button className="button add" type="button" onClick={() => addFormFields()}>Add Song</button>
-                <button className="button submit" type="submit">Submit</button>
-                <button className="button cancel" type="reset" onClick={cancelSubmit}>Cancel</button>
-            </div>
-        </form>
+            </form>
+        </div>
     )
 };
 

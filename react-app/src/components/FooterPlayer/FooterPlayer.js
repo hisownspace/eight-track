@@ -58,7 +58,9 @@ function Footer() {
     const previousSong = () => {
       if (currentSongIdx > 0) {
         dispatch(nextSong("down"));
+        dispatch(addSongToPlayer(playlist[currentSongIdx - 1]));
       } else {
+        player.current.audio.current.pause();
         player.current.audio.current.currentTime = 0;
         dispatch(setPlayerTime(0));
       }

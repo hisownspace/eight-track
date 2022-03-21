@@ -1,8 +1,12 @@
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { myPlaylists, clearPlaylist, loadPlaylist, removePlaylist, getAllPlaylists } from '../../store/playlist';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan, faPenToSquare, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { myPlaylists, addSongToPlaylist, clearPlaylist, loadPlaylist, removePlaylist, getAllPlaylists } from '../../store/playlist';
 import { addSongToPlayer } from "../../store/player";
+import './SinglePlaylist.css';
+
 
 function SinglePlaylist() {
     const dispatch = useDispatch();
@@ -11,9 +15,11 @@ function SinglePlaylist() {
     const id = +playlistId
     const userId = useSelector(state => state.session.user?.id);
     const playlists = useSelector(state => state.playlist.allPlaylists);
-    const minePlaylists = useSelector(state => state.playlist.myPlaylists)
     const [loaded, setLoaded] = useState(false);
     const [authorized, setAuthorized] = useState(false);
+    const player = useSelector(state => state.player.player);
+    const playState = useSelector(state => state?.player.playing);
+
 
 
     useEffect(() => {
@@ -34,10 +40,14 @@ function SinglePlaylist() {
         const songIds = playlists[id].songs.map(song => {
             return song.id
         });
-        console.log(songIds);
+
+        player.current.audio.current.pause();
+        player.current.audio.current.currentTime = 0;
+        
         dispatch(clearPlaylist());
         dispatch(loadPlaylist(songIds));
-        dispatch(addSongToPlayer(songIds[0]));
+        dispatch(addSongToPlayer(songIds[0]))
+        .then(() => player.current.audio.current.play());
     };
 
     const handleDelete = async idx => {
@@ -55,22 +65,44 @@ function SinglePlaylist() {
     return (
         <div>
             <div style={{ marginTop: "10px" }}>
-                {playlists[id]?.name}
+                <h1>
+                    {playlists[id]?.name}
+                </h1>
             </div>
+            <ul>
+
             {playlists[id]?.songs.map((song, idx) => {
                 return (
-                    <div key={song.id.toString() + playlists[id]?.id + idx}>
-                        <Link to={`/songs/${song.id}`}>
-                            <div>{song.title}</div>
-                        </Link>
-                        <div>- {song.artist}</div>
-                    </div>
+                    <li
+                        key={song.id.toString() + playlists[id]?.id + idx}
+                        className="playlist-item-container">
+                            <div className='playlist-item'>
+                                <div
+                                    className="playlist-thumbnail"
+                                >
+                                    <Link to={`/songs/${song.id}`}>
+                                    <img
+                                        alt={song.title}
+                                        src={song.image_url}
+                                        ></img>
+                                        </Link>
+                                </div>
+                                    <Link to={`/songs/${song.id}`}>
+                                <div className="playlist-text-side">
+                                    <div className='playlist-song-title'>{song.title}</div>
+                                    <div className="playlist-artist-name">- {song.artist}</div>
+                                </div>
+                                        </Link>
+                            </div>
+                    </li>
                 )
             })}
-            <button onClick={handlePlay}>Play</button>
-            {authorized ?<>
-                <button onClick={handleEdit}>Edit</button>
-                <button onClick={handleDelete}>Delete</button></>  : null}
+            </ul>
+            <button className="playlist-buttons" onClick={() => handlePlay()}><FontAwesomeIcon className="fa-solid" icon={faPlay} /></button>
+
+            {authorized ? <>
+                <button className="playlist-buttons" onClick={() => handleEdit()}><FontAwesomeIcon className="fa-solid" icon={faPenToSquare} /></button>
+                <button className="playlist-buttons" onClick={() => handleDelete()}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button></>  : null}
             
         </div>)
     } else {

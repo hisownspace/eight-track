@@ -1,0 +1,10 @@
+.playlist-buttons {
+    margin: 4px;
+    border: none;
+    cursor: pointer;
+    color: #E05107;
+}
+
+.playlist-buttons:hover {
+    color: black;
+}
