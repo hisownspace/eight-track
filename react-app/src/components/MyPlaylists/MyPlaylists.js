@@ -52,9 +52,11 @@ function MyPlaylists() {
                 return (
                     <div key={idx}>
                         <div style={{marginTop: "10px"}}>
+                            <Link to={`/playlists/${playlist.id}`}>
                             <h1>
                                 {playlist.name}
                             </h1>
+                            </Link>
                             </div>
                     {playlist.songs.map((song, idx) => {
                     return (

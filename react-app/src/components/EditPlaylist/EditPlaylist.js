@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { editPlaylist } from '../../store/playlist';
 import { getAllSongs } from '../../store/song';
 
@@ -93,8 +95,18 @@ function EditPlaylist() {
         setPlaylist(newPlaylistValues);
     };
 
+    const moveSongDown = idx => {
+        const newPlaylistValues = { ...playlist };
+        const placeholder = newPlaylistValues.songs[idx];
+        newPlaylistValues.songs[idx] = newPlaylistValues.songs[idx + 1];
+        newPlaylistValues.songs[idx + 1] = placeholder;
+        setPlaylist(newPlaylistValues);
+    };
+
     return (
+        <div className="playlist-form-div">
         <form
+            className="playlist-form"
             onSubmit={handleSubmit}
         >
             <label
@@ -119,9 +131,9 @@ function EditPlaylist() {
                             <option key={song.id} value={song.id}>{song.title}</option>
                         ))}
                     </select>
-                    <button type="button" className="button remove" onClick={() => removeFormFields(idx)}>Remove</button>
-                            {idx ? <button type="button" className="button remove" onClick={() => moveSongUp(idx)}>Move Up</button> : null}
-
+                    <button type="button" className="button remove" onClick={() => removeFormFields(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
+                                {idx ? <button type="button" className="button remove" onClick={() => moveSongUp(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
+                                {idx < playlist.songs.length - 1 ? <button type="button" className="button remove" onClick={() => moveSongDown(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowDown} /></button> : null}
                    </div>
                ) 
             })}
@@ -129,6 +141,7 @@ function EditPlaylist() {
             <button type='submit'>Edit Playlist</button>
             <button type='reset' onClick={handleCancel}>Cancel</button>
         </form>
+        </div>
     )
 }
 

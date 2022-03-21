@@ -117,7 +117,7 @@ function AddPlaylist () {
                                 <option key={idx} value={song.id}>{song.title}</option>
                             ))}
                         </select>
-                        {formValues.length > 1 ?
+                        {formValues.length > 0 ?
                             <div className="playlist-song-buttons">
                                 <button type="button" className="button remove" onClick={() => removeFormFields(index)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
                                 {index ? <button type="button" className="button remove" onClick={() => moveSongUp(index)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
