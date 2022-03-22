@@ -40,9 +40,13 @@ function DropZone() {
 
     if (artist === "") {
       formErrors["artist"] = "Please fill out artist field!";
+    } else if (artist.length > 150) {
+      formErrors["artist"] = "Artist name cannot be longer than 150 characters!"
     }
     if (title === "") {
       formErrors["title"] = "Please fill out title field!";
+    } else if (title.length > 150) {
+      formErrors["title"] = "Song title cannot be longer than 150 characters!"
     }
 
     if (Object.values(formErrors).length > 0) {
@@ -135,15 +139,15 @@ function DropZone() {
     const formErrors = {};
     if (submitted && !artist) {
       formErrors.artist = ("Please fill out artist field!")
-    } else if (submitted && artist.length > 255) {
-      formErrors.artist = "Artist name cannot be longer than 255 characters!";
+    } else if (submitted && artist.length > 150) {
+      formErrors.artist = "Artist name cannot be longer than 150 characters!";
     } else if (submitted) {
       formErrors.artist = null;
     }
     if (submitted && !title) {
       formErrors.title = ("Please fill out title field!")
-    } else if (submitted && title.length > 255) {
-      formErrors.title = "Title cannot be longer than 255 characters.";
+    } else if (submitted && title.length > 150) {
+      formErrors.title = "Title cannot be longer than 150 characters.";
     } else if (submitted) {
       formErrors.title = null;
     }
