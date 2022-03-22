@@ -216,20 +216,23 @@ export default function WaveForm({ songId }) {
       <div className="song-info-headline">
         <div className="song-info-text">
           <div className="controls-and-title">
+            {loaded ? ((!playState || (playerSong?.url !== songUrl)) ?
           <div className="controls">
-            {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ?
               <button
                 className="waveform-play"
                 onClick={handlePlayPause}
               >
                 <FontAwesomeIcon icon={faPlay} />
-              </button> : <button
+              </button></div> : 
+              <div className="controls">
+              <button
                 className="waveform-play"
                 onClick={handlePlayPause}
               >
                 <FontAwesomeIcon icon={faPause} />
-              </button>) : null}
+              </button>
           </div>
+              ) : <div className="controls"><div className="empty-button"></div></div>}
           <div>
           <div className='song-info-title'>
             <p>

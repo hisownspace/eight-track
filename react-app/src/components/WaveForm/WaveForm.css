@@ -9,6 +9,15 @@
     box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
 }
 
+.empty-button {
+    border: none;
+    background-color: none;
+    height: 45px;
+    width: 45px;
+    margin: auto;
+    box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
+}
+
 .waveform-play:hover {
     cursor: pointer;
     color: black;

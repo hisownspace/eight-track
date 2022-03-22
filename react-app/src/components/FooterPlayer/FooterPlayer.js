@@ -5,17 +5,15 @@ import './Footer.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { getOneSong, getAllSongs } from '../../store/song';
-import { addSongToPlaylist, nextSong, loadPlaylist } from '../../store/playlist';
+import { getAllSongs } from '../../store/song';
+import { addSongToPlaylist, nextSong } from '../../store/playlist';
 import { playingState, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
 import getCloudFrontDomain from '../../presignHelper';
-import playlistReducer from '../../store/playlist';
 
 
 function Footer() {
     const history = useHistory();
     const dispatch = useDispatch();
-    const waveformRef = useSelector(state => state.player.ref);
     const song = useSelector(state => state.player.currentSong);
     const songsObj = useSelector(state => state.songs.songs);
     const playlist = useSelector(state => state.playlist.playlist);
@@ -124,13 +122,13 @@ function Footer() {
         onEnded={newSong}
         onCanPlay={e => setTime(0)}
       />
-                    <button
-                      onClick={e => changeSongPage(e)}
-                      className="player-button" 
-                    >
-                        {song?.title}
-                    </button>
-      <div className = "player-title">{song?.artist}</div>
+      <button
+        onClick={e => changeSongPage(e)}
+        className="player-button"
+      >
+        {song?.title}
+      </button>
+      <div className="player-title">{song?.artist}</div>
     </footer>
   );
 }

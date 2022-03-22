@@ -10,10 +10,10 @@
   z-index: 9999;
 }
 
-footer.footer {
+/* footer.footer {
   background-color: white;
   padding: 0;
-}
+} */
 
 .footer-hidden {
   display: none;
@@ -23,6 +23,26 @@ footer.footer {
    color:black;
  }
 
+.player-button {
+  border: none;
+  box-sizing: border-box;
+  margin: 1px;
+  font-weight: 700;
+  background-color: #F2F2F2;
+}
+
  .player-button:hover {
    cursor: pointer;
+   color:rgb(83, 83, 83);
+   border: 1px solid rgba(0, 0, 0, 0.445);
+   box-sizing: border-box;
+   margin: 0px;
+ }
+
+ .player-title {
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 12px;
  }
