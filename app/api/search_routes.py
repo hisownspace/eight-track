@@ -8,8 +8,8 @@ search_routes = Blueprint("api/search", __name__)
 def search():
     term = request.args.get('q')
     by_artist = Song.query.filter(Song.artist.ilike(f"%{term}%")).all()
-    genre = Genre.query.filter_by(name=term).first()
-    by_playlist = Playlist.query.filter_by(name=term).all()
+    genre = Genre.query.filter(Genre.name.ilike(f"%{term}%")).first()
+    by_playlist = Playlist.query.filter(Playlist.name.ilike(f"%{term}%")).all()
     by_genre = []
     if genre is not None:
         by_genre = Song.query.filter_by(genre_id=genre.id).all()
