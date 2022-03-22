@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { addPlaylist } from '../../store/playlist';
 import { useHistory } from 'react-router-dom';
@@ -107,7 +107,7 @@ function AddPlaylist () {
                     onChange={e => setPlaylistName(e.target.value)}
                 ></input>
                 {formValues.map((element, index) => (
-                    <div className="form-inline" key={index}>
+                    <div className="playlist-item-div" key={index}>
                         <label>Song #{index + 1}</label>
                         <select
                             value={formValues[index].id}
@@ -119,17 +119,31 @@ function AddPlaylist () {
                         </select>
                         {formValues.length > 0 ?
                             <div className="playlist-song-buttons">
-                                <button type="button" className="button remove" onClick={() => removeFormFields(index)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
-                                {index ? <button type="button" className="button remove" onClick={() => moveSongUp(index)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
-                                {index < formValues.length - 1 ? <button type="button" className="button remove" onClick={() => moveSongDown(index)}><FontAwesomeIcon className="fa-solid" icon={faArrowDown} /></button> : null}
+                                <button type="button" className="button remove" onClick={() => removeFormFields(index)}>
+                                    <FontAwesomeIcon className="fa-solid" icon={faTrashCan} />
+                                </button>
+                                {index ? 
+                                <button type="button" className="button remove" onClick={() => moveSongUp(index)}>
+                                    <FontAwesomeIcon className="fa-solid" icon={faArrowUp} />
+                                </button> : null}
+                                {index < formValues.length - 1 ? 
+                                <button type="button" className="button remove" onClick={() => moveSongDown(index)}>
+                                    <FontAwesomeIcon className="fa-solid" icon={faArrowDown} />
+                                </button> : null}
                             </div>
                             : null}
                     </div>
                 ))}
                 <div className="button-section">
-                    <button className="button add" type="button" onClick={() => addFormFields()}>Add Song</button>
-                    <button className="button submit" type="submit">Submit</button>
-                    <button className="button cancel" type="reset" onClick={cancelSubmit}>Cancel</button>
+                    <div className='add-song-div'>
+                        <button className="button add" type="button" onClick={() => addFormFields()}>
+                            <FontAwesomeIcon className="fa-solid" icon={faPlus} />
+                        </button>
+                    </div>
+                    <div className='submit-playlist-div'>
+                        <button className="button submit" type="submit">Submit</button>
+                        <button className="button cancel" type="reset" onClick={cancelSubmit}>Cancel</button>
+                    </div>
                 </div>
             </form>
         </div>

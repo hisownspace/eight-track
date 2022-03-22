@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { addSongToPlayer } from "../../store/player";
@@ -30,8 +30,11 @@ function MyPlaylists() {
     };
 
     const handleDelete = async idx => {
-        await dispatch(removePlaylist(playlists[idx].id));
-        await dispatch(myPlaylists(userId))
+        const confirm = window.confirm("Are you sure you want to delete this playlist?")
+        if (confirm) {
+            await dispatch(removePlaylist(playlists[idx].id));
+            await dispatch(myPlaylists(userId))
+        }
     };
 
     const handleEdit = (idx) => {
@@ -46,48 +49,50 @@ function MyPlaylists() {
     return (
         <div>
             <h1>My Playlists</h1>
-            <h2>Under Construction</h2>
-            <h3>Please excuse the dust</h3>
+            <div className="create-playlist-link">
+                <Link to="/playlists/add">Create a playlist!</Link>
+            </div>
             {playlists?.map((playlist, idx) => {
                 return (
-                    <div key={idx}>
-                        <div style={{marginTop: "10px"}}>
+                    <div className="playlist-sections" key={idx}>
+                        <div style={{ marginTop: "10px" }}>
                             <Link to={`/playlists/${playlist.id}`}>
-                            <h1>
-                                {playlist.name}
-                            </h1>
+                                <div className='playlist-titles'>
+                                    {playlist.name}
+                                </div>
                             </Link>
-                            </div>
-                    {playlist.songs.map((song, idx) => {
-                    return (
-<div
-                        key={song.id.toString() + playlists?.id + idx}
-                        className="playlist-item-container">
-                        <Link to={`/songs/${song.id}`}>
-                            <div className='playlist-item'>
+                        </div>
+                        {playlist.songs.map((song, idx) => {
+                            return (
                                 <div
-                                    className="playlist-thumbnail"
-                                >
-                                    <img
-                                        alt={song.title}
-                                        src={song.image_url}
-                                    ></img>
+                                    key={song.id.toString() + playlists?.id + idx}
+                                    className="playlist-item-container">
+                                    <div className='playlist-item'>
+                                        <div
+                                            className="playlist-thumbnail"
+                                        >
+                                            <Link to={`/songs/${song.id}`}>
+                                                <img
+                                                    alt={song.title}
+                                                    src={song.image_url}
+                                                ></img>
+                                            </Link>
+                                        </div>
+                                        <Link to={`/songs/${song.id}`}>
+                                            <div className="playlist-text-side">
+                                                <div className='playlist-song-title'>{song.title}</div>
+                                                <div className="playlist-artist-name">- {song.artist}</div>
+                                            </div>
+                                        </Link>
+                                    </div>
                                 </div>
-                                <div className="playlist-text-side">
-                                    <div className='playlist-song-title'>{song.title}</div>
-                                    <div className="playlist-artist-name">- {song.artist}</div>
-                                </div>
-                            </div>
-                        </Link>
-                    </div>
-                    )
-                })}
-                <button className="playlist-buttons" onClick={() => handlePlay(idx)}><FontAwesomeIcon className="fa-solid" icon={faPlay} /></button>
-                <button className="playlist-buttons" onClick={() => handleEdit(idx)}><FontAwesomeIcon className="fa-solid" icon={faPenToSquare} /></button>
-                <button className="playlist-buttons" onClick={() => handleDelete(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
-                </div>)
+                            )
+                        })}
+                        <button className="playlist-buttons" onClick={() => handlePlay(idx)}><FontAwesomeIcon className="fa-solid" icon={faPlay} /></button>
+                        <button className="playlist-buttons" onClick={() => handleEdit(idx)}><FontAwesomeIcon className="fa-solid" icon={faPenToSquare} /></button>
+                        <button className="playlist-buttons" onClick={() => handleDelete(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
+                    </div>)
             })}
-            <Link to="/playlists/add">Create a playlist!</Link>
         </div>
     )
 }

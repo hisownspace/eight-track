@@ -135,7 +135,7 @@
   min-height: 100%;
 }
 
-.button-hole .submit {
+.submit {
   margin-right: 15px;
   margin-left: 10px;
   background-color: #FD5600;
@@ -153,7 +153,7 @@
   cursor: pointer;
 }
 
-.button-hole .cancel {
+.cancel {
   background-color: white;
   border: none;
   overflow: auto;

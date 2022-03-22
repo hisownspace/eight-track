@@ -51,9 +51,12 @@ function SinglePlaylist() {
     };
 
     const handleDelete = async idx => {
-        await dispatch(removePlaylist(playlists[id].id));
-        await dispatch(myPlaylists(userId));
-        history.push('/playlists');
+        const confirm = window.confirm("Are you sure you want to delete this playlist?")
+        if (confirm) {
+            await dispatch(removePlaylist(playlists[id].id));
+            await dispatch(myPlaylists(userId));
+            history.push('/playlists');
+        }
     };
 
     const handleEdit = (idx) => {

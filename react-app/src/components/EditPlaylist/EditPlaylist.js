@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDown, faArrowUp, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faTrashCan, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { editPlaylist } from '../../store/playlist';
 import { getAllSongs } from '../../store/song';
 
@@ -29,9 +29,15 @@ function EditPlaylist() {
             dispatch(getAllSongs());
             setPlaylist(list);
             setPlaylistLoaded(true);
-            setPlaylistName(playlist.name)
         }
     }, [playlists, playlistId, playlistLoaded, history, playlist, dispatch]);
+
+
+    useEffect(() => {
+        if (playlistLoaded === true) {
+            setPlaylistName(playlist?.name);
+        }
+    }, [playlistLoaded, playlist?.name]);
 
     const handleSongChange = (idx, e) => {
         const songId = +e.target.value
@@ -55,9 +61,9 @@ function EditPlaylist() {
         if (playlist.songs.length === 0) {
             validationErrors.push("Please add a song to the list.");
         }
-        if (playlist.name === '') {
+        if (playlistName === '') {
             validationErrors.push("Please provide a name for the playlist");
-        } else if (playlist.name.length > 50) {
+        } else if (playlistName.length > 50) {
             validationErrors.push("Playlist name cannot be greater than 50 characters.");
         }
 
@@ -105,42 +111,57 @@ function EditPlaylist() {
 
     return (
         <div className="playlist-form-div">
-        <form
-            className="playlist-form"
-            onSubmit={handleSubmit}
-        >
-            <label
-                htmlFor="playlist-name"
-            ></label>
-            <input
-                id="playlist-name"
-                type="text"
-                name="playlist-name"
-                value={playlistName}
-                onChange={handleTitleChange}
-            />
-            {playlist?.songs.map((song, idx) => {
-               return (
-                   <div key={idx}>
-                    <label>Song #{idx + 1}</label>
-                    <select
-                        value={song.id}
-                        onChange={e => handleSongChange(idx, e)}
-                    >
-                        {Object.values(songs).map((song) => (
-                            <option key={song.id} value={song.id}>{song.title}</option>
-                        ))}
-                    </select>
-                    <button type="button" className="button remove" onClick={() => removeFormFields(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
+            <form
+                className="playlist-form"
+                onSubmit={handleSubmit}
+            >
+                <ul>
+                    {errors ? errors.map((error, idx) => {
+                        return (<li key={idx}>{error}</li>)
+                    }) : null}
+                </ul>
+                <label
+                    htmlFor="playlist-name"
+                >Playlist Name:</label>
+                <input
+                    id="playlist-name"
+                    type="text"
+                    name="playlist-name"
+                    value={playlistName}
+                    onChange={handleTitleChange}
+                />
+                {playlist?.songs.map((song, idx) => {
+                    return (
+                        <div className="playlist-item-div" key={idx}>
+                            <label>Song #{idx + 1}</label>
+                            <select
+                                value={song.id}
+                                onChange={e => handleSongChange(idx, e)}
+                            >
+                                {Object.values(songs).map((song) => (
+                                    <option key={song.id} value={song.id}>{song.title}</option>
+                                ))}
+                            </select>
+                            <div className="playlist-song-buttons">
+                                <button type="button" className="button remove" onClick={() => removeFormFields(idx)}><FontAwesomeIcon className="fa-solid" icon={faTrashCan} /></button>
                                 {idx ? <button type="button" className="button remove" onClick={() => moveSongUp(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowUp} /></button> : null}
                                 {idx < playlist.songs.length - 1 ? <button type="button" className="button remove" onClick={() => moveSongDown(idx)}><FontAwesomeIcon className="fa-solid" icon={faArrowDown} /></button> : null}
-                   </div>
+                            </div>
+                        </div>
                ) 
             })}
-            <button className="button add" type="button" onClick={() => addFormFields()}>Add Song</button>
-            <button type='submit'>Edit Playlist</button>
-            <button type='reset' onClick={handleCancel}>Cancel</button>
-        </form>
+                <div className='button-section'>
+                    <div className="add-song-div">
+                        <button className="button add" type="button" onClick={() => addFormFields()}>
+                            <FontAwesomeIcon className="fa-solid" icon={faPlus} />
+                        </button>
+                    </div>
+                    <div className="submit-playlist-div">
+                        <button className="submit" type='submit'>Edit Playlist</button>
+                        <button className="cancel" type='reset' onClick={handleCancel}>Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     )
 }

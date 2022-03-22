@@ -8,3 +8,44 @@
 .playlist-buttons:hover {
     color: black;
 }
+
+.playlist-sections {
+    border-bottom: 1px solid rgb(155, 155, 155);
+}
+
+.playlist-text-side:hover {
+    color: rgb(161, 161, 161);
+}
+
+.playlist-item {
+    display: inline-block;
+}
+
+.playlist-titles {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 34px;
+    display: inline-block;
+}
+
+.playlist-titles:hover {
+    color: rgb(161, 161, 161);
+}
+
+.playlist-thumbnail:hover + a .playlist-text-side {
+    color: rgb(161, 161, 161);
+}
+
+.create-playlist-link {
+    color: black;
+    font-size: 18px;
+    background-color: white;
+    display: inline-block;
+    padding: 5px;
+    border: 1px solid rgba(128, 128, 128, 0.356);
+    border-radius: 3px;
+}
+
+.create-playlist-link *:hover {
+    color: rgb(161, 161, 161);
+}
