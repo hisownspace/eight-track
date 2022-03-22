@@ -29,7 +29,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items:stretch;
     flex-grow: 2;
+    max-width: 69%;
 }
 
 #actual-player {
@@ -51,6 +53,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.song-info-text {
+    max-width: 80%
 }
 
 .song-detail-timestamp {
@@ -148,7 +154,8 @@
 }
 
 .song-detail-player {
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
+    height: 100%;
 }
 
 .traveling-comments {

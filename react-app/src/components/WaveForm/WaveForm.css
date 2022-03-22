@@ -4,7 +4,7 @@
     background-color: #F25503;
     height: 45px;
     width: 45px;
-    margin: 15px;
+    margin: auto;
     color: white;
     box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
 }
@@ -15,7 +15,20 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.849);
 }
 
+.controls {
+    margin: auto 0px auto 20px;
+    align-items: center;
+}
+
 .controls-and-title {
     display: flex;
     flex-direction: row;
+}
+
+.waveform {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    margin-bottom: 50px;
 }

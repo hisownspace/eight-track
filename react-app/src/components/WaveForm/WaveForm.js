@@ -214,7 +214,7 @@ export default function WaveForm({ songId }) {
   return (
     <div className="waveform">
       <div className="song-info-headline">
-        <div>
+        <div className="song-info-text">
           <div className="controls-and-title">
           <div className="controls">
             {loaded || true ? ((!playState || (playerSong?.url !== songUrl)) ?
