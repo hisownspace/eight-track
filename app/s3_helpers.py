@@ -12,6 +12,7 @@ s3 = boto3.client(
 
 AUDIO_EXTENSIONS = {
                     "mp3",
+                    "mp4",
                     "wav",
                     "flac",
                     "alac",
