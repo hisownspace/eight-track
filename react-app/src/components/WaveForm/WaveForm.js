@@ -159,7 +159,7 @@ export default function WaveForm({ songId }) {
   const handlePlayPause = async () => {
     if (playerSong?.url !== songUrl && songId){
       dispatch(clearPlaylist());
-      dispatch(addSongToPlaylist(song.id));
+      dispatch(addSongToPlaylist(songId));
       dispatch(addSongToPlayer(songId));
       wavesurfer.current.play();
     } else if (playState){

@@ -63,6 +63,7 @@ function Footer() {
         player.current.audio.current.pause();
         player.current.audio.current.currentTime = 0;
         dispatch(setPlayerTime(0));
+        player.current.audio.current.play();
       }
     };
 
@@ -76,14 +77,22 @@ function Footer() {
       if (playlist?.length === 0) {
         dispatch(addSongToPlaylist(song.id));
       }
-      if (currentSongIdx >= playlist?.length - 1) {
+      if (currentSongIdx === playlist?.length - 1) {
         const songsLength = songs.length;
-        const randomSongIdx = Math.floor(Math.random() * songsLength);
-        dispatch(addSongToPlaylist(songs[randomSongIdx].id))
+        let randomSongIdx = Math.floor(Math.random() * songsLength);
+        while (songs[randomSongIdx].id === playlist[playlist.length-1]) {
+          randomSongIdx = Math.floor(Math.random() * songsLength);
+        }
+        dispatch(addSongToPlaylist(songs[randomSongIdx].id));
       }
+      if (currentSongIdx >= playlist?.length) {
+        dispatch(nextSong("down"));
+      }
+
     };
 
     const newSong = () => {
+      setTime(0);
       dispatch(nextSong("up"));
     };
 
@@ -107,7 +116,6 @@ function Footer() {
         customAdditionalControls={[]}
         src={signedSong}
         ref={player}
-        // onListen={setTime}
         onPlay={setPlay}
         onPause={setPause}
         onSeeked={setTime}
