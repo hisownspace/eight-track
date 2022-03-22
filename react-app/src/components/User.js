@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHammer, faHelmetSafety } from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from 'react-redux';
 
 function User() {
   const [user, setUser] = useState({});
   const { userId }  = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     if (!userId) {
@@ -15,12 +17,11 @@ function User() {
       const response = await fetch(`/api/users/${userId}`);
       const user = await response.json();
       setUser(user);
+      if (user.errors) {
+          history.push('/users');
+      }
     })();
-  }, [userId]);
-
-  if (!user) {
-    return null;
-  }
+  }, [userId, history]);
 
   return (
     <>

@@ -20,6 +20,8 @@ def users():
 @login_required
 def user(id):
     user = User.query.get(id)
+    if not user:
+        return {"errors": "The requested user could not be found."}
     return user.to_dict()
 
 @user_routes.route('/<int:id>/playlists', methods=["POST"])

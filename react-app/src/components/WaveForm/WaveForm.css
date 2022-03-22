@@ -11,11 +11,12 @@
 
 .empty-button {
     border: none;
+    border-radius: 50%;
     background-color: none;
     height: 45px;
     width: 45px;
     margin: auto;
-    box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
+    /* box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849); */
 }
 
 .waveform-play:hover {
