@@ -40,7 +40,7 @@ def update_playlist(id):
         except Exception as e:
             return  { "errors": e}
 
-@playlist_routes.route('/')
+@playlist_routes.route('')
 def getAllPlaylists():
     try:
         playlists = Playlist.query.all()

@@ -18,7 +18,7 @@ export const search = query => async dispatch => {
     };
 };
 
-const initialState = { artist: {}, title: {}, genre: {} };
+const initialState = { artist: [], title: [], genre: [] };
 
 export default function searchReducer(state = initialState, action) {
     let newState;
@@ -28,6 +28,7 @@ export default function searchReducer(state = initialState, action) {
             newState.artist = action.songs.artist
             newState.title = action.songs.title;
             newState.genre = action.songs.genre;
+            newState.playlist = action.songs.playlist;
             return newState;
         default:
             return state;
