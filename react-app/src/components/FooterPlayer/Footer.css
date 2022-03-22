@@ -7,7 +7,7 @@
   background-color: white;
   height: 55px;
   display:flex;
-  z-index: 100;
+  z-index: 9999;
 }
 
 footer.footer {

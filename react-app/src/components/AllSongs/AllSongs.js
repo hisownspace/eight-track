@@ -48,16 +48,6 @@ function AllSongs() {
     return (
         <div>
             <div className='all-songs'>
-            {/* {songs?.map((song, idx) => {
-                return (
-                    <div key={idx}>
-                        {song.title}
-                        <div className='song-image-list-item-container'>
-                            <img alt={song.title} src={song.image_url || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}></img>
-                        </div>
-                    </div>
-                )
-            })} */}
             </div>
             <div className='genre-carousel-list'>
                 <div className='genre-carousel-item'>
