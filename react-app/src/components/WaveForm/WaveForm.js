@@ -89,7 +89,6 @@ export default function WaveForm({ songId }) {
   
 
   // useEffect(() => async () => {
-  //   console.log('HIIIII!!!!!!')
   //   let count = "down";
   //   let length = 0;
   //   while (length < 500) {
@@ -102,7 +101,6 @@ export default function WaveForm({ songId }) {
   //         } else if (newLoadingMessage.length === 19) {
   //           count = "down";
   //         }
-  //         console.log(newLoadingMessage.length);
   //       }, 50);
   //     } else {
   //       await setTimeout(() => {
@@ -113,7 +111,6 @@ export default function WaveForm({ songId }) {
   //         } else if (newLoadingMessage.length === 19) {
   //           count = "down";
   //         }
-  //         console.log(newLoadingMessage);
   //       }, 50);
   //     };
   //     length += 1;

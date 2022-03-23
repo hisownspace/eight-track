@@ -16,7 +16,6 @@ function LoginForm() {
         e.preventDefault();
         const data = await dispatch(login(username, password));
         if (data) {
-            console.log(data.username)
             if (data.username) {
                 // delete data.password;
             }

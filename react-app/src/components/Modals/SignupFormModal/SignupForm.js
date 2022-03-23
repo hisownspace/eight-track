@@ -18,7 +18,7 @@ const SignupForm = () => {
     const user = useSelector(state => state.session.user);
     const dispatch = useDispatch();
 
-    const onSignUp = (e) => {
+    const onSignUp = async (e) => {
         e.preventDefault();
         const signupErrors = {};
 
@@ -47,7 +47,7 @@ const SignupForm = () => {
             setErrors(signupErrors);
         } else {
             if (password === repeatPassword) {
-                const data = dispatch(signUp(username, email, password, repeatPassword));
+                const data = await dispatch(signUp(username, email, password, repeatPassword));
                 if (data) {
                     setErrors(data);
                 }

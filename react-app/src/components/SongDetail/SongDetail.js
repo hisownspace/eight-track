@@ -58,10 +58,13 @@ function SongDetail() {
     
     const handleDeleteComment = e => {
         e.preventDefault();
-        const commentId = +(e.target.value);
-        dispatch(deleteOneComment(commentId));
-        dispatch(getAllSongComments(songId));
-        setIsLoaded(false);
+        const confirm = window.confirm("Are you sure you want to delete this comment?")
+        if (confirm) {
+            const commentId = +(e.target.value);
+            dispatch(deleteOneComment(commentId));
+            dispatch(getAllSongComments(songId));
+            setIsLoaded(false);
+        }
     };
 
     const timeElapsed = (time) => {
