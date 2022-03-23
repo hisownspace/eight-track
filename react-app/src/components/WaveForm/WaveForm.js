@@ -217,34 +217,34 @@ export default function WaveForm({ songId }) {
         <div className="song-info-text">
           <div className="controls-and-title">
             {loaded ? ((!playState || (playerSong?.url !== songUrl)) ?
-          <div className="controls">
-              <button
-                className="waveform-play"
-                onClick={handlePlayPause}
-              >
-                <FontAwesomeIcon icon={faPlay} />
-              </button></div> : 
               <div className="controls">
-              <button
-                className="waveform-play"
-                onClick={handlePlayPause}
-              >
-                <FontAwesomeIcon icon={faPause} />
-              </button>
-          </div>
-              ) : <div className="controls"><div className="empty-button"></div></div>}
-          <div>
-          <div className='song-info-title'>
-            <p>
-              {Object.values(song)[0]?.title}
-            </p>
-          </div>
-          <div className='song-info-artist'>
-            <p>
-              {Object.values(song)[0]?.artist}
-            </p>
-          </div>
-          </div>
+                <button
+                  className="waveform-play"
+                  onClick={handlePlayPause}
+                >
+                  <FontAwesomeIcon icon={faPlay} />
+                </button></div> :
+              <div className="controls">
+                <button
+                  className="waveform-play"
+                  onClick={handlePlayPause}
+                >
+                  <FontAwesomeIcon icon={faPause} />
+                </button>
+              </div>
+            ) : <div className="controls"><div className="empty-button"></div></div>}
+            <div>
+              <div className='song-info-title'>
+                <p>
+                  {Object.values(song)[0]?.title}
+                </p>
+              </div>
+              <div className='song-info-artist'>
+                <p>
+                  {Object.values(song)[0]?.artist}
+                </p>
+              </div>
+            </div>
           </div>
 
           {(userId && (userId === Object.values(song)[0]?.user?.id)) ?
@@ -265,7 +265,15 @@ export default function WaveForm({ songId }) {
         </div>
       </div>
 
-      <div id="waveform" ref={waveformRef} />
+      <div id="waveform" ref={waveformRef}>
+        {loaded ? null :
+          <div className="loading-waveform">
+            <div>
+              Loading waveform...
+            </div>
+            <progress />
+          </div>}
+      </div>
     </div>
   );
 }
