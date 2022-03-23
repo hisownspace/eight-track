@@ -88,37 +88,37 @@ export default function WaveForm({ songId }) {
   }, [songUrl]);
   
 
-  useEffect(() => async () => {
-    console.log('HIIIII!!!!!!')
-    let count = "down";
-    let length = 0;
-    while (length < 500) {
-      if (count === 'down') {
-        await setTimeout(() => {
-          const newLoadingMessage = loadingMessage.slice(0, -1);
-          setLoadingMessage(newLoadingMessage)
-          if (newLoadingMessage.length < 17) {
-            count = "up";
-          } else if (newLoadingMessage.length === 19) {
-            count = "down";
-          }
-          console.log(newLoadingMessage.length);
-        }, 50);
-      } else {
-        await setTimeout(() => {
-          const newLoadingMessage = loadingMessage + '.';
-          setLoadingMessage(newLoadingMessage)
-          if (newLoadingMessage.length < 17) {
-            count = "up";
-          } else if (newLoadingMessage.length === 19) {
-            count = "down";
-          }
-          console.log(newLoadingMessage);
-        }, 50);
-      };
-      length += 1;
-    }
-  });
+  // useEffect(() => async () => {
+  //   console.log('HIIIII!!!!!!')
+  //   let count = "down";
+  //   let length = 0;
+  //   while (length < 500) {
+  //     if (count === 'down') {
+  //       await setTimeout(() => {
+  //         const newLoadingMessage = loadingMessage.slice(0, -1);
+  //         setLoadingMessage(newLoadingMessage)
+  //         if (newLoadingMessage.length < 17) {
+  //           count = "up";
+  //         } else if (newLoadingMessage.length === 19) {
+  //           count = "down";
+  //         }
+  //         console.log(newLoadingMessage.length);
+  //       }, 50);
+  //     } else {
+  //       await setTimeout(() => {
+  //         const newLoadingMessage = loadingMessage + '.';
+  //         setLoadingMessage(newLoadingMessage)
+  //         if (newLoadingMessage.length < 17) {
+  //           count = "up";
+  //         } else if (newLoadingMessage.length === 19) {
+  //           count = "down";
+  //         }
+  //         console.log(newLoadingMessage);
+  //       }, 50);
+  //     };
+  //     length += 1;
+  //   }
+  // });
 
   useEffect(() => {
     if (playState && songUrl === playerSong?.url) {
