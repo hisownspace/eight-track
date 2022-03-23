@@ -42,7 +42,7 @@ export default function WaveForm({ songId }) {
   const player = useSelector(state => state.player.player);
   const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
-
+  const[loadingMessage, setLoadingMessage] = useState('Loading Waveform...');
 
   // create new WaveSurfer instance
   // On component mount and when url changes
@@ -87,6 +87,38 @@ export default function WaveForm({ songId }) {
     }
   }, [songUrl]);
   
+
+  useEffect(() => async () => {
+    console.log('HIIIII!!!!!!')
+    let count = "down";
+    let length = 0;
+    while (length < 500) {
+      if (count === 'down') {
+        await setTimeout(() => {
+          const newLoadingMessage = loadingMessage.slice(0, -1);
+          setLoadingMessage(newLoadingMessage)
+          if (newLoadingMessage.length < 17) {
+            count = "up";
+          } else if (newLoadingMessage.length === 19) {
+            count = "down";
+          }
+          console.log(newLoadingMessage.length);
+        }, 50);
+      } else {
+        await setTimeout(() => {
+          const newLoadingMessage = loadingMessage + '.';
+          setLoadingMessage(newLoadingMessage)
+          if (newLoadingMessage.length < 17) {
+            count = "up";
+          } else if (newLoadingMessage.length === 19) {
+            count = "down";
+          }
+          console.log(newLoadingMessage);
+        }, 50);
+      };
+      length += 1;
+    }
+  });
 
   useEffect(() => {
     if (playState && songUrl === playerSong?.url) {
@@ -269,7 +301,7 @@ export default function WaveForm({ songId }) {
         {loaded ? null :
           <div className="loading-waveform">
             <div>
-              Loading waveform...
+              {loadingMessage}
             </div>
             <progress />
           </div>}

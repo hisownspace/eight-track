@@ -16,8 +16,9 @@ function LoginForm() {
         e.preventDefault();
         const data = await dispatch(login(username, password));
         if (data) {
-            if (data.email) {
-                delete data.password
+            console.log(data.username)
+            if (data.username) {
+                // delete data.password;
             }
             setErrors(data);
         }
@@ -48,7 +49,6 @@ function LoginForm() {
         <>
             <form onSubmit={onLogin}>
                 <div className='modal_ul_errors'>
-                    {errors.email}
                 </div>
                 <label>
                     <input
@@ -57,12 +57,14 @@ function LoginForm() {
                         value={username}
                         onChange={updateEmail}
                         placeholder='Enter Username or Email'
-                        required
+                        // required
                         autoComplete='username'
-                    />
+                        />
+                        <div className='form-errors'>
+                            {errors.username}
+                        </div>
                 </label>
                 <div className='modal_ul_errors'>
-                    {errors.password}
                 </div>
                 <label>
                     <input
@@ -72,10 +74,12 @@ function LoginForm() {
                         onChange={updatePassword}
                         placeholder='Password'
                         // required
-                        readOnly={true}
-                        onFocus={e => e.target.removeAttribute('readonly')}
+                        // readOnly={true}
                         autoComplete="current-password"
-                    />
+                        />
+                        <div className='form-errors'>
+                            {errors.password}
+                        </div>
                 </label>
                 <button className="button_submit button_main" type="submit">Log In</button>
             </form>

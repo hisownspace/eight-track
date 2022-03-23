@@ -97,10 +97,6 @@ const SignupForm = () => {
             className="main_modal"
             onSubmit={onSignUp}>
                 <div>
-                    <div className='modal_ul_errors'>
-                        {errors ? <div>{errors.username}</div> : null}
-                        {errors ? <div>{errors.usernameLength}</div> : null}
-                    </div>
                     <label htmlFor='username'>
                         <input
                             id='username'
@@ -111,10 +107,9 @@ const SignupForm = () => {
                             autoComplete='username'
                         />
                     </label>
-                    <div className='modal_ul_errors'>
-                        {errors ? <div>{errors.email}</div> : null}
-                        {errors ? <div>{errors.emailLength}</div> : null}
-                        {errors ? <div>{errors.emailValid}</div> : null}
+                    <div className='form-errors'>
+                        {errors ? <div>{errors.username}</div> : null}
+                        {errors ? <div>{errors.usernameLength}</div> : null}
                     </div>
                     <label htmlFor='email'>
                         <input
@@ -126,9 +121,10 @@ const SignupForm = () => {
                             autoComplete='email'
                         />
                     </label>
-                    <div className='modal_ul_errors'>
-                        {errors ? <div>{errors.passwordLength}</div> : null}
-                        {errors ? <div>{errors.passwordMismatch}</div> : null}
+                    <div className='form-errors'>
+                        {errors ? <div>{errors.email}</div> : null}
+                        {errors ? <div>{errors.emailLength}</div> : null}
+                        {errors ? <div>{errors.emailValid}</div> : null}
                     </div>
                     <label htmlFor='password'>
                         <input
@@ -140,8 +136,9 @@ const SignupForm = () => {
                             autoComplete='new-password'
                         />
                     </label>
-                    <div className='modal_ul_errors'>
-                        {errors ? <div>{errors.repeatPasswordLength}</div> : null}
+                    <div className='form-errors'>
+                        {errors ? <div>{errors.passwordLength}</div> : null}
+                        {errors ? <div>{errors.passwordMismatch}</div> : null}
                     </div>
                     <label htmlFor='confirm-password'>
                         <input
@@ -153,6 +150,9 @@ const SignupForm = () => {
                             autoComplete='new-password'
                         />
                     </label>
+                    <div className='form-errors'>
+                        {errors ? <div>{errors.repeatPasswordLength}</div> : null}
+                    </div>
                     <button className="button_submit button_main" type="submit">Sign Up</button>
                 </div>
             </form>

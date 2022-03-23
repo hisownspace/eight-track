@@ -44,6 +44,7 @@ def login():
             user = User.query.filter(User.email == form.data['username']).first()
         login_user(user)
         return user.to_dict()
+    print(form.errors)
     return {'errors': form.errors}, 401
 
 

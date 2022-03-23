@@ -39,7 +39,7 @@
 
 #modal-content input:focus{
   outline:rgba(0, 0, 0, 0);
-  border: 1px solid rgba(0, 0, 0, 0);
+  /* border: 1px solid rgba(0, 0, 0, 0); */
 }
 
 .button_submit{
@@ -74,4 +74,11 @@
 
 .hrmodal{
   margin: 8px 0;
+}
+
+.form-errors {
+  font-size: 12px;
+  color: red;
+  line-height: 17px;
+  height: 20px;
 }
