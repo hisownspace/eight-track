@@ -17,12 +17,11 @@ function SongDetail() {
     const song = useSelector(state => state.songs.song[songId]);
     const comments = useSelector(state => state.comments.comments);
     const userId = useSelector(state => state.session.user?.id);
-    const  [backIdx, setBackIdx] = useState(0);
     const audioRef = useRef();
     const palette = useSelector(state => state.songs?.song[songId]?.palette);
     const [gradient, setGradient] = useState('');
 
-
+    
 
     // establishes the background of the song header
     // based on color palette of song cover
@@ -37,11 +36,6 @@ function SongDetail() {
         }
     }, [palette, gradient]);
 
-    useEffect(() => {
-        const songBackground = Math.floor(Math.random() * 10)
-        setBackIdx(songBackground);
-    }, [song]);
-
     const [isLoaded, setIsLoaded] = useState(false);
     
     useEffect(() => {
@@ -51,7 +45,7 @@ function SongDetail() {
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
-        if (isLoaded && song && !(song.id) && history && songId) {
+        if ((isLoaded && !song) || song?.errors) {
             history.push("/songs");
         }
     }, [isLoaded, songId, song, dispatch, history]);
@@ -101,57 +95,61 @@ function SongDetail() {
             return `${Math.floor(years)} years ago`;
         }
     };
+    if (isLoaded){
 
-    return (
-        <>
-            <div
-                className={`song-detail`}
-                style={{ background: gradient }}
-            >
-                <div className='song-detail-player-side'>
-                    <div className="song-detail-player">
-                        <WaveForm songId={songId} />
+        return (
+            <>
+                <div
+                    className={`song-detail`}
+                    style={{ background: gradient }}
+                >
+                    <div className='song-detail-player-side'>
+                        <div className="song-detail-player">
+                            <WaveForm songId={songId} />
+                        </div>
+                    </div>
+                    <div className='song-detail-album-art'>
+                        <img
+                            alt={song?.title}
+                            src={song?.image_url ||
+                                "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
+                        ></img>
                     </div>
                 </div>
-                <div className='song-detail-album-art'>
-                    <img
-                        alt={song?.title}
-                        src={song?.image_url ||
-                            "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
-                    ></img>
+                <div className='song-comments'>
+                    <div className="song-description">{song?.description}</div>
+                    {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
+                    {isLoaded && comments?.comments &&
+                        (Object.values(comments?.comments)).reverse().map(comment => {
+                        return (
+                            <div key={comment.id} className='comment-list-item'>
+                                <div>{comment.user.image_url}</div>
+                                <div>{comment.content}</div>
+                                <div> - {comment.user.username}</div>
+                                <div>{comment.timestamp}</div>
+                                <div>{timeElapsed(comment.created_at)}</div>
+                                {comment.user.id === userId ?
+                                    <>
+                                        <button
+                                            className="delete-comment-button"
+                                            value={comment.id}
+                                            onClick={handleDeleteComment}>
+                                            Delete Comment
+                                        </button>
+                                        <EditCommentModal
+                                            commentId={comment?.id}
+                                            commentContent={comment?.content}
+                                            songId={songId} />
+                                    </>
+                                    : null}
+                            </div>)
+                    })}
                 </div>
-            </div>
-            <div className='song-comments'>
-                <div className="song-description">{song?.description}</div>
-                {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
-                {isLoaded && comments?.comments &&
-                    (Object.values(comments?.comments)).reverse().map(comment => {
-                    return (
-                        <div key={comment.id} className='comment-list-item'>
-                            <div>{comment.user.image_url}</div>
-                            <div>{comment.content}</div>
-                            <div> - {comment.user.username}</div>
-                            <div>{comment.timestamp}</div>
-                            <div>{timeElapsed(comment.created_at)}</div>
-                            {comment.user.id === userId ?
-                                <>
-                                    <button
-                                        className="delete-comment-button"
-                                        value={comment.id}
-                                        onClick={handleDeleteComment}>
-                                        Delete Comment
-                                    </button>
-                                    <EditCommentModal
-                                        commentId={comment?.id}
-                                        commentContent={comment?.content}
-                                        songId={songId} />
-                                </>
-                                : null}
-                        </div>)
-                })}
-            </div>
-        </>
-    )
+            </>
+        )
+    } else {
+        return null;
+    }
 }
 
 export default SongDetail

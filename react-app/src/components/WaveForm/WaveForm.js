@@ -43,6 +43,7 @@ export default function WaveForm({ songId }) {
   const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
   const[loadingMessage, setLoadingMessage] = useState('Loading Waveform...');
+  const [checkSong, setCheckSong] = useState(false);
 
   // create new WaveSurfer instance
   // On component mount and when url changes
@@ -235,9 +236,18 @@ export default function WaveForm({ songId }) {
     }
 };
 
-  useEffect(() => {
-
-  }, []);
+  // useEffect(() => {
+  //   console.log(checkSong);
+  //   console.log(song[0]);
+  //   if (song[0]?.errors && checkSong) {
+  //     delete song[0].errors;
+  //     console.log(song[0]?.errors);
+  //     history.push('/');
+  //   }
+  //   else if (song[0]) {
+  //     setCheckSong(true);
+  //   }
+  // }, [song]);
 
 
   return (
@@ -289,7 +299,7 @@ export default function WaveForm({ songId }) {
             {loaded ? timeElapsed(Object.values(song)[0]?.created_at) : null}
           </div>
           <div className="song-detail-genre">
-            # {Object.values(song)[0]?.genre.name}
+            # {Object.values(song)[0]?.genre?.name}
           </div>
         </div>
       </div>

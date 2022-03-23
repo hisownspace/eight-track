@@ -59,6 +59,12 @@ function SinglePlaylist() {
         }
     };
 
+    useEffect(() => {
+        if (loaded && !playlists[id]) {
+            history.push('/playlists');
+        }
+    }, [loaded, playlists, history, id]);
+
     const handleEdit = (idx) => {
         const playlistId = playlists[id].id
         history.push(`/playlists/${playlistId}/edit`)
