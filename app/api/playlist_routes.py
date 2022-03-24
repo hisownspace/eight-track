@@ -23,7 +23,6 @@ def update_playlist(id):
     form = EditPlaylistForm()
     form['csrf_token'].data = request.cookies['csrf_token']
     playlist = Playlist.query.get(id)
-    print(form)
     if form.validate_on_submit():
         playlist.name = form.data["name"]
         playlist.songs = []
