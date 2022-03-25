@@ -46,7 +46,7 @@ function App() {
             <ProtectedRoute path='/playlists/add' ><AddPlaylist /></ProtectedRoute>
             <ProtectedRoute path='/playlists/:playlistId'><SinglePlaylist /></ProtectedRoute>
             <ProtectedRoute path='/playlists/:playlistId/edit'><EditPlaylist /></ProtectedRoute>
-            <Route exact path='/playlists'><MyPlaylists /></Route>
+            <ProtectedRoute exact path='/playlists'><MyPlaylists /></ProtectedRoute>
             <Route path='/' ><AllSongs /></Route>
             <Route path='' ><AllSongs /></Route>
           </Switch>
