@@ -19,9 +19,6 @@ def users():
 @user_routes.route('/<int:id>')
 @login_required
 def user(id):
-    breakBad = Song.query.get(54)
-    db.session.delete(breakBad)
-    db.session.commit()
     user = User.query.get(id)
     if not user:
         return {"errors": "The requested user could not be found."}
