@@ -60,6 +60,13 @@ function SinglePlaylist() {
     };
 
     useEffect(() => {
+        console.log("FUCKING BITCHES")
+        if (loaded && !playlistId) {
+            history.push('/login');
+        }
+    }, [loaded, history, playlistId])
+
+    useEffect(() => {
         if (loaded && !playlists[id]) {
             history.push('/playlists');
         }

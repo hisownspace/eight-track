@@ -35,6 +35,7 @@ function AllSongs() {
     const genresObj = useSelector(state => state.genres.genres);
     const playlists = useSelector(state => state.playlist.allPlaylists);
     const songs = Object.values(songsObj);
+    const user = useSelector(state => state.session.user)
     const genres = Object.values(genresObj);
 
     useEffect(() => {
@@ -55,7 +56,7 @@ function AllSongs() {
             </div>
             <div className='genre-carousel-list'>
                 <div className='genre-carousel-item'>
-                    <h1>playlists</h1>
+                { user ? <><h1>playlists</h1>
                     <Carousel responsive={responsive}>
                         {Object.values(playlists).map(playlist => (
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`}>
@@ -71,7 +72,7 @@ function AllSongs() {
                                 </div>
                                 </Link>
                         ))}
-                    </Carousel>
+                    </Carousel></> : null}
                 </div>
             </div>
             <div className="genre-carousel-list">
