@@ -45,9 +45,14 @@ function AllSongs() {
         })();
     }, [dispatch]);
 
+    const burnItDown = () => {
+        
+    }
+
     return (
         <div>
             <div className='all-songs'>
+                <button onClick={burnItDown}></button>
             </div>
             <div className='genre-carousel-list'>
                 <div className='genre-carousel-item'>

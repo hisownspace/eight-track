@@ -86,7 +86,6 @@ function Footer() {
       if (currentSongIdx >= playlist?.length) {
         dispatch(nextSong("down"));
       }
-
     };
 
     const newSong = () => {

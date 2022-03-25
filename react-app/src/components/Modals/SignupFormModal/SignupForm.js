@@ -39,6 +39,8 @@ const SignupForm = () => {
         }
         if (email.length === 0) {
             signupErrors.emailLength = "Email must not be empty."
+        } else if (email.length > 255) {
+            signupErrors.emailLength = "Email is too long."
         }
         else if (!validator.validate(email)) {
             signupErrors.emailValid = "Please provide a valid email address."

@@ -30,7 +30,7 @@ def get_all_songs():
 @song_routes.route("/<int:id>")
 def get_one_song(id):
     song = Song.query.get(id)
-    if song:
+    if song and song.image_url:
         fd = urlopen(song.image_url)
         f = io.BytesIO(fd.read())
         color_thief = ColorThief(f)
@@ -38,6 +38,8 @@ def get_one_song(id):
         song_info = song.to_dict()
         song_info["palette"] = palette
         return song_info
+    elif song:
+        return song.to_dict()
     else:
         return { "errors": "unkown error" }
 
@@ -78,7 +80,7 @@ def add_songs():
         # columns["length"] = 999
     url = upload["url"]
     # flask_login allows us to get the current user from the request
-    if imageUrl is None:
+    if imageUrl == '':
         imageUrl = "https://eta-photobucket.s3.amazonaws.com/play-button.svg"
     new_song = Song(
                 genre_id=columns["genreId"],

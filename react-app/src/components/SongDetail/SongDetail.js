@@ -33,6 +33,9 @@ function SongDetail() {
                 rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})
                 100%)`;
             setGradient(backgroundColor);
+        } else {
+            const backgroundColor = "linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(0, 0 , 0) 100%)"
+            setGradient(backgroundColor)
         }
     }, [palette, gradient]);
 
