@@ -74,7 +74,7 @@ function MyPlaylists() {
                                             <Link to={`/songs/${song.id}`}>
                                                 <img
                                                     alt={song.title}
-                                                    src={song.image_url}
+                                                    src={song.image_url || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}
                                                 ></img>
                                             </Link>
                                         </div>
