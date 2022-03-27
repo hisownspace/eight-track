@@ -42,6 +42,7 @@ function Footer() {
 
     const changeSongPage = (e) => {
       e.preventDefault();
+      console.log(song.id)
       history.push(`/songs/${song.id}`);
     };
 

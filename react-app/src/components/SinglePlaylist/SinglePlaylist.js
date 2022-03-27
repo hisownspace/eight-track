@@ -59,12 +59,12 @@ function SinglePlaylist() {
         }
     };
 
-    useEffect(() => {
-        console.log("FUCKING BITCHES")
-        if (loaded && !playlistId) {
-            history.push('/login');
-        }
-    }, [loaded, history, playlistId])
+    // useEffect(() => {
+    //     console.log("words")
+    //     if (loaded && !playlists) {
+    //         history.push('/login');
+    //     }
+    // }, [loaded, history, playlists])
 
     useEffect(() => {
         if (loaded && !playlists[id]) {
