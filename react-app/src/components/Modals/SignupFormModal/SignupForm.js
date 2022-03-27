@@ -31,7 +31,7 @@ const SignupForm = () => {
         if (repeatPassword !== password) {
             signupErrors.passwordMismatch = "Passwords do not match!"
         }
-        if (username.length > 255) {
+        if (username.length > 40) {
             signupErrors.usernameLength = "Username is too long."
         }
         if (username.length === 0) {
