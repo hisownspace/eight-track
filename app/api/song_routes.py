@@ -116,6 +116,16 @@ def delete_song(id):
 
 @song_routes.route("/<int:id>", methods=["PUT"])
 def update_song(id):
+    imageUrl = None
+    if "image" in request.files:
+        image = request.files["image"]
+        if not image_file(image.filename):
+            return { "errors": "file type not permitted for submitted image" }
+        image.filename = get_unique_filename(image.filename)
+        imageUpload = upload_image_file_to_s3(image)
+        if "url" not in imageUpload:
+            return imageUpload, 400
+        imageUrl = imageUpload["url"]
     song_changes = request.form.to_dict()
     try:
         updated_song = Song.query.get(id)
@@ -125,6 +135,8 @@ def update_song(id):
         updated_song.publicSong = song_changes["publicSong"]
         updated_song.genre_id = song_changes["genreId"]
         updated_song.updated_at = datetime.now()
+        if imageUrl:
+            updated_song.image_url = imageUrl
         db.session.add(updated_song)
         db.session.commit()
         return updated_song.to_dict()

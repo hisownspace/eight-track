@@ -2,14 +2,14 @@ import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteOneComment, getAllSongComments } from '../../store/comment';
-import { deleteOneSong, getAllSongs, getOneSong } from '../../store/song';
-import UpdateSongForm from '../Modals/UpdateSongModal';
+import { getOneSong } from '../../store/song';
 import AddComment from '../AddComment';
 import WaveForm from '../WaveForm';
 import './SongDetail.css';
 import EditCommentModal from '../Modals/EditCommentFormModal';
 
 function SongDetail() {
+    const [isLoaded, setIsLoaded] = useState(false);
     const { id } = useParams();
     const songId = +id;
     const dispatch = useDispatch();
@@ -39,7 +39,6 @@ function SongDetail() {
         }
     }, [palette, gradient]);
 
-    const [isLoaded, setIsLoaded] = useState(false);
     
     useEffect(() => {
         dispatch(getOneSong(songId))
@@ -48,10 +47,10 @@ function SongDetail() {
     }, [songId, dispatch, isLoaded]);
     
     useEffect(() => {
-        if ((isLoaded && !song) || song?.errors) {
+        if (isLoaded && (!song || song?.errors)) {
             history.push("/songs");
         }
-    }, [isLoaded, songId, song, dispatch, history]);
+    }, [isLoaded, history]);
     
     const handleDeleteComment = e => {
         e.preventDefault();

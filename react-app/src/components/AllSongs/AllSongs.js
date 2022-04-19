@@ -31,10 +31,8 @@ const responsive = {
 
 function AllSongs() {
     const dispatch = useDispatch();
-    const songsObj = useSelector(state => state.songs.songs);
     const genresObj = useSelector(state => state.genres.genres);
     const playlists = useSelector(state => state.playlist.allPlaylists);
-    const songs = Object.values(songsObj);
     const user = useSelector(state => state.session.user)
     const genres = Object.values(genresObj);
 
@@ -45,10 +43,6 @@ function AllSongs() {
             await dispatch(getAllPlaylists());
         })();
     }, [dispatch]);
-
-    const burnItDown = () => {
-
-    }
 
     return (
         <div>
@@ -80,7 +74,7 @@ function AllSongs() {
                     return (
                         <div className="genre-carousel-item" key={genre.id}>
                             <h1>{genre.name}</h1>
-                            <GenreList genreId={genre.id} />
+                            <GenreList songsType={"genre"} uniqueId={genre.id} />
                         </div>
                         )
                     })}

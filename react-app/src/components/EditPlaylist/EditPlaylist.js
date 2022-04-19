@@ -13,7 +13,6 @@ function EditPlaylist() {
     const playlists = useSelector(state => state.playlist.myPlaylists);
     const [playlist, setPlaylist] = useState({ songs: []})
     const songs = useSelector(state => state.songs.songs);
-    const userId = useSelector(state => state.session.user.id);
     const [errors, setErrors] = useState();
     const [playlistLoaded, setPlaylistLoaded] = useState(false);
     const [playlistName, setPlaylistName] = useState('')

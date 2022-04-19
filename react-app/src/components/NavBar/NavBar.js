@@ -18,8 +18,10 @@ function NavBar({ isLoaded }) {
 
     const handleSearch = async e => {
         e.preventDefault();
-        await dispatch(search(searchTerm));
-        history.push(`/search?q=${searchTerm}`);
+        if (searchTerm.length) {
+            await dispatch(search(searchTerm));
+            history.push(`/search?q=${searchTerm}`);
+        }
     };
 
     let sessionLinks;

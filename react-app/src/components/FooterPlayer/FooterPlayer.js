@@ -3,9 +3,9 @@ import 'react-h5-audio-player/lib/styles.css';
 import './Footer.css';
 // import random from Math;
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { getAllSongs } from '../../store/song';
+import { getAllSongs, getOneSong } from '../../store/song';
 import { addSongToPlaylist, nextSong } from '../../store/playlist';
 import { playingState, setPlayerTime, addSongToPlayer, setPlayer } from '../../store/player'
 import getCloudFrontDomain from '../../presignHelper';
@@ -33,7 +33,7 @@ function Footer() {
         setSignedSong(signed);
         await dispatch(getAllSongs());
       })()
-    }, [song]);
+    }, [song, dispatch]);
     
     
     useEffect(() => {
@@ -42,7 +42,8 @@ function Footer() {
 
     const changeSongPage = (e) => {
       e.preventDefault();
-      console.log(song.id)
+      dispatch(getOneSong(song.id));
+
       history.push(`/songs/${song.id}`);
     };
 
@@ -90,8 +91,16 @@ function Footer() {
     };
 
     const newSong = () => {
-      setTime(0);
-      dispatch(nextSong("up"));
+      if(playlist[currentSongIdx] === playlist[currentSongIdx + 1]) {
+        player.current.audio.current.pause();
+        player.current.audio.current.currentTime = 0;
+        dispatch(setPlayerTime(0));
+        player.current.audio.current.play();
+        dispatch(nextSong("up"));
+      } else {
+        setTime(0);
+        dispatch(nextSong("up"));
+      }
     };
 
 
