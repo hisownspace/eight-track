@@ -33,11 +33,11 @@ The song detail page displays a waveform that represents the audio levels of the
 When a user is signed in, they can make comments about any song, and if the song being commented on is currently playing, the current time of the song is logged. This allows users to be able to make a comment about a specific moment in the song.
 
 ## Song Upload
-![song-upload-eight-track](https://user-images.githubusercontent.com/61633951/164092306-3a365789-c192-4edc-8878-440150fdbea4.png)
+
 
 A user who is signed in is given the opportunity to upload music either by dragging a file from their gui onto the dropzone or using the file input element and selecting a song to upload.
 
-![upload-2](https://user-images.githubusercontent.com/61633951/155903219-d4c6334c-0f4e-4334-adc6-45663c284cc1.png)
+![song-upload-eight-track](https://user-images.githubusercontent.com/61633951/164092306-3a365789-c192-4edc-8878-440150fdbea4.png)
 
 Once the song has been loaded. the user is able to select a title, artist name, image, genre, and description of the song, and upload the song and create a row in the database with the relevant information.
 
