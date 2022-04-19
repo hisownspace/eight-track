@@ -7,16 +7,18 @@
 
 ## Technologies Used
 
+- [PostgreSQL](https://www.postgresql.org/docs/current/)
+- [Flask](https://flask.palletsprojects.com/en/2.0.x/)
 - [React](https://reactjs.org/)
 - [Redux](https://react-redux.js.org/)
-- [Flask](https://flask.palletsprojects.com/en/2.0.x/)
-- [PostgreSQL](https://www.postgresql.org/docs/current/)
-
-- AWS S3
+- [Node.js](https://nodejs.org/)
+---
 - [react-h5-audio-player](https://www.npmjs.com/package/react-h5-audio-player)
 - [wavesurfer.js](http://wavesurfer-js.org/docs/)
 - [react-multi-carousel](https://www.npmjs.com/package/react-multi-carousel)
-
+- [ColorThief](https://github.com/fengsp/color-thief-py)
+- [AWS S3](https://aws.amazon.com/s3)
+- [AWS CloudFront](https://aws.amazon.com/cloudfront/)
 ## Features
  ### Splash Screen
 ![splash-screen](https://user-images.githubusercontent.com/61633951/155901264-c246fd19-e148-4d33-bb1a-f865daa832c9.png)

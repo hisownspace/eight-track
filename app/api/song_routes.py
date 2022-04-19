@@ -1,17 +1,17 @@
+import sys
+import io
 from flask import Blueprint, jsonify, request
 from flask_login import login_required
 from app.models import db, Song, User, Genre
 from app.forms import SongEditForm
 from datetime import datetime
-import sys
+from colorthief import ColorThief
 
 if sys.version_info < (3, 0):
     from urllib2 import urlopen
 else:
     from urllib.request import urlopen
 
-import io
-from colorthief import ColorThief
 from app.s3_helpers import (
     remove_file_from_s3, upload_image_file_to_s3,
     upload_music_file_to_s3, audio_file,
