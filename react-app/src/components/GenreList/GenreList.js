@@ -29,7 +29,6 @@ function GenreList({ songsType, uniqueId }) {
     const [theseSongs, setTheseSongs] = useState([]);
     
     useEffect(() => {
-        console.log(songs);
         const songsArr = Object.values(songs);
         if (songsType === "genre") {
             const genreSongs = songsArr.filter(song => song.genre.id === id);

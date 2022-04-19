@@ -62,6 +62,10 @@
   display:none;
 }
 
+.song-update {
+  margin: auto;
+}
+
 .custom-file-upload {
   background-color: #FD5600;
   color: white;
