@@ -1,5 +1,4 @@
 from flask import Blueprint, request
-from flask_login import login_required
 from app.models import db, Playlist, Song, PlayListSong
 from app.forms import PlaylistForm, EditPlaylistForm
 from .user_routes import user_routes

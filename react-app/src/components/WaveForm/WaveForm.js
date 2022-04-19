@@ -42,8 +42,7 @@ export default function WaveForm({ songId }) {
   const player = useSelector(state => state.player.player);
   const songUrl = Object.values(song)[0]?.url
   const [loaded, setLoaded] = useState(false);
-  const[loadingMessage, setLoadingMessage] = useState('Loading Waveform...');
-  const [checkSong, setCheckSong] = useState(false);
+  const loadingMessage = 'Loading Waveform...';
 
   // create new WaveSurfer instance
   // On component mount and when url changes
