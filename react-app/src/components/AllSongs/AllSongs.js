@@ -74,7 +74,7 @@ function AllSongs() {
                     return (
                         <div className="genre-carousel-item" key={genre.id}>
                             <h1>{genre.name}</h1>
-                            <GenreList genreId={genre.id} />
+                            <GenreList songsType={"genre"} uniqueId={genre.id} />
                         </div>
                         )
                     })}

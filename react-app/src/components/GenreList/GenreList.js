@@ -23,16 +23,22 @@ const responsive = {
     }
 };
 
-function GenreList({ genreId }) {
-    const id = +genreId;
+function GenreList({ songsType, uniqueId }) {
+    const id = +uniqueId;
     const songs = useSelector(state => state.songs.songs);
     const [theseSongs, setTheseSongs] = useState([]);
     
     useEffect(() => {
+        console.log(songs);
         const songsArr = Object.values(songs);
-        const genreSongs = songsArr.filter(song => song.genre.id === id);
-        setTheseSongs(genreSongs);
-    }, [songs, id]);
+        if (songsType === "genre") {
+            const genreSongs = songsArr.filter(song => song.genre.id === id);
+            setTheseSongs(genreSongs);
+        } else if (songsType === "artist") {
+            const artistSongs = songsArr.filter(song => song.artist === id);
+            setTheseSongs(artistSongs);
+        }
+    }, [songs, id, songsType]);
 
     return (
         <Carousel responsive={responsive}
