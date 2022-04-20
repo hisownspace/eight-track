@@ -29,17 +29,19 @@ function GenreList({ songsType, uniqueId }) {
     const [theseSongs, setTheseSongs] = useState([]);
     
     useEffect(() => {
-        const songsArr = Object.values(songs);
-        if (songsType === "genre") {
-            const genreSongs = songsArr.filter(song => song.genre.id === id);
-            setTheseSongs(genreSongs);
-        } else if (songsType === "artist") {
-            const artistSongs = songsArr.filter(song => song.artist === id);
-            setTheseSongs(artistSongs);
+        if (songs) {
+            const songsArr = Object.values(songs);
+            if (songsType === "genre") {
+                const genreSongs = songsArr.filter(song => song.genre.id === id);
+                setTheseSongs(genreSongs);
+            } else if (songsType === "artist") {
+                const artistSongs = songsArr.filter(song => song.artist === id);
+                setTheseSongs(artistSongs);
+            }
         }
     }, [songs, id, songsType]);
 
-    return (
+    return ( songs ?
         <Carousel responsive={responsive}
         infinite={true}
         autoPlaySpeed={10000000}
@@ -61,7 +63,7 @@ function GenreList({ songsType, uniqueId }) {
                     </Link>
                 )
             })}
-        </Carousel>
+        </Carousel> : null
     )
 }
 

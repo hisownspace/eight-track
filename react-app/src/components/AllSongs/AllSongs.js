@@ -50,13 +50,13 @@ function AllSongs() {
             </div>
             <div className='genre-carousel-list'>
                 <div className='genre-carousel-item'>
-                { user ? <><h1>playlists</h1>
+                { user && playlists ? <><h1>playlists</h1>
                     <Carousel responsive={responsive}>
                         {Object.values(playlists).map(playlist => (
                             <Link key={playlist.id} to={`/playlists/${playlist.id}`}>
                                 <div className='hide-image'>
                                     <div className='song-image-list-item-container'>
-                                        <img alt={playlist.name} src={playlist.songs[0].image_url
+                                        <img alt={playlist.name} src={playlist.songs[0]?.image_url
                                             || "https://eta-photobucket.s3.amazonaws.com/play-button.svg"}>
                                         </img>
                                         <div className='song-title-carousel'>
