@@ -15,6 +15,8 @@ import AddPlaylist from './components/AddPlaylist';
 import MyPlaylists from './components/MyPlaylists';
 import EditPlaylist from './components/EditPlaylist';
 import SinglePlaylist from './components/SinglePlaylist/SinglePlaylist';
+import Admin from './components/admin';
+
 
 function App() {
   const [loaded, setLoaded] = useState(false);
@@ -47,6 +49,7 @@ function App() {
             <ProtectedRoute path='/playlists/:playlistId/edit'><EditPlaylist /></ProtectedRoute>
             <ProtectedRoute path='/playlists/:playlistId'><SinglePlaylist /></ProtectedRoute>
             <ProtectedRoute exact path='/playlists'><MyPlaylists /></ProtectedRoute>
+            <Route path='/admin' ><Admin /></Route>
             <Route path='/' ><AllSongs /></Route>
             <Route path='' ><AllSongs /></Route>
           </Switch>

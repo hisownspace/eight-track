@@ -59,6 +59,7 @@ export const getOneSong = (songId) => async (dispatch) => {
 export const addOneSong = (songDetails) => async (dispatch) => {
     const res = await fetch('/api/songs/', {
         method: 'POST',
+        // headers: { 'Content-Type': 'application/json' },
         body: songDetails
     });
 
