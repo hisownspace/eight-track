@@ -1,0 +1,23 @@
+.song-table {
+    table-layout: fixed;
+    width: 100%;
+
+}
+
+.song-table-head {
+    width: 100%
+}
+
+.song-table-head tr td {
+    width: 12.5%;
+}
+
+.song-table-body {
+    width: 100%
+
+}
+
+.song-table-body tr td {
+    overflow-wrap: break-word;
+    width: 12.5%;
+}

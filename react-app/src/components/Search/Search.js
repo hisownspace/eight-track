@@ -69,7 +69,7 @@ function Search() {
             {searchResults.genre.length ? 
             <>
             <h1>
-                Songs with genres that match you search:
+                Songs with genres that match your search:
             </h1>
             <Carousel responsive={responsive}
                 infinite={true}

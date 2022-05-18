@@ -45,3 +45,18 @@ class Song(db.Model):
             # playlists is backrefed in the playlist model
             # "playlists": [playlist.to_dict() for playlist in self.playlists]
         }
+
+
+    def admin_to_dict(self):
+        return {
+            "title": self.title,
+            "artist": self.artist,
+            "url": self.url,
+            "image_url": self.image_url,
+            "length": ceil(float(str(self.length))),
+            "description": self.description,
+            "public": self.public,
+            "created_at": time.mktime(self.created_at.timetuple()) * 1000,
+            "user_id": self.user_id,
+            "genre_id": self.genre_id,
+        }
