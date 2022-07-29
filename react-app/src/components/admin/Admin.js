@@ -9,7 +9,6 @@ function Admin() {
     const username = useSelector(state => state.session.user?.username);
     const history = useHistory();
 
-    console.log(username);
 
     
     useEffect(() => {

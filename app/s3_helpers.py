@@ -87,4 +87,4 @@ def remove_file_from_s3(key):
         Key=key
         )
     except Exception as e:
-        return { "errors": str(e) }  
+        return { "errors": str(e) }

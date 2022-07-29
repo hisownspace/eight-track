@@ -25,7 +25,6 @@ function UpdateSongFormModal({ genresObj, setShowModal }) {
     const [submitted, setSubmitted] = useState(false);
 
     const populateImagePreview = (e) => {
-        console.log(songArr);
         const file = e.target.files[0]
     
         if (file) {
