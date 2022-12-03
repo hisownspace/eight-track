@@ -37,7 +37,7 @@ def add_comment(id):
         comments = Comment.query.all()
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
-        return { "errors": "An unkown error occurred. Please try again."}
+        return { "errors": "An unknown error occurred. Please try again."}
 
 @comment_routes.route('/<int:id>', methods=["DELETE"])
 def delete_comment(id):
