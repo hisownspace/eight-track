@@ -11,6 +11,8 @@ import sqlalchemy as sa
 import os
 production = not os.environ.get("FLASK_DEBUG")
 SCHEMA = os.environ.get("SCHEMA")
+print(production, "<==================== production")
+print(SCHEMA, "<============================ SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '068cff8bc6fc'
