@@ -8,6 +8,9 @@ Create Date: 2022-03-20 15:52:54.965823
 from alembic import op
 import sqlalchemy as sa
 
+import os
+production = not os.environ.get("FLASK_DEBUG")
+SCHEMA = os.environ.get("SCHEMA")
 
 # revision identifiers, used by Alembic.
 revision = '068cff8bc6fc'
@@ -25,6 +28,9 @@ def upgrade():
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
+    if production:
+        op.execute(f"ALTER TABLE genres SET SCHEMA {SCHEMA};")
+        
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(length=40), nullable=False),
@@ -40,6 +46,9 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
+    if production:
+        op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
+        
     op.create_table('playlists',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -49,6 +58,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if production:
+        op.execute(f"ALTER TABLE playlists SET SCHEMA {SCHEMA};")
+        
     op.create_table('songs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('genre_id', sa.Integer(), nullable=False),
@@ -66,6 +78,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if production:
+        op.execute(f"ALTER TABLE songs SET SCHEMA {SCHEMA};")
+        
     op.create_table('comments',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('song_id', sa.Integer(), nullable=False),
@@ -78,6 +93,9 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
+    if production:
+        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
+        
     op.create_table('playlist_songs',
     sa.Column('song_id', sa.Integer(), nullable=False),
     sa.Column('playlist_id', sa.Integer(), nullable=False),
@@ -86,6 +104,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['song_id'], ['songs.id'], ),
     sa.PrimaryKeyConstraint('song_id', 'playlist_id', 'order')
     )
+    if production:
+        op.execute(f"ALTER TABLE playlist_songs SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
