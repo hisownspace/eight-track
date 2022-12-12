@@ -1,10 +1,10 @@
-from .db import db, development, SCHEMA, add_prefix_for_prod
+from .db import db, production, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
 class PlayListSong(db.Model):
     __tablename__ = 'playlist_songs'
 
-    if not development:
+    if production:
         __table_args__ = { "schema": SCHEMA }
 
     song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("songs.id")), primary_key=True)
@@ -24,7 +24,7 @@ class PlayListSong(db.Model):
 class Playlist(db.Model):
     __tablename__ = "playlists"
 
-    if not development:
+    if production:
         __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)

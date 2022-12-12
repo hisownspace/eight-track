@@ -1,4 +1,4 @@
-from .db import db, development, SCHEMA
+from .db import db, production, SCHEMA
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from datetime import datetime
@@ -7,7 +7,7 @@ from datetime import datetime
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
-    if not development:
+    if production:
        __table_args__ = { 'schema': SCHEMA } 
 
     id = db.Column(db.Integer, primary_key=True)

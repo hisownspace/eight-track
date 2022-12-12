@@ -3,7 +3,7 @@ from .users import seed_users, undo_users
 from .genres import seed_genres, undo_genres
 from .songs import seed_songs, undo_songs
 
-from app.models.db import development, SCHEMA
+from app.models.db import production, SCHEMA
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -13,7 +13,7 @@ seed_commands = AppGroup('seed')
 # Creates the `flask seed all` command
 @seed_commands.command('all')
 def seed():
-    if not development:
+    if production:
         undo_users()
         undo_genres()
         undo_songs()

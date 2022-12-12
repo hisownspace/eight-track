@@ -1,4 +1,4 @@
-from .db import db, development, SCHEMA, add_prefix_for_prod
+from .db import db, production, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 import time
 from math import ceil
@@ -6,7 +6,8 @@ from math import ceil
 class Song(db.Model):
     __tablename__ = "songs"
 
-    if not development:
+    if production:
+        print(SCHEMA)
         __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)

@@ -1,10 +1,10 @@
-from .db import db, development, SCHEMA
+from .db import db, production, SCHEMA
 from datetime import datetime
 
 class Genre(db.Model):
     __tablename__ = "genres"
     
-    if not development:
+    if production:
         __table_args__ = { "schema": SCHEMA }
         
 

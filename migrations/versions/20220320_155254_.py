@@ -9,9 +9,10 @@ from alembic import op
 import sqlalchemy as sa
 
 import os
-development = os.environ.get("FLASK_DEBUG")
+production = os.environ.get("FLASK_DEBUG") == "False"
 SCHEMA = os.environ.get("SCHEMA")
-print(development, "<==================== development")
+print(type(production), "<==================== production type")
+print(production, "<==================== production")
 print(SCHEMA, "<============================ SCHEMA")
 
 # revision identifiers, used by Alembic.
@@ -30,7 +31,7 @@ def upgrade():
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE genres SET SCHEMA {SCHEMA};")
         
     op.create_table('users',
@@ -48,7 +49,7 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE users SET SCHEMA {SCHEMA};")
         
     op.create_table('playlists',
@@ -60,7 +61,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE playlists SET SCHEMA {SCHEMA};")
         
     op.create_table('songs',
@@ -80,7 +81,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE songs SET SCHEMA {SCHEMA};")
         
     op.create_table('comments',
@@ -95,7 +96,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
         
     op.create_table('playlist_songs',
@@ -106,7 +107,7 @@ def upgrade():
     sa.ForeignKeyConstraint(['song_id'], ['songs.id'], ),
     sa.PrimaryKeyConstraint('song_id', 'playlist_id', 'order')
     )
-    if not development:
+    if production:
         op.execute(f"ALTER TABLE playlist_songs SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
