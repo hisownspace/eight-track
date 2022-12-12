@@ -1,4 +1,4 @@
-from .db import db, production, SCHEMA
+from .db import db, production, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
 class PlayListSong(db.Model):
@@ -7,8 +7,8 @@ class PlayListSong(db.Model):
     if production:
         __table_args__ = { "schema": SCHEMA }
 
-    song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), primary_key=True)
-    playlist_id = db.Column(db.Integer, db.ForeignKey("playlists.id"), primary_key=True)
+    song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("songs.id")), primary_key=True)
+    playlist_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("playlists.id")), primary_key=True)
     order = db.Column(db.Integer, nullable=False, primary_key=True)
 
     playlist = db.relationship("Playlist", back_populates="songs")
@@ -28,7 +28,7 @@ class Playlist(db.Model):
         __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
     name = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     updated_at = db.Column(db.DateTime,

@@ -1,4 +1,4 @@
-from .db import db, production, SCHEMA
+from .db import db, production, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 import time
 from math import ceil
@@ -10,8 +10,8 @@ class Song(db.Model):
         __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)
-    genre_id = db.Column(db.Integer, db.ForeignKey("genres.id"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    genre_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("genres.id")), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     url = db.Column(db.String, nullable=False)
     image_url = db.Column(db.String)
     title = db.Column(db.String, nullable=True)

@@ -1,4 +1,4 @@
-from .db import db, production, SCHEMA
+from .db import db, production, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 import time
 from math import floor
@@ -11,8 +11,8 @@ class Comment(db.Model):
         
 
     id = db.Column(db.Integer, primary_key=True)
-    song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    song_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("songs.id")), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")))
     content = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
     updated_at = db.Column(db.DateTime,
