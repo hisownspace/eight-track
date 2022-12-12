@@ -1,4 +1,4 @@
-from app.models import db, Genre, production, SCHEMA
+from app.models import db, Genre, development, SCHEMA
 
 
 # Adds default genres
@@ -44,7 +44,7 @@ def seed_genres():
     db.session.commit()
 
 def undo_genres():
-    if production:
+    if not development:
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute('TRUNCATE genres RESTART IDENTITY CASCADE;')

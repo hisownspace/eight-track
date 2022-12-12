@@ -1,4 +1,4 @@
-from .db import db, production, SCHEMA
+from .db import db, development, SCHEMA
 from .user import User
 from .song import Song
 from .comment import Comment

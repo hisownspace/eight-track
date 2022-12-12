@@ -1,4 +1,4 @@
-from app.models import Song, db, production, SCHEMA
+from app.models import Song, db, development, SCHEMA
 
 song1 = Song(
   user_id = 1,
@@ -18,7 +18,7 @@ def seed_songs():
   db.session.commit()
 
 def undo_songs():
-  if production:
+  if not development:
       db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
   else:
     db.session.execute("TRUNCATE users RESTART IDENTITY CASCADE;")

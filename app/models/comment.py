@@ -1,4 +1,4 @@
-from .db import db, production, SCHEMA, add_prefix_for_prod
+from .db import db, development, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 import time
 from math import floor
@@ -6,7 +6,7 @@ from math import floor
 class Comment(db.Model):
     __tablename__ = "comments"
 
-    if production:
+    if development:
         __table_args__ = { 'schema': SCHEMA }
         
 

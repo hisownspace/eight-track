@@ -1,4 +1,4 @@
-from app.models import db, User, production, SCHEMA
+from app.models import db, User, development, SCHEMA
 
 
 # Adds a demo user, you can add other users here if you want
@@ -30,7 +30,7 @@ def seed_users():
 # resets the auto incrementing primary key, CASCADE deletes any
 # dependent entities
 def undo_users():
-    if production:
+    if not development:
         db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
     else:
         db.session.execute('TRUNCATE users RESTART IDENTITY CASCADE;')
