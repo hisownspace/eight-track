@@ -1,8 +1,11 @@
-from .db import db
+from .db import db, production, SCHEMA
 from datetime import datetime
 
 class PlayListSong(db.Model):
     __tablename__ = 'playlist_songs'
+
+    if production:
+        __table_args__ = { "schema": SCHEMA }
 
     song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), primary_key=True)
     playlist_id = db.Column(db.Integer, db.ForeignKey("playlists.id"), primary_key=True)
@@ -20,6 +23,9 @@ class PlayListSong(db.Model):
 
 class Playlist(db.Model):
     __tablename__ = "playlists"
+
+    if production:
+        __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))

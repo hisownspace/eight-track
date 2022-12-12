@@ -1,10 +1,14 @@
-from .db import db
+from .db import db, production, SCHEMA
 from datetime import datetime
 import time
 from math import floor
 
 class Comment(db.Model):
     __tablename__ = "comments"
+
+    if production:
+        __table_args__ = { 'schema': SCHEMA }
+        
 
     id = db.Column(db.Integer, primary_key=True)
     song_id = db.Column(db.Integer, db.ForeignKey("songs.id"), nullable=False)

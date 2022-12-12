@@ -1,10 +1,13 @@
-from .db import db
+from .db import db, production, SCHEMA
 from datetime import datetime
 import time
 from math import ceil
 
 class Song(db.Model):
     __tablename__ = "songs"
+
+    if production:
+        __table_args__ = { "schema": SCHEMA }
 
     id = db.Column(db.Integer, primary_key=True)
     genre_id = db.Column(db.Integer, db.ForeignKey("genres.id"), nullable=False)
