@@ -19,7 +19,7 @@ from app.s3_helpers import (
 
 song_routes = Blueprint('api/songs', __name__)
 
-@song_routes.route("/")
+@song_routes.route("")
 def get_all_songs():
     songs = Song.query.join(User).join(Genre).all()
     if songs:
@@ -43,7 +43,7 @@ def get_one_song(id):
     else:
         return { "errors": "unkown error" }
 
-@song_routes.route("/", methods=["POST"])
+@song_routes.route("", methods=["POST"])
 def add_songs():
     if "song" not in request.files:
         return { "errors": "audio file required"}, 400

@@ -13,9 +13,10 @@ function Admin() {
     
     useEffect(() => {
         (async () => {
-            const response = await fetch("/api/admin/");
+            const response = await fetch("/api/admin");
             const { songs } = await response.json();
             setAllSongs(songs);
+            console.log(songs[0].id);
         }   
         )()}, []);
         
@@ -41,7 +42,7 @@ function Admin() {
             <tbody className="song-table-body">
                 {allSongs?.map(song => {
                     return (
-                        <tr>
+                        <tr key={song.url}>
                             <td>{song.genre_id}</td>
                             <td>{song.user_id}</td>
                             <td>{song.url}</td>

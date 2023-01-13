@@ -63,4 +63,4 @@ def update_comment(id):
         comments = Comment.query.filter_by(song_id=songId).order_by(Comment.created_at).all()
         return { "comments": [comment.to_dict() for comment in comments] }
     else:
-        return { "errors": "An unkown error occurred. Please try again."}
+        return { "errors": "An unknown error occurred. Please try again."}

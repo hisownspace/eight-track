@@ -36,7 +36,7 @@ const deleteSong = (id) => {
 
 //thunks
 export const getAllSongs = () => async (dispatch) => {
-    const res = await fetch('/api/songs/');
+    const res = await fetch('/api/songs');
     if (res.ok) {
         const songs = await res.json();
         dispatch(getSongs(songs));
@@ -57,7 +57,7 @@ export const getOneSong = (songId) => async (dispatch) => {
 }
 
 export const addOneSong = (songDetails) => async (dispatch) => {
-    const res = await fetch('/api/songs/', {
+    const res = await fetch('/api/songs', {
         method: 'POST',
         // headers: { 'Content-Type': 'application/json' },
         body: songDetails

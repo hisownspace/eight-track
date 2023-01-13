@@ -19,7 +19,7 @@ const getGenreSongs = (songs) => {
 
 // thunks
 export const getAllGenres = () => async (dispatch) => {
-    const res = await fetch('/api/genres/');
+    const res = await fetch('/api/genres');
     if (res.ok) {
         const genres = await res.json();
         dispatch(getGenres(genres));

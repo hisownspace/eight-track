@@ -4,7 +4,7 @@ from app.models import Song, User, Genre
 
 genre_routes = Blueprint('api/genres', __name__)
 
-@genre_routes.route('/')
+@genre_routes.route('')
 def get_genres():
     genres = Genre.query.all()
     genres = [genre.to_dict() for genre in genres]
