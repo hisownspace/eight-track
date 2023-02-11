@@ -2,7 +2,7 @@
 
 ## Overview
 
-[Eight Track](https://eight-track-app.herokuapp.com) is a clone of SoundCloud, a music sharing app. Users are able to upload music, which is freely available for others to listen to.
+[Eight Track](https://eight-track.onrender.com) is a clone of SoundCloud, a music sharing app. Users are able to upload music, which is freely available for others to listen to.
 
 
 ## Technologies Used
