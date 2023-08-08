@@ -14,7 +14,7 @@ from .api.comment_routes import comment_routes
 from .api.presign_routes import presign_routes
 from .api.search_routes import search_routes
 from .api.playlist_routes import playlist_routes
-from .api.admin_routes  import admin_routes
+from .api.admin_routes import admin_routes
 
 from .seeds import seed_commands
 
@@ -24,9 +24,9 @@ app = Flask(__name__, static_folder="../react-app/build", static_url_path="/")
 
 # Setup login manager
 login = LoginManager(app)
-login.login_view = 'auth.unauthorized'
+login.login_view = "auth.unauthorized"
 
-app.register_blueprint(song_routes, url_prefix='/api/songs')
+app.register_blueprint(song_routes, url_prefix="/api/songs")
 app.register_blueprint(genre_routes, url_prefix="/api/genres")
 app.register_blueprint(comment_routes, url_prefix="/api/comments")
 app.register_blueprint(presign_routes, url_prefix="/api/presign")
@@ -44,31 +44,35 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.register_blueprint(user_routes, url_prefix='/api/users')
-app.register_blueprint(auth_routes, url_prefix='/api/auth')
+app.register_blueprint(user_routes, url_prefix="/api/users")
+app.register_blueprint(auth_routes, url_prefix="/api/auth")
 db.init_app(app)
 Migrate(app, db)
 
 # Application Security
-CORS(app, expose_headers=[
-                        "Access-Control-Allow-Origin",
-                        "content-length"
-                        ])
+CORS(app, expose_headers=["Access-Control-Allow-Origin", "content-length"])
+
 
 @app.after_request
 def inject_csrf_token(response):
     response.set_cookie(
-        'csrf_token',
+        "csrf_token",
         generate_csrf(),
-        secure=True if os.environ.get('FLASK_ENV') == 'production' else False,
-        samesite='Strict' if os.environ.get(
-            'FLASK_ENV') == 'production' else None,
-        httponly=True)
+        secure=True if os.environ.get("FLASK_ENV") == "production" else False,
+        samesite="Strict" if os.environ.get("FLASK_ENV") == "production" else None,
+        httponly=True,
+    )
     return response
 
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
 def react_root(path):
-    if path == 'favicon.ico':
-        return app.send_from_directory('public', 'favicon.ico')
-    return app.send_static_file('index.html')
+    if path == "favicon.ico":
+        return app.send_from_directory("public", "favicon.ico")
+    return app.send_static_file("index.html")
+
+
+@app.errorhandler(404)
+def not_found():
+    return app.send_static_file("index.html")
