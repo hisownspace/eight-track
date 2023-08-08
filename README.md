@@ -28,7 +28,7 @@
 
 ![player-waveform](https://user-images.githubusercontent.com/61633951/155901543-1ffe7bc3-a1a0-4033-b75e-667c3dc656b7.png)
 
-The song detail page displays a waveform that represents the audio levels of the song during it's playtime, as well as an indicator of the current song playtime location the song if the player is currently playing that song.
+The song detail page displays a waveform that represents the audio levels of the song during its playtime, as well as an indicator of the current song playtime location the song if the player is currently playing that song. The waveform itself also acts as a seek control, allowing the user to seek to a specific time in the song.
 
 ### Comments
 
