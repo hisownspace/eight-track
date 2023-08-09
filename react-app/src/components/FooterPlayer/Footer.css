@@ -28,7 +28,7 @@
   box-sizing: border-box;
   margin: 3px 0 0 10px;
   font-weight: 400;
-  color: grey;
+  color: #666;
   /* background-color: #f2f2f2; */
 }
 
@@ -45,7 +45,7 @@
   text-align: center;
   display: flex;
   font-size: 12px;
-  color: grey;
+  color: #999;
   text-align: left;
   margin: 3px 0 0 10px;
 }
@@ -69,4 +69,20 @@
   justify-content: center;
   flex-direction: column;
   min-width: 250px;
+}
+
+.rhap_progress-filled {
+  background-color: #f25503;
+}
+
+.rhap_progress-indicator {
+  display: none;
+}
+
+.rhap_progress-bar {
+  height: 1px;
+}
+
+.rhap_volume-indicator {
+  background-color: #f25503;
 }
