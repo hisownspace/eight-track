@@ -117,41 +117,14 @@ export default function WaveForm({ songId }) {
   // });
 
   useEffect(() => {
+    console.log(comments);
     const commentElements = commentBarRef.current.children;
-    console.log(playerSong?.url);
-    console.log(songUrl);
-    if (playerSong?.url === songUrl) {
-      const displayComments = () => {
-        for (let i = 0; i < commentElements.length; i++) {
-          const comment = comments[i];
-          // commentElements[i].style.display = "none";
-          const currTime = player?.current.audio.current.currentTime;
-          const minAndSec = comment.timestamp.split(":");
-          let commentTime = 0;
-          if (minAndSec.length > 1) {
-            const min = minAndSec[0];
-            if (min) {
-              commentTime += parseInt(min) * 60;
-            }
-            const sec = minAndSec[1];
-            commentTime += parseInt(sec);
-          }
-          if (currTime >= commentTime && currTime - commentTime < 5) {
-            commentElements[i].style.display = "inline";
-          } else {
-            commentElements[i].style.display = "none";
-          }
-          const position = Math.floor((commentTime / song[0].length) * 100);
-          commentElements[i].style.left = `${position}%`;
-        }
-      };
-      displayComments();
-      const playtime = setInterval(displayComments, 100);
-      return () => {
-        clearInterval(playtime);
-      };
-    }
-  }, [comments, songUrl, playerSong]);
+    console.log(commentElements);
+    console.log(commentBarRef.current.style);
+    // const playtime = setInterval(() => {
+    console.log(waveformRef.current);
+    // }, 1000);
+  }, [comments]);
 
   useEffect(() => {
     if (playState && songUrl === playerSong?.url) {
@@ -340,13 +313,8 @@ export default function WaveForm({ songId }) {
           </div>
         )}
         <div ref={commentBarRef} className="dynamic-comment-div">
-          {comments?.map((comment, idx) => (
-            <span id={`comment-${comment.timestamp}`}>
-              <div className="comment-bar-username">
-                {comment.user.username}:
-              </div>{" "}
-              {comment.content}
-            </span>
+          {comments.map((comment, idx) => (
+            <span id={`comment-${comment.timestamp}`}>{comment.content}</span>
           ))}
         </div>
       </div>

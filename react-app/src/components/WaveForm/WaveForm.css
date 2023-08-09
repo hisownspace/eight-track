@@ -1,60 +1,95 @@
 .waveform-play {
-    border: none;
-    border-radius: 50%;
-    background-color: #F25503;
-    height: 45px;
-    width: 45px;
-    margin: auto;
-    color: white;
-    box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
+  border: none;
+  border-radius: 50%;
+  background-color: #f25503;
+  height: 45px;
+  width: 45px;
+  margin: auto;
+  color: white;
+  box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849);
 }
 
 .empty-button {
-    border: none;
-    border-radius: 50%;
-    background-color: none;
-    height: 45px;
-    width: 45px;
-    margin: auto;
-    /* box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849); */
+  border: none;
+  border-radius: 50%;
+  background-color: none;
+  height: 45px;
+  width: 45px;
+  margin: auto;
+  /* box-shadow: 1px 1px 1px rgba(87, 87, 87, 0.849); */
 }
 
 .waveform-play:hover {
-    cursor: pointer;
-    color: black;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.849);
+  cursor: pointer;
+  color: black;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.849);
 }
 
 .controls {
-    margin: auto 0px auto 20px;
-    align-items: center;
+  margin: auto 0px auto 20px;
+  align-items: center;
 }
 
 .controls-and-title {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
+}
+
+#waveform {
+  margin-bottom: 25px;
 }
 
 .waveform {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  margin-bottom: 50px;
+  position: relative;
 }
 
 .loading-waveform {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    margin-bottom: -55px;
-    margin-left: auto;
-    margin-right: auto;
-    background: #7e7e7e77;
-    border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin-bottom: -55px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #7e7e7e77;
+  border-radius: 3px;
 }
 
 .loading-waveform progress {
-    width: 50%;
+  width: 50%;
+}
+
+.dynamic-comment-div {
+  height: 35px;
+  width: 100%;
+  position: relative;
+  top: 100px;
+  margin: 0px;
+  padding: 0px;
+  z-index: 30;
+}
+
+.dynamic-comment-div span {
+  color: white;
+  display: none;
+  position: absolute;
+  top: 40px;
+  /* margin: 0; */
+  padding-left: 5px;
+  font-size: 12px;
+  width: 250px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dynamic-comment-div span > div {
+  display: inline;
+  color: #ff4500;
+  font-weight: bold;
 }
