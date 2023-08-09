@@ -23,6 +23,10 @@
   color: black;
 }
 
+.rhap_container {
+  box-shadow: none;
+}
+
 .player-button {
   border: none;
   box-sizing: border-box;
@@ -55,7 +59,7 @@
 }
 
 .player-art-container {
-  /* padding: 10px; */
+  padding: 8px;
   border-left: none;
   max-height: 100%;
 }
@@ -77,6 +81,15 @@
 
 .rhap_progress-indicator {
   display: none;
+  height: 7px;
+  width: 7px;
+  top: -3px;
+  margin-left: -4px;
+  background-color: #f25503;
+}
+
+.rhap_progress-indicator:hover {
+  display: inline;
 }
 
 .rhap_progress-bar {
@@ -84,5 +97,28 @@
 }
 
 .rhap_volume-indicator {
+  display: none;
+}
+
+.rhap_current-time {
+  color: #f25503;
+}
+
+.rhap_time {
+  font-size: 12px;
+}
+
+.rhap_volume-bar {
+  /* background-color: white; */
+  height: 1px;
+}
+
+.volume-progress {
   background-color: #f25503;
+  height: 1px;
+}
+
+.footer-space {
+  margin: auto;
+  width: 1850px;
 }

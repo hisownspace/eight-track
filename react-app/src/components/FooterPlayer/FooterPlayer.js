@@ -18,9 +18,12 @@ import getCloudFrontDomain from "../../presignHelper";
 function Footer() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [volume, setVolume] = useState("100%");
   const song = useSelector((state) => state.player.currentSong);
   const songsObj = useSelector((state) => state.songs.songs);
   const playlist = useSelector((state) => state.playlist.playlist);
+  let volumeBar = useRef(null);
+  let volumeIndicator = useRef(null);
   const currentSongIdx = useSelector(
     (state) => state.playlist.currentSongIndex
   );
@@ -55,6 +58,35 @@ function Footer() {
   const setPlay = async () => {
     dispatch(playingState(true));
   };
+
+  useEffect(() => {
+    volumeBar = document.querySelector(".rhap_volume-bar");
+    const volumeProgress = document.createElement("div");
+    volumeProgress.className = "volume-progress";
+    player.current.audio.current.addEventListener("volumechange", (e) => {
+      setVolume(`${(e.target.volume * 100).toFixed(0)}%`);
+    });
+    volumeIndicator = document.querySelector(".rhap_progress-indicator");
+    console.log(volumeIndicator);
+    document
+      .querySelector(".rhap_progress-container")
+      .addEventListener("mouseleave", (e) => {
+        document.querySelector(".rhap_progress-indicator").style.display =
+          "none";
+      });
+    document
+      .querySelector(".rhap_progress-container")
+      .addEventListener("mouseover", (e) => {
+        document.querySelector(".rhap_progress-indicator").style.display =
+          "block";
+      });
+    volumeProgress.style.width = volume;
+
+    volumeBar.appendChild(volumeProgress);
+    return () => {
+      volumeBar.removeChild(volumeProgress);
+    };
+  }, [volume]);
 
   const setPause = () => {
     dispatch(playingState(false));
