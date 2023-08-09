@@ -6,7 +6,7 @@
   width: 100%;
   background-color: white;
   height: 55px;
-  display:flex;
+  display: flex;
   z-index: 9999;
 }
 
@@ -19,30 +19,54 @@
   display: none;
 }
 
- .rhap_container * {
-   color:black;
- }
+.rhap_container * {
+  color: black;
+}
 
 .player-button {
   border: none;
   box-sizing: border-box;
-  margin: 1px;
-  font-weight: 700;
-  background-color: #F2F2F2;
+  margin: 3px 0 0 10px;
+  font-weight: 400;
+  color: grey;
+  /* background-color: #f2f2f2; */
 }
 
- .player-button:hover {
-   cursor: pointer;
-   color:rgb(83, 83, 83);
-   border: 1px solid rgba(0, 0, 0, 0.445);
-   box-sizing: border-box;
-   margin: 0px;
- }
+.player-button:hover {
+  /* cursor: pointer; */
+  /* color: rgb(83, 83, 83); */
+  /* border: 1px solid rgba(0, 0, 0, 0.445); */
+  /* box-sizing: border-box; */
+  /* margin: 0px; */
+  color: black;
+}
 
- .player-title {
-   text-align: center;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   font-size: 12px;
- }
+.player-title {
+  text-align: center;
+  display: flex;
+  font-size: 12px;
+  color: grey;
+  text-align: left;
+  margin: 3px 0 0 10px;
+}
+
+.player-title:hover {
+  color: black;
+}
+
+.player-art-container {
+  /* padding: 10px; */
+  border-left: none;
+  max-height: 100%;
+}
+.player-art {
+  /* max-width: 100%; */
+  max-height: 100%;
+}
+
+.player-text-info {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 250px;
+}
