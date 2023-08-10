@@ -22,8 +22,8 @@ function Footer() {
   const song = useSelector((state) => state.player.currentSong);
   const songsObj = useSelector((state) => state.songs.songs);
   const playlist = useSelector((state) => state.playlist.playlist);
-  let volumeBar = useRef(null);
-  let volumeIndicator = useRef(null);
+  // let volumeBar = useRef(null);
+  // let volumeIndicator = useRef(null);
   const currentSongIdx = useSelector(
     (state) => state.playlist.currentSongIndex
   );
@@ -60,14 +60,13 @@ function Footer() {
   };
 
   useEffect(() => {
-    volumeBar = document.querySelector(".rhap_volume-bar");
+    const volumeBar = document.querySelector(".rhap_volume-bar");
     const volumeProgress = document.createElement("div");
     volumeProgress.className = "volume-progress";
     player.current.audio.current.addEventListener("volumechange", (e) => {
       setVolume(`${(e.target.volume * 100).toFixed(0)}%`);
     });
-    volumeIndicator = document.querySelector(".rhap_progress-indicator");
-    console.log(volumeIndicator);
+    const volumeIndicator = document.querySelector(".rhap_progress-indicator");
     document
       .querySelector(".rhap_progress-container")
       .addEventListener("mouseleave", (e) => {
@@ -144,6 +143,10 @@ function Footer() {
     history.push(`/search?q=${song?.artist}`);
   };
 
+  // useEffect(() => {
+  //
+  // }, [player]);
+
   useEffect(() => {
     if (currentSongIdx) {
       dispatch(addSongToPlayer(playlist[currentSongIdx]));
@@ -155,34 +158,39 @@ function Footer() {
 
   return (
     <footer className={song ? "footer" : "footer-hidden"}>
-      <AudioPlayer
-        layout="horizontal-reverse"
-        showSkipControls={true}
-        showJumpControls={false}
-        autoPlay={false}
-        customAdditionalControls={[]}
-        src={signedSong}
-        ref={player}
-        onPlay={setPlay}
-        onPause={setPause}
-        onSeeked={setTime}
-        onClickNext={newSong}
-        onClickPrevious={previousSong}
-        onEnded={newSong}
-        onCanPlay={(e) => setTime(0)}
-      />
-      <div className="player-art-container">
-        <Link to={`/songs/${song?.id}`}>
-          <img className="player-art" src={song?.image_url} />
-        </Link>
-      </div>
-      <div className="player-text-info">
-        <Link to={`/songs/${song?.id}`}>
-          <div className="player-button">{song?.title}</div>
-        </Link>
-        <Link to={`/search?q=${song?.artist}`}>
-          <div className="player-title">{song?.artist}</div>
-        </Link>
+      <div className="footer-div">
+        <AudioPlayer
+          layout="horizontal-reverse"
+          showSkipControls={true}
+          showJumpControls={false}
+          autoPlay={false}
+          customAdditionalControls={[]}
+          src={signedSong}
+          ref={player}
+          onPlay={setPlay}
+          onPause={setPause}
+          onSeeked={setTime}
+          onClickNext={newSong}
+          onClickPrevious={previousSong}
+          onEnded={newSong}
+          onCanPlay={(e) => setTime(0)}
+          className="footer-player"
+        />
+        <div className="footer-player-info">
+          <div className="player-art-container">
+            <Link to={`/songs/${song?.id}`}>
+              <img className="player-art" src={song?.image_url} />
+            </Link>
+          </div>
+          <div className="player-text-info">
+            <Link className="player-song-title" to={`/songs/${song?.id}`}>
+              <div className="player-button">{song?.title}</div>
+            </Link>
+            <Link to={`/search?q=${song?.artist}`}>
+              <div className="player-title">{song?.artist}</div>
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

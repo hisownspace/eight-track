@@ -6,14 +6,30 @@
   width: 100%;
   background-color: white;
   height: 55px;
-  display: flex;
   z-index: 9999;
 }
 
-/* footer.footer {
-  background-color: white;
-  padding: 0;
-} */
+.footer-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: 55px;
+  width: 1280px;
+  margin: auto;
+}
+
+.footer-player-info {
+  display: flex;
+  width: fit-content;
+  max-width: 300px;
+}
+
+.player-text-info {
+  /* max-width: 250px; */
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 4px;
+}
 
 .footer-hidden {
   display: none;
@@ -27,21 +43,24 @@
   box-shadow: none;
 }
 
+.footer-player {
+  max-width: 1040px;
+}
+
+.player-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .player-button {
-  border: none;
-  box-sizing: border-box;
   margin: 3px 0 0 10px;
   font-weight: 400;
   color: #666;
-  /* background-color: #f2f2f2; */
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .player-button:hover {
-  /* cursor: pointer; */
-  /* color: rgb(83, 83, 83); */
-  /* border: 1px solid rgba(0, 0, 0, 0.445); */
-  /* box-sizing: border-box; */
-  /* margin: 0px; */
   color: black;
 }
 
@@ -52,6 +71,17 @@
   color: #999;
   text-align: left;
   margin: 3px 0 0 10px;
+  text-overflow: ellipsis;
+}
+
+.rhap_volume-controls {
+  max-width: 100px;
+  margin: auto;
+}
+
+.rhap_controls-section {
+  justify-content: start;
+  max-width: 250px;
 }
 
 .player-title:hover {
@@ -59,20 +89,13 @@
 }
 
 .player-art-container {
-  padding: 8px;
+  padding: 10px;
   border-left: none;
   max-height: 100%;
 }
 .player-art {
   /* max-width: 100%; */
   max-height: 100%;
-}
-
-.player-text-info {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  min-width: 250px;
 }
 
 .rhap_progress-filled {
@@ -102,6 +125,10 @@
 
 .rhap_current-time {
   color: #f25503;
+}
+
+.rhap_additional-controls {
+  max-width: 0;
 }
 
 .rhap_time {
