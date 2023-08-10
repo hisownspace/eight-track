@@ -6,43 +6,146 @@
   width: 100%;
   background-color: white;
   height: 55px;
-  display:flex;
   z-index: 9999;
 }
 
-/* footer.footer {
-  background-color: white;
-  padding: 0;
-} */
+.footer-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: 55px;
+  width: 1280px;
+  margin: auto;
+}
+
+.footer-player-info {
+  display: flex;
+  width: fit-content;
+  max-width: 300px;
+}
+
+.player-text-info {
+  /* max-width: 250px; */
+  white-space: nowrap;
+  overflow: hidden;
+  padding-top: 4px;
+}
 
 .footer-hidden {
   display: none;
 }
 
- .rhap_container * {
-   color:black;
- }
-
-.player-button {
-  border: none;
-  box-sizing: border-box;
-  margin: 1px;
-  font-weight: 700;
-  background-color: #F2F2F2;
+.rhap_container * {
+  color: black;
 }
 
- .player-button:hover {
-   cursor: pointer;
-   color:rgb(83, 83, 83);
-   border: 1px solid rgba(0, 0, 0, 0.445);
-   box-sizing: border-box;
-   margin: 0px;
- }
+.rhap_container {
+  box-shadow: none;
+}
 
- .player-title {
-   text-align: center;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   font-size: 12px;
- }
+.footer-player {
+  max-width: 1040px;
+}
+
+.player-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.player-button {
+  margin: 3px 0 0 10px;
+  font-weight: 400;
+  color: #666;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.player-button:hover {
+  color: black;
+}
+
+.player-title {
+  text-align: center;
+  display: flex;
+  font-size: 12px;
+  color: #999;
+  text-align: left;
+  margin: 3px 0 0 10px;
+  text-overflow: ellipsis;
+}
+
+.rhap_volume-controls {
+  max-width: 100px;
+  margin: auto;
+}
+
+.rhap_controls-section {
+  justify-content: start;
+  max-width: 250px;
+}
+
+.player-title:hover {
+  color: black;
+}
+
+.player-art-container {
+  padding: 10px;
+  border-left: none;
+  max-height: 100%;
+}
+.player-art {
+  /* max-width: 100%; */
+  max-height: 100%;
+}
+
+.rhap_progress-filled {
+  background-color: #f25503;
+}
+
+.rhap_progress-indicator {
+  display: none;
+  height: 7px;
+  width: 7px;
+  top: -3px;
+  margin-left: -4px;
+  background-color: #f25503;
+}
+
+.rhap_progress-indicator:hover {
+  display: inline;
+}
+
+.rhap_progress-bar {
+  height: 1px;
+}
+
+.rhap_volume-indicator {
+  display: none;
+}
+
+.rhap_current-time {
+  color: #f25503;
+}
+
+.rhap_additional-controls {
+  max-width: 0;
+}
+
+.rhap_time {
+  font-size: 12px;
+}
+
+.rhap_volume-bar {
+  /* background-color: white; */
+  height: 1px;
+}
+
+.volume-progress {
+  background-color: #f25503;
+  height: 1px;
+}
+
+.footer-space {
+  margin: auto;
+  width: 1850px;
+}
