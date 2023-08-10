@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
-import './WaveForm.css';
-import UpdateSongForm from '../Modals/UpdateSongModal';
-import { deleteOneSong } from '../../store/song';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
+import "./WaveForm.css";
+import UpdateSongForm from "../Modals/UpdateSongModal";
+import { deleteOneSong } from "../../store/song";
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
 import { clearPlaylist, addSongToPlaylist } from "../../store/playlist";
 
-const formWaveSurferOptions = ref => ({
+const formWaveSurferOptions = (ref) => ({
   container: ref,
   waveColor: "#eee",
   progressColor: "#FF4500",
@@ -34,36 +34,36 @@ export default function WaveForm({ songId }) {
   const history = useHistory();
   const waveformRef = useRef(null);
   const wavesurfer = useRef(null);
-  const userId = useSelector(state => state.session.user?.id);
-  const playerSong = useSelector(state => state.player.currentSong);
-  const playTime = useSelector(state => state.player.time);
-  const song = useSelector(state => Object.values(state.songs.song));
-  const playState = useSelector(state => state?.player.playing);
-  const player = useSelector(state => state.player.player);
-  const songUrl = Object.values(song)[0]?.url
+  const commentBarRef = useRef(null);
+  const userId = useSelector((state) => state.session.user?.id);
+  const playerSong = useSelector((state) => state.player.currentSong);
+  const playTime = useSelector((state) => state.player.time);
+  const song = useSelector((state) => Object.values(state.songs.song));
+  const playState = useSelector((state) => state?.player.playing);
+  const player = useSelector((state) => state.player.player);
+  const comments = useSelector((state) => state.comments.comments.comments);
+  const songUrl = Object.values(song)[0]?.url;
   const [loaded, setLoaded] = useState(false);
-  const loadingMessage = 'Loading Waveform...';
+  const loadingMessage = "Loading Waveform...";
 
   // create new WaveSurfer instance
   // On component mount and when url changes
-  
+
   useEffect(() => {
     if (songUrl) {
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
-        getCloudFrontDomain(songUrl).then(signedSongUrl =>{
+        getCloudFrontDomain(songUrl).then((signedSongUrl) => {
           wavesurfer.current?.load(signedSongUrl);
-        }
-          
-        );
+        });
       }
       wavesurfer.current.on("ready", async function () {
         setLoaded(true);
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
         if (playerSong?.url === songUrl) {
-          const currentTime  = player.current?.audio.current.currentTime;
+          const currentTime = player.current?.audio.current.currentTime;
           const songLength = Object.values(song)[0].length;
           const seek = currentTime / songLength;
           if (seek > 0 && seek < 1) {
@@ -77,7 +77,7 @@ export default function WaveForm({ songId }) {
           wavesurfer.current.seekTo(0);
         }
       });
-      
+
       // when the waveform ends, it resets
       wavesurfer.current.on("finish", function () {
         wavesurfer.current.seekTo(0);
@@ -86,7 +86,6 @@ export default function WaveForm({ songId }) {
       return () => wavesurfer.current.destroy();
     }
   }, [songUrl]);
-  
 
   // useEffect(() => async () => {
   //   let count = "down";
@@ -118,13 +117,49 @@ export default function WaveForm({ songId }) {
   // });
 
   useEffect(() => {
+    const commentElements = commentBarRef.current.children;
+    console.log(playerSong?.url);
+    console.log(songUrl);
+    if (playerSong?.url === songUrl) {
+      const displayComments = () => {
+        for (let i = 0; i < commentElements.length; i++) {
+          const comment = comments[i];
+          // commentElements[i].style.display = "none";
+          const currTime = player?.current.audio.current.currentTime;
+          const minAndSec = comment.timestamp.split(":");
+          let commentTime = 0;
+          if (minAndSec.length > 1) {
+            const min = minAndSec[0];
+            if (min) {
+              commentTime += parseInt(min) * 60;
+            }
+            const sec = minAndSec[1];
+            commentTime += parseInt(sec);
+          }
+          if (currTime >= commentTime && currTime - commentTime < 5) {
+            commentElements[i].style.display = "inline";
+          } else {
+            commentElements[i].style.display = "none";
+          }
+          const position = Math.floor((commentTime / song[0].length) * 100);
+          commentElements[i].style.left = `${position}%`;
+        }
+      };
+      displayComments();
+      const playtime = setInterval(displayComments, 100);
+      return () => {
+        clearInterval(playtime);
+      };
+    }
+  }, [comments, songUrl, playerSong]);
+
+  useEffect(() => {
     if (playState && songUrl === playerSong?.url) {
       wavesurfer.current?.play();
     } else {
       wavesurfer.current?.pause();
     }
   }, [playState, songUrl, playerSong?.url]);
-
 
   // allows the waveform to control the position of the
   // footer player
@@ -134,24 +169,22 @@ export default function WaveForm({ songId }) {
       const playerTime = player.current?.audio.current.currentTime;
       // loopSeparator prevents infinite loop between
       // the two player control interfaces
-      const loopSeparator = (Math.abs(playerTime - surfTime));
-      if(playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
+      const loopSeparator = Math.abs(playerTime - surfTime);
+      if (playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
         player.current.audio.current.currentTime = surfTime;
       }
     });
     // this event listener can be used to toggle the
     // traveling comments
-    wavesurfer.current?.on("audioprocess", function (e) {
-    });
+    wavesurfer.current?.on("audioprocess", function (e) {});
   }, [songUrl, playerSong, player]);
-
 
   // causes the waveform to seek to the appropriate position
   // once it loads
   // if the player is playing and the songs are the same
   useEffect(() => {
     if (playerSong?.url === songUrl) {
-      const currentTime  = player?.current?.audio.current.currentTime;
+      const currentTime = player?.current?.audio.current.currentTime;
       const songLength = Object.values(song)[0]?.length;
       const seek = currentTime / songLength;
       if (seek > 0 && seek < 1) {
@@ -159,7 +192,6 @@ export default function WaveForm({ songId }) {
       }
     }
   }, [playTime, player, song, songUrl, playerSong?.url]);
-
 
   // seeks the waveform appropriately when the song changes
   useEffect(() => {
@@ -169,29 +201,28 @@ export default function WaveForm({ songId }) {
     } else if (songUrl === playerSong?.url) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.play();
-
     }
   }, [songUrl, playerSong?.url]);
 
-
   const handleDelete = async () => {
     const confirm = window.confirm(
-        "This will permanently delete this song. Are you sure?");
+      "This will permanently delete this song. Are you sure?"
+    );
     if (confirm) {
-        await dispatch(deleteOneSong(songId));
-        // await dispatch(getAllSongs());
-        history.push("/songs");
+      await dispatch(deleteOneSong(songId));
+      // await dispatch(getAllSongs());
+      history.push("/songs");
     }
-};
+  };
 
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
-    if (playerSong?.url !== songUrl && songId){
+    if (playerSong?.url !== songUrl && songId) {
       dispatch(clearPlaylist());
       dispatch(addSongToPlaylist(songId));
       dispatch(addSongToPlayer(songId));
       wavesurfer.current.play();
-    } else if (playState){
+    } else if (playState) {
       wavesurfer.current.pause();
       player.current.audio.current.pause();
     } else {
@@ -203,37 +234,37 @@ export default function WaveForm({ songId }) {
   const timeElapsed = (time) => {
     const postDate = new Date(time);
     const rightNow = new Date(Date.now());
-    const elapsedTime = rightNow - postDate
+    const elapsedTime = rightNow - postDate;
     const seconds = elapsedTime / 1000;
     const minutes = seconds / 60;
     if (minutes < 5) {
-        return "Just moments ago...";
+      return "Just moments ago...";
     }
     const hours = minutes / 60;
     if (hours < 1) {
-        return `${Math.floor(minutes)} minutes ago`
+      return `${Math.floor(minutes)} minutes ago`;
     } else if (Math.floor(hours) === 1) {
-        return `1 hour ago`;
+      return `1 hour ago`;
     }
     const days = hours / 24;
-    if ( days < 1) {
-        return `${Math.floor(hours)} hours ago`;
-    } else if (Math.floor(days) ===1) {
-        return `1 day ago`
+    if (days < 1) {
+      return `${Math.floor(hours)} hours ago`;
+    } else if (Math.floor(days) === 1) {
+      return `1 day ago`;
     }
     const months = days / 30;
     if (months < 1) {
-        return `${Math.floor(days)} days ago`;
+      return `${Math.floor(days)} days ago`;
     }
-    const years = months / 12
+    const years = months / 12;
     if (years < 1) {
-        return `${Math.floor(months)} months ago`;
+      return `${Math.floor(months)} months ago`;
     } else if (Math.floor(years) === 1) {
-        return `1 year ago`;
+      return `1 year ago`;
     } else {
-        return `${Math.floor(years)} years ago`;
+      return `${Math.floor(years)} years ago`;
     }
-};
+  };
 
   // useEffect(() => {
   //   console.log(checkSong);
@@ -248,50 +279,48 @@ export default function WaveForm({ songId }) {
   //   }
   // }, [song]);
 
-
   return (
     <div className="waveform">
       <div className="song-info-headline">
         <div className="song-info-text">
           <div className="controls-and-title">
-            {loaded ? ((!playState || (playerSong?.url !== songUrl)) ?
+            {loaded ? (
+              !playState || playerSong?.url !== songUrl ? (
+                <div className="controls">
+                  <button className="waveform-play" onClick={handlePlayPause}>
+                    <FontAwesomeIcon icon={faPlay} />
+                  </button>
+                </div>
+              ) : (
+                <div className="controls">
+                  <button className="waveform-play" onClick={handlePlayPause}>
+                    <FontAwesomeIcon icon={faPause} />
+                  </button>
+                </div>
+              )
+            ) : (
               <div className="controls">
-                <button
-                  className="waveform-play"
-                  onClick={handlePlayPause}
-                >
-                  <FontAwesomeIcon icon={faPlay} />
-                </button></div> :
-              <div className="controls">
-                <button
-                  className="waveform-play"
-                  onClick={handlePlayPause}
-                >
-                  <FontAwesomeIcon icon={faPause} />
-                </button>
+                <div className="empty-button"></div>
               </div>
-            ) : <div className="controls"><div className="empty-button"></div></div>}
+            )}
             <div>
-              <div className='song-info-title'>
-                <p>
-                  {Object.values(song)[0]?.title}
-                </p>
+              <div className="song-info-title">
+                <p>{Object.values(song)[0]?.title}</p>
               </div>
-              <div className='song-info-artist'>
-                <p>
-                  {Object.values(song)[0]?.artist}
-                </p>
+              <div className="song-info-artist">
+                <p>{Object.values(song)[0]?.artist}</p>
               </div>
             </div>
           </div>
 
-          {(userId && (userId === Object.values(song)[0]?.user?.id)) ?
+          {userId && userId === Object.values(song)[0]?.user?.id ? (
             <>
-              <button
-                className="song-detail-buttons"
-                onClick={handleDelete}>Delete Song</button>
+              <button className="song-detail-buttons" onClick={handleDelete}>
+                Delete Song
+              </button>
               <UpdateSongForm />
-            </> : null}
+            </>
+          ) : null}
         </div>
         <div>
           <div className="song-detail-timestamp">
@@ -304,13 +333,22 @@ export default function WaveForm({ songId }) {
       </div>
 
       <div id="waveform" ref={waveformRef}>
-        {loaded ? null :
+        {loaded ? null : (
           <div className="loading-waveform">
-            <div>
-              {loadingMessage}
-            </div>
+            <div>{loadingMessage}</div>
             <progress />
-          </div>}
+          </div>
+        )}
+        <div ref={commentBarRef} className="dynamic-comment-div">
+          {comments?.map((comment, idx) => (
+            <span id={`comment-${comment.timestamp}`}>
+              <div className="comment-bar-username">
+                {comment.user.username}:
+              </div>{" "}
+              {comment.content}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );
