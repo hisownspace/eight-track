@@ -140,9 +140,7 @@ function SongDetail() {
         </div>
         <div className="song-comments">
           <div className="song-description">{song?.description}</div>
-          {userId && player ? (
-            <AddComment songId={songId} audioRef={audioRef} />
-          ) : null}
+          {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
           <ul className="comment-list">
             {isLoaded &&
               comments?.comments &&

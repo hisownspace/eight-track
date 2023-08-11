@@ -85,7 +85,7 @@ export default function WaveForm({ songId }) {
       });
       return () => wavesurfer.current.destroy();
     }
-  }, [songUrl]);
+  }, [songUrl, player]);
 
   // useEffect(() => async () => {
   //   let count = "down";
