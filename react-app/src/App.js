@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import NavBar from './components/NavBar';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import UsersList from './components/UsersList';
-import User from './components/User';
-import DropZone from './components/DropZone';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import NavBar from "./components/NavBar";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import UsersList from "./components/UsersList";
+import User from "./components/User";
+import DropZone from "./components/DropZone";
 import SongDetail from "./components/SongDetail";
-import AllSongs from './components/AllSongs/AllSongs';
-import Footer from './components/FooterPlayer';
-import Search from './components/Search';
-import { authenticate } from './store/session';
-import AddPlaylist from './components/AddPlaylist';
-import MyPlaylists from './components/MyPlaylists';
-import EditPlaylist from './components/EditPlaylist';
-import SinglePlaylist from './components/SinglePlaylist/SinglePlaylist';
-import Admin from './components/admin';
-
+import AllSongs from "./components/AllSongs/AllSongs";
+import Footer from "./components/FooterPlayer";
+import Search from "./components/Search";
+import { authenticate } from "./store/session";
+import AddPlaylist from "./components/AddPlaylist";
+import MyPlaylists from "./components/MyPlaylists";
+import EditPlaylist from "./components/EditPlaylist";
+import SinglePlaylist from "./components/SinglePlaylist/SinglePlaylist";
+import Admin from "./components/admin";
+import "./index.css";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       await dispatch(authenticate());
       setLoaded(true);
     })();
@@ -39,19 +39,45 @@ function App() {
       {loaded && (
         <div id="main">
           <Switch>
-            <ProtectedRoute path='/users/:userId' ><User /></ProtectedRoute>
-            <ProtectedRoute path='/users' ><UsersList /></ProtectedRoute>
-            <Route path='/songs/:id'><SongDetail /></Route>
-            <Route path='/songs' ><AllSongs /></Route>
-            <ProtectedRoute path='/upload' ><DropZone /></ProtectedRoute>
-            <Route path='/search'><Search /></Route>
-            <ProtectedRoute path='/playlists/add' ><AddPlaylist /></ProtectedRoute>
-            <ProtectedRoute path='/playlists/:playlistId/edit'><EditPlaylist /></ProtectedRoute>
-            <ProtectedRoute path='/playlists/:playlistId'><SinglePlaylist /></ProtectedRoute>
-            <ProtectedRoute exact path='/playlists'><MyPlaylists /></ProtectedRoute>
-            <Route path='/admin' ><Admin /></Route>
-            <Route path='/' ><AllSongs /></Route>
-            <Route path='' ><AllSongs /></Route>
+            <ProtectedRoute path="/users/:userId">
+              <User />
+            </ProtectedRoute>
+            <ProtectedRoute path="/users">
+              <UsersList />
+            </ProtectedRoute>
+            <Route path="/songs/:id">
+              <SongDetail />
+            </Route>
+            <Route path="/songs">
+              <AllSongs />
+            </Route>
+            <ProtectedRoute path="/upload">
+              <DropZone />
+            </ProtectedRoute>
+            <Route path="/search">
+              <Search />
+            </Route>
+            <ProtectedRoute path="/playlists/add">
+              <AddPlaylist />
+            </ProtectedRoute>
+            <ProtectedRoute path="/playlists/:playlistId/edit">
+              <EditPlaylist />
+            </ProtectedRoute>
+            <ProtectedRoute path="/playlists/:playlistId">
+              <SinglePlaylist />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/playlists">
+              <MyPlaylists />
+            </ProtectedRoute>
+            <Route path="/admin">
+              <Admin />
+            </Route>
+            <Route path="/">
+              <AllSongs />
+            </Route>
+            <Route path="">
+              <AllSongs />
+            </Route>
           </Switch>
         </div>
       )}

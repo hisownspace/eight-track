@@ -1,4 +1,13 @@
 .comment-box {
-    width: 66%;
-    margin: 15px;
+  width: 93.875%;
+  margin: 15px;
+  display: inline-block;
+}
+
+.comment-form-wrapper {
+  background-color: #f2f2f2;
+  height: 45px;
+  width: 850px;
+  padding: 0 0 5px 15px;
+  margin: 0 15px;
 }

@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { deleteOneComment, getAllSongComments } from "../../store/comment";
+import { addSongToPlaylist, clearPlaylist } from "../../store/playlist";
+import { addSongToPlayer, setPlayerTime } from "../../store/player";
 import { getOneSong } from "../../store/song";
 import AddComment from "../AddComment";
 import WaveForm from "../WaveForm";
@@ -17,6 +19,7 @@ function SongDetail() {
   const song = useSelector((state) => state.songs.song[songId]);
   const comments = useSelector((state) => state.comments.comments);
   const userId = useSelector((state) => state.session.user?.id);
+  const player = useSelector((state) => state.player.player);
   const audioRef = useRef();
   const palette = useSelector((state) => state.songs?.song[songId]?.palette);
   const [gradient, setGradient] = useState("");
@@ -96,6 +99,26 @@ function SongDetail() {
       return `${Math.floor(years)} years ago`;
     }
   };
+
+  const startAtTimestamp = async (timestamp, songUrl, songId) => {
+    console.log(timestamp);
+    const newTime =
+      parseInt(timestamp.split(":")[0]) * 60 +
+      parseInt(timestamp.split(":")[1]);
+    console.log(newTime);
+    console.log(songUrl);
+    console.log(player.current.audio.src);
+    // await dispatch(clearPlaylist());
+    await dispatch(addSongToPlaylist(songId));
+    if (player.current.audio.currentSrc != songUrl) {
+      await dispatch(addSongToPlayer(songId));
+      await dispatch(clearPlaylist());
+      await dispatch(setPlayerTime(newTime));
+    }
+    player.current.audio.current.currentTime = newTime;
+    player.current.audio.current.play();
+  };
+
   if (isLoaded) {
     return (
       <>
@@ -117,38 +140,66 @@ function SongDetail() {
         </div>
         <div className="song-comments">
           <div className="song-description">{song?.description}</div>
-          {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
-          {isLoaded &&
-            comments?.comments &&
-            Object.values(comments?.comments)
-              .reverse()
-              .map((comment) => {
-                return (
-                  <div key={comment.id} className="comment-list-item">
-                    <div>{comment.user.image_url}</div>
-                    <div>{comment.content}</div>
-                    <div> - {comment.user.username}</div>
-                    <div>{comment.timestamp}</div>
-                    <div>{timeElapsed(comment.created_at)}</div>
-                    {comment.user.id === userId ? (
-                      <>
-                        <button
-                          className="delete-comment-button"
-                          value={comment.id}
-                          onClick={handleDeleteComment}
-                        >
-                          Delete Comment
-                        </button>
-                        <EditCommentModal
-                          commentId={comment?.id}
-                          commentContent={comment?.content}
-                          songId={songId}
-                        />
-                      </>
-                    ) : null}
-                  </div>
-                );
-              })}
+          {userId && player ? (
+            <AddComment songId={songId} audioRef={audioRef} />
+          ) : null}
+          <ul className="comment-list">
+            {isLoaded &&
+              comments?.comments &&
+              Object.values(comments?.comments)
+                .reverse()
+                .map((comment) => {
+                  return (
+                    <li key={comment.id} className="comment-list-item">
+                      <div className="comment-main">
+                        <div className="comment-image-div">
+                          <img src={comment.user.image_url} />
+                        </div>
+                        <div className="comment-name-timestamp-content">
+                          <div className="comment-name-and-timestamp">
+                            <Link to={`/users/${comment.user.id}`}>
+                              {comment.user.username}{" "}
+                            </Link>
+                            <span className="comment-at">at</span>{" "}
+                            <span
+                              className="comment-timestamp"
+                              onClick={() =>
+                                startAtTimestamp(
+                                  comment.timestamp,
+                                  comment.song.url,
+                                  comment.song.id
+                                )
+                              }
+                            >
+                              {comment.timestamp}
+                            </span>
+                          </div>
+                          <div>{comment.content}</div>
+                          {comment.user.id === userId ? (
+                            <>
+                              <button
+                                className="delete-comment-button"
+                                value={comment.id}
+                                onClick={handleDeleteComment}
+                              >
+                                Delete Comment
+                              </button>
+                              <EditCommentModal
+                                commentId={comment?.id}
+                                commentContent={comment?.content}
+                                songId={songId}
+                              />
+                            </>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="comment-time-elapsed">
+                        <div>{timeElapsed(comment.created_at)}</div>
+                      </div>
+                    </li>
+                  );
+                })}
+          </ul>
         </div>
       </>
     );

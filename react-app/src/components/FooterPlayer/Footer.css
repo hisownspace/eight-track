@@ -14,8 +14,9 @@
   justify-content: center;
   flex-direction: row;
   height: 55px;
-  width: 1280px;
+  width: 1240px;
   margin: auto;
+  padding-right: 25px;
 }
 
 .footer-player-info {

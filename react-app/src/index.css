@@ -1,22 +1,23 @@
 /* TODO Add site wide styles */
 * {
-    font-family: interstate, sans-serif;
+  font-family: interstate, sans-serif;
 }
 body {
-    margin: 0;
-    margin-bottom: 75px;
-    z-index: 100;
-    background-color: #F2F2F2;
+  margin: 0;
+  margin-bottom: 53px;
+  z-index: 100;
+  background-color: #f2f2f2;
 }
 
 #root {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #main {
-    width: 100%;
-    max-width: 1240px;
-    align-self: center;
+  width: 100%;
+  max-width: 1240px;
+  align-self: center;
+  min-height: 100vh;
 }

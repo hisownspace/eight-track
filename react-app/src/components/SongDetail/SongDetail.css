@@ -1,168 +1,212 @@
 .song-detail {
-    height: 380px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    color: white;
-}
-
-.song-comments {
-
+  height: 380px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: white;
 }
 
 .search-form {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .song-detail-album-art {
-    width: 340px;
-    margin: 20px;
+  width: 340px;
+  margin: 20px;
 }
 
 .song-detail-album-art img {
-    width: 100%;
+  width: 100%;
 }
 
 .song-detail-player-side {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items:stretch;
-    flex-grow: 2;
-    max-width: 69%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-grow: 2;
+  max-width: 69%;
 }
 
 #actual-player {
-    width: 700px;
+  width: 700px;
 }
 
-.rhap_container, .rhap_container *:focus {
-    outline: none;
-    /* background-color: #6B6D7A; */
-    background-color: rgba(0, 0, 0, 0);
-    border: none;
+.rhap_container,
+.rhap_container *:focus {
+  outline: none;
+  /* background-color: #6B6D7A; */
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
 }
 
 .rhap_container svg {
-    color: white;
+  color: white;
 }
 
 .song-info-headline {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .song-info-text {
-    max-width: 80%
+  max-width: 80%;
 }
 
 .song-detail-timestamp {
-    margin: 40px 15px 0px 0px;
-    padding-right: 0;
-    text-align: right;
+  margin: 40px 15px 0px 0px;
+  padding-right: 0;
+  text-align: right;
 }
 
 .song-detail-genre {
-    margin: 15px;
-    background: #999999;
-    padding: 4px 15px;
-    border-radius: 25px;
-    height: 25px;
-    line-height: 25px;;
+  margin: 15px;
+  background: #999999;
+  padding: 4px 15px;
+  border-radius: 25px;
+  height: 25px;
+  line-height: 25px;
 }
 
 .song-info-title p {
-    background: #13171E;
-    color: white;
-    margin-top: 25px;
-    margin-left: 20px;
-    margin-bottom: 0px;
-    padding: 3px 15px;
-    display: inline-block;
-    font-size: 24px;
-    line-height: 37px;
-    font-weight: 100;
+  background: #13171e;
+  color: white;
+  margin-top: 25px;
+  margin-left: 20px;
+  margin-bottom: 0px;
+  padding: 3px 15px;
+  display: inline-block;
+  font-size: 24px;
+  line-height: 37px;
+  font-weight: 100;
 }
 
 .song-info-artist p {
-    background: #13181F;
-    margin-top: 5px;
-    margin-left: 20px;
-    padding: 3px 10px;
-    display: inline-block;
-    font-size: 16px;
-    line-height: 19px;
-    font-weight: 100;
-    color: #cccccc;
+  background: #13181f;
+  margin-top: 5px;
+  margin-left: 20px;
+  padding: 3px 10px;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 19px;
+  font-weight: 100;
+  color: #cccccc;
 }
 
+.song-comments {
+  background-color: white;
+  padding-top: 0;
+  margin: 0 0 -30px 0;
+  min-height: 65vh;
+  padding-top: 10px;
+}
+
+.comment-main {
+  font-size: 12px;
+  display: flex;
+}
+
+.comment-time-elapsed {
+  font-size: 12px;
+  color: #999;
+}
+
+.comment-at {
+  color: #ccc;
+}
+
+.comment-image-div {
+  height: 35px;
+  width: 35px;
+}
+
+.comment-name-timestamp-content {
+  margin-left: 15px;
+}
+
+.comment-name-and-timestamp {
+  color: #999;
+}
+
+.comment-image-div img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
 
 .comment-list-item {
-    width: 70%;
-    height: 170px;
-    overflow-wrap: anywhere;
+  display: flex;
+  width: 825px;
+  margin: 15px;
+  justify-content: space-between;
+  overflow-wrap: anywhere;
 }
 
 .edit-button {
-    background-color: white;
-    border: none;
+  background-color: white;
+  border: none;
+}
+
+.comment-timestamp {
+  cursor: pointer;
 }
 
 .edit-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .delete-comment-button {
-    background-color: white;
-    border: none;
-    margin-right: 5px;
+  background-color: white;
+  border: none;
+  margin-right: 5px;
+  font-size: 12px;
 }
 
 .delete-comment-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .submit-comment-button {
-    background-color: white;
-    border: none;
+  background-color: white;
+  border: none;
 }
 
 .submit-comment-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .submit-comment-edit-button {
-    border: none;
-    background-color: white;
+  border: none;
+  background-color: white;
 }
 
 .submit-comment-edit-button:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .song-detail-buttons {
-    background-color: #FE5700;
-    border: none;
-    margin: 5px;
-    color: white;
-    border-radius: 3px;
+  background-color: #fe5700;
+  border: none;
+  margin: 5px;
+  color: white;
+  border-radius: 3px;
 }
 
 .song-detail-buttons:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .song-detail-player {
-    /* margin-bottom: 20px; */
-    height: 100%;
+  /* margin-bottom: 20px; */
+  height: 100%;
 }
 
 .traveling-comments {
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.397);
-    height: 30px;
-    width: auto;
-    bottom: -254px;
-    z-index: 3;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.397);
+  height: 30px;
+  width: auto;
+  bottom: -254px;
+  z-index: 3;
 }

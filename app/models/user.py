@@ -5,10 +5,10 @@ from datetime import datetime
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     if production:
-       __table_args__ = { 'schema': SCHEMA } 
+        __table_args__ = {"schema": SCHEMA}
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(40), nullable=False, unique=True)
@@ -19,10 +19,9 @@ class User(db.Model, UserMixin):
     header_url = db.Column(db.String(255))
     bio = db.Column(db.String(1000))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
-    updated_at = db.Column(db.DateTime,
-                            nullable=False,
-                            default=datetime.now(),
-                            onupdate=datetime.now())
+    updated_at = db.Column(
+        db.DateTime, nullable=False, default=datetime.now(), onupdate=datetime.now()
+    )
 
     songs = db.relationship("Song", back_populates="user", cascade="all, delete-orphan")
     comments = db.relationship("Comment", back_populates="user")
@@ -40,7 +39,8 @@ class User(db.Model, UserMixin):
 
     def to_dict(self):
         return {
-            'id': self.id,
-            'username': self.username,
-            'email': self.email
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "image_url": self.image_url,
         }
