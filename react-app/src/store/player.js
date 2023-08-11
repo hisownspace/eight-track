@@ -43,7 +43,6 @@ const setFooterPlayer = (player) => {
 
 // thunks
 export const addSongToPlayer = (songId) => async (dispatch) => {
-  console.log(songId);
   const res = await fetch(`/api/songs/${songId}`);
   if (res.ok) {
     const song = await res.json();

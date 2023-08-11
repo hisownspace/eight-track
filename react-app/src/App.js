@@ -16,7 +16,6 @@ import MyPlaylists from "./components/MyPlaylists";
 import EditPlaylist from "./components/EditPlaylist";
 import SinglePlaylist from "./components/SinglePlaylist/SinglePlaylist";
 import Admin from "./components/admin";
-import "./index.css";
 
 function App() {
   const [loaded, setLoaded] = useState(false);

@@ -85,7 +85,7 @@ export default function WaveForm({ songId }) {
       });
       return () => wavesurfer.current.destroy();
     }
-  }, [songUrl, player]);
+  }, [songUrl]);
 
   // useEffect(() => async () => {
   //   let count = "down";
@@ -118,8 +118,6 @@ export default function WaveForm({ songId }) {
 
   useEffect(() => {
     const commentElements = commentBarRef.current.children;
-    console.log(playerSong?.url);
-    console.log(songUrl);
     if (playerSong?.url === songUrl) {
       const displayComments = () => {
         for (let i = 0; i < commentElements.length; i++) {
@@ -265,19 +263,6 @@ export default function WaveForm({ songId }) {
       return `${Math.floor(years)} years ago`;
     }
   };
-
-  // useEffect(() => {
-  //   console.log(checkSong);
-  //   console.log(song[0]);
-  //   if (song[0]?.errors && checkSong) {
-  //     delete song[0].errors;
-  //     console.log(song[0]?.errors);
-  //     history.push('/');
-  //   }
-  //   else if (song[0]) {
-  //     setCheckSong(true);
-  //   }
-  // }, [song]);
 
   return (
     <div className="waveform">

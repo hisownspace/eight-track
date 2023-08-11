@@ -101,13 +101,9 @@ function SongDetail() {
   };
 
   const startAtTimestamp = async (timestamp, songUrl, songId) => {
-    console.log(timestamp);
     const newTime =
       parseInt(timestamp.split(":")[0]) * 60 +
       parseInt(timestamp.split(":")[1]);
-    console.log(newTime);
-    console.log(songUrl);
-    console.log(player.current.audio.src);
     // await dispatch(clearPlaylist());
     await dispatch(addSongToPlaylist(songId));
     if (player.current.audio.currentSrc != songUrl) {
