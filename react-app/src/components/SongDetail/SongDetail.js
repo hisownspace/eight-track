@@ -20,6 +20,7 @@ function SongDetail() {
   const comments = useSelector((state) => state.comments.comments);
   const userId = useSelector((state) => state.session.user?.id);
   const player = useSelector((state) => state.player.player);
+  const waveformLoaded = useSelector((state) => state.player.waveformLoaded);
   const audioRef = useRef();
   const palette = useSelector((state) => state.songs?.song[songId]?.palette);
   const [gradient, setGradient] = useState("");
@@ -139,6 +140,7 @@ function SongDetail() {
           {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
           <ul className="comment-list">
             {isLoaded &&
+              waveformLoaded &&
               comments?.comments &&
               Object.values(comments?.comments)
                 .reverse()

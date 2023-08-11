@@ -1,5 +1,5 @@
 from sqlalchemy.sql import text
-from random import choice, random
+from random import choice, random, randint
 from math import floor
 from datetime import datetime, timedelta
 
@@ -7,12 +7,13 @@ from ..models import db, Comment, production, SCHEMA
 
 
 def random_datetime():
-    end_year = datetime.now().year
     start_year = 2020
-    start = datetime(start_year, 1, 1, 00, 00, 00)
-    years = end_year - start_year + 1
-    end = start + timedelta(days=365 * years)
-    return start + (end - start) * random()
+    end = datetime.now()
+    start = datetime(start_year, 1, 1)
+    random_date = start + timedelta(
+        seconds=randint(0, int((end - start).total_seconds()))
+    )
+    return random_date
 
 
 def seed_comments(users, songs):

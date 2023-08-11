@@ -7,7 +7,7 @@ import "./WaveForm.css";
 import UpdateSongForm from "../Modals/UpdateSongModal";
 import { deleteOneSong } from "../../store/song";
 import WaveSurfer from "wavesurfer.js";
-import { addSongToPlayer } from "../../store/player";
+import { addSongToPlayer, setWaveformState } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
 import { clearPlaylist, addSongToPlaylist } from "../../store/playlist";
 
@@ -76,6 +76,7 @@ export default function WaveForm({ songId }) {
         } else {
           wavesurfer.current.seekTo(0);
         }
+        dispatch(setWaveformState(true));
       });
 
       // when the waveform ends, it resets
@@ -83,7 +84,10 @@ export default function WaveForm({ songId }) {
         wavesurfer.current.seekTo(0);
         wavesurfer.current.pause();
       });
-      return () => wavesurfer.current.destroy();
+      return () => {
+        dispatch(setWaveformState(false));
+        wavesurfer.current.destroy();
+      };
     }
   }, [songUrl]);
 

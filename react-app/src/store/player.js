@@ -4,6 +4,7 @@ const SET_REFERENCE = "player/SET_REFERENCE";
 const SET_PLAYING = "player/SET_PLAYING";
 const SET_TIME = "player/SET_TIME";
 const SET_PLAYER = "player/SET_PLAYER";
+const WAVEFORM_LOADED = "player/WAVEFORM_LOADED";
 
 // action creators
 const addToPlayer = (song) => {
@@ -34,6 +35,13 @@ const setTime = (time) => {
   };
 };
 
+const waveformLoaded = (bool) => {
+  return {
+    type: WAVEFORM_LOADED,
+    bool,
+  };
+};
+
 const setFooterPlayer = (player) => {
   return {
     type: SET_PLAYER,
@@ -49,6 +57,10 @@ export const addSongToPlayer = (songId) => async (dispatch) => {
     await dispatch(addToPlayer(song));
     return song;
   }
+};
+
+export const setWaveformState = (bool) => (dispatch) => {
+  dispatch(waveformLoaded(bool));
 };
 
 export const playingState = (bool) => (dispatch) => {
@@ -68,7 +80,14 @@ export const setPlayerTime = (time) => (dispatch) => {
 };
 
 // reducer
-const initialState = { playlist: [] };
+const initialState = {
+  playing: false,
+  time: 0,
+  currentSong: null,
+  player: {},
+  playlist: [],
+  waveformLoaded: false,
+};
 export default function playerReducer(state = initialState, action) {
   let newState;
   switch (action.type) {
@@ -91,6 +110,9 @@ export default function playerReducer(state = initialState, action) {
     case SET_PLAYER:
       newState = { ...state };
       newState["player"] = action.player;
+      return newState;
+    case WAVEFORM_LOADED:
+      newState = { ...state, waveformLoaded: action.bool };
       return newState;
     default:
       return state;
