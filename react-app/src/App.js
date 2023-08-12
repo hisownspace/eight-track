@@ -33,7 +33,7 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <NavBar isLoaded={loaded} />
       {loaded && (
         <div id="main">

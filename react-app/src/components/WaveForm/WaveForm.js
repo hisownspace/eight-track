@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import "./WaveForm.css";
 import UpdateSongForm from "../Modals/UpdateSongModal";
-import { deleteOneSong } from "../../store/song";
+import { deleteOneSong, clearSong } from "../../store/song";
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer, setWaveformState } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
@@ -42,6 +42,7 @@ export default function WaveForm({ songId }) {
   const playState = useSelector((state) => state?.player.playing);
   const player = useSelector((state) => state.player.player);
   const comments = useSelector((state) => state.comments.comments.comments);
+  const waveformLoaded = useSelector((state) => state.player.waveformLoaded);
   const songUrl = Object.values(song)[0]?.url;
   const [loaded, setLoaded] = useState(false);
   const loadingMessage = "Loading Waveform...";
@@ -85,11 +86,19 @@ export default function WaveForm({ songId }) {
         wavesurfer.current.pause();
       });
       return () => {
+        console.log("cleanup function");
         dispatch(setWaveformState(false));
+        // dispatch(clearSong());
         wavesurfer.current.destroy();
       };
     }
   }, [songUrl]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearSong());
+    };
+  }, []);
 
   // useEffect(() => async () => {
   //   let count = "down";
@@ -143,7 +152,7 @@ export default function WaveForm({ songId }) {
           } else {
             commentElements[i].style.display = "none";
           }
-          const position = Math.floor((commentTime / song[0].length) * 100);
+          const position = Math.floor((commentTime / song[0]?.length) * 100);
           commentElements[i].style.left = `${position}%`;
         }
       };
@@ -159,9 +168,11 @@ export default function WaveForm({ songId }) {
     if (playState && songUrl === playerSong?.url) {
       wavesurfer.current?.play();
     } else {
-      wavesurfer.current?.pause();
+      if (waveformLoaded) {
+        wavesurfer?.current?.pause();
+      }
     }
-  }, [playState, songUrl, playerSong?.url]);
+  }, [playState, songUrl, playerSong?.url, waveformLoaded]);
 
   // allows the waveform to control the position of the
   // footer player
@@ -197,7 +208,7 @@ export default function WaveForm({ songId }) {
 
   // seeks the waveform appropriately when the song changes
   useEffect(() => {
-    if (songUrl !== playerSong?.url && wavesurfer) {
+    if (songUrl !== playerSong?.url && wavesurfer && waveformLoaded) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.pause();
     } else if (songUrl === playerSong?.url) {
@@ -322,7 +333,7 @@ export default function WaveForm({ songId }) {
       </div>
 
       <div id="waveform" ref={waveformRef}>
-        {loaded ? null : (
+        {waveformLoaded ? null : (
           <div className="loading-waveform">
             <div>{loadingMessage}</div>
             <progress />

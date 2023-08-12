@@ -3,6 +3,7 @@ const GET_SONGS = "songs/GET_SONGS";
 const GET_SONG = "songs/GET_SONG";
 const ADD_SONG = "songs/ADD_SONG";
 const DELETE_SONG = "songs/DELETE_SONG";
+const SONG_CLEARED = "songs/SONG_CLEARED";
 
 //action creators
 const getSongs = (songs) => {
@@ -33,6 +34,12 @@ const deleteSong = (id) => {
   };
 };
 
+const songCleared = () => {
+  return {
+    type: SONG_CLEARED,
+  };
+};
+
 //thunks
 export const getAllSongs = () => async (dispatch) => {
   const res = await fetch("/api/songs");
@@ -52,6 +59,10 @@ export const getOneSong = (songId) => async (dispatch) => {
     dispatch(getSong(song));
     return song;
   }
+};
+
+export const clearSong = () => (dispatch) => {
+  dispatch(songCleared());
 };
 
 export const addOneSong = (songDetails) => async (dispatch) => {
@@ -126,6 +137,10 @@ export default function songReducer(state = initialState, action) {
       newState = { ...state };
       const id = +action.id;
       delete newState.songs[id];
+      return newState;
+    case SONG_CLEARED:
+      console.log("SONG CLEARED!!!!");
+      newState = { ...state, song: {} };
       return newState;
     default:
       newState = { ...state };

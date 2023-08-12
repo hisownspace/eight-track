@@ -2,5 +2,4 @@ react-app/node_modules
 .venv
 Pipfile
 Pipfile.lock
-.env
 .DS_Store
