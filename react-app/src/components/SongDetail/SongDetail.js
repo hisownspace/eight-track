@@ -4,7 +4,7 @@ import { useHistory, useParams, Link } from "react-router-dom";
 import { deleteOneComment, getAllSongComments } from "../../store/comment";
 import { addSongToPlaylist, clearPlaylist } from "../../store/playlist";
 import { addSongToPlayer, setPlayerTime } from "../../store/player";
-import { getOneSong } from "../../store/song";
+import { getOneSong, clearSong } from "../../store/song";
 import AddComment from "../AddComment";
 import WaveForm from "../WaveForm";
 import "./SongDetail.css";
@@ -43,9 +43,12 @@ function SongDetail() {
   }, [palette, gradient]);
 
   useEffect(() => {
-    dispatch(getOneSong(songId)).then(() => setIsLoaded(true));
+    dispatch(getOneSong(songId));
     dispatch(getAllSongComments(songId));
-  }, [songId, dispatch, isLoaded]);
+    // return () => {
+    //   dispatch(clearSong());
+    // };
+  }, [songId, dispatch]);
 
   useEffect(() => {
     if (isLoaded && (!song || song?.errors)) {
@@ -155,7 +158,9 @@ function SongDetail() {
                           <Link to={`/users/${comment.user.id}`}>
                             {comment.user.username}{" "}
                           </Link>
-                          <span className="comment-at">at</span>{" "}
+                          {comment.timestamp ? (
+                            <span className="comment-at">at </span>
+                          ) : null}
                           <span
                             className="comment-timestamp"
                             onClick={() =>

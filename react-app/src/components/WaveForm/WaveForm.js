@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import "./WaveForm.css";
 import UpdateSongForm from "../Modals/UpdateSongModal";
-import { deleteOneSong, clearSong } from "../../store/song";
+import { deleteOneSong, clearSong, getOneSong } from "../../store/song";
 import WaveSurfer from "wavesurfer.js";
 import { addSongToPlayer, setWaveformState } from "../../store/player";
 import getCloudFrontDomain from "../../presignHelper";
@@ -39,6 +39,8 @@ export default function WaveForm({ songId }) {
   const playerSong = useSelector((state) => state.player.currentSong);
   const playTime = useSelector((state) => state.player.time);
   const song = useSelector((state) => Object.values(state.songs.song));
+  const peaks = useSelector((state) => state.songs.songs[songId]?.peaks);
+  const [containsPeaks, setContainsPeaks] = useState(false);
   const playState = useSelector((state) => state?.player.playing);
   const player = useSelector((state) => state.player.player);
   const comments = useSelector((state) => state.comments.comments.comments);
@@ -52,18 +54,24 @@ export default function WaveForm({ songId }) {
 
   useEffect(() => {
     if (songUrl) {
+      getOneSong(songId);
       const options = formWaveSurferOptions(waveformRef.current);
       wavesurfer.current = WaveSurfer.create(options);
       if (songUrl) {
         getCloudFrontDomain(songUrl).then((signedSongUrl) => {
-          wavesurfer.current?.load(signedSongUrl);
+          if (peaks.length) {
+            setContainsPeaks(true);
+            wavesurfer.current?.load(signedSongUrl, peaks);
+          } else {
+            wavesurfer.current?.load(signedSongUrl);
+          }
         });
       }
       wavesurfer.current.on("ready", async function () {
         setLoaded(true);
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
-        if (playerSong?.url === songUrl) {
+        if (playerSong?.url === songUrl && loaded) {
           const currentTime = player.current?.audio.current.currentTime;
           const songLength = Object.values(song)[0].length;
           const seek = currentTime / songLength;
@@ -94,11 +102,11 @@ export default function WaveForm({ songId }) {
     }
   }, [songUrl]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(clearSong());
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(clearSong());
+  //   };
+  // }, []);
 
   // useEffect(() => async () => {
   //   let count = "down";
@@ -165,14 +173,12 @@ export default function WaveForm({ songId }) {
   }, [comments, songUrl, playerSong]);
 
   useEffect(() => {
-    if (playState && songUrl === playerSong?.url) {
+    if (playState && songUrl === playerSong?.url && wavesurfer.current) {
       wavesurfer.current?.play();
     } else {
-      if (waveformLoaded) {
-        wavesurfer?.current?.pause();
-      }
+      wavesurfer?.current?.pause();
     }
-  }, [playState, songUrl, playerSong?.url, waveformLoaded]);
+  }, [songUrl, playerSong?.url, wavesurfer.current]);
 
   // allows the waveform to control the position of the
   // footer player
@@ -223,7 +229,6 @@ export default function WaveForm({ songId }) {
     );
     if (confirm) {
       await dispatch(deleteOneSong(songId));
-      // await dispatch(getAllSongs());
       history.push("/songs");
     }
   };
@@ -284,23 +289,17 @@ export default function WaveForm({ songId }) {
       <div className="song-info-headline">
         <div className="song-info-text">
           <div className="controls-and-title">
-            {loaded ? (
-              !playState || playerSong?.url !== songUrl ? (
-                <div className="controls">
-                  <button className="waveform-play" onClick={handlePlayPause}>
-                    <FontAwesomeIcon icon={faPlay} />
-                  </button>
-                </div>
-              ) : (
-                <div className="controls">
-                  <button className="waveform-play" onClick={handlePlayPause}>
-                    <FontAwesomeIcon icon={faPause} />
-                  </button>
-                </div>
-              )
+            {!playState || playerSong?.url !== songUrl ? (
+              <div className="controls">
+                <button className="waveform-play" onClick={handlePlayPause}>
+                  <FontAwesomeIcon icon={faPlay} />
+                </button>
+              </div>
             ) : (
               <div className="controls">
-                <div className="empty-button"></div>
+                <button className="waveform-play" onClick={handlePlayPause}>
+                  <FontAwesomeIcon icon={faPause} />
+                </button>
               </div>
             )}
             <div>
@@ -333,7 +332,7 @@ export default function WaveForm({ songId }) {
       </div>
 
       <div id="waveform" ref={waveformRef}>
-        {waveformLoaded ? null : (
+        {waveformLoaded || containsPeaks ? null : (
           <div className="loading-waveform">
             <div>{loadingMessage}</div>
             <progress />

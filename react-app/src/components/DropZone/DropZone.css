@@ -1,12 +1,16 @@
+.song-data > wave {
+  display: none !important;
+}
+
 .drop_zone {
   height: 500px;
   width: 50%;
   border: 1px solid rgb(134, 134, 134);
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   margin: 50px auto;
-  min-width:620px;
+  min-width: 620px;
 }
 
 .drop_zone_submit {
@@ -14,7 +18,7 @@
   width: 50%;
   min-width: 620px;
   border: 1px solid rgb(134, 134, 134);
-  display:flex;
+  display: flex;
   flex-direction: column;
   margin: 50px auto;
 }
@@ -27,10 +31,10 @@
   color: #666666;
   font-size: 12px;
   line-height: 17px;
-  padding: 3px 5px
+  padding: 3px 5px;
 }
 
-.song-data  {
+.song-data {
   display: grid;
   grid-template-columns: 1fr 2fr;
 }
@@ -40,7 +44,6 @@
   width: 200px;
   height: 200px;
 }
-
 
 .song-submit-form {
   padding: 20px;
@@ -55,11 +58,11 @@
 }
 
 #choose-audio-file-button {
-  display:none;
+  display: none;
 }
 
 #image {
-  display:none;
+  display: none;
 }
 
 .song-update {
@@ -67,7 +70,7 @@
 }
 
 .custom-file-upload {
-  background-color: #FD5600;
+  background-color: #fd5600;
   color: white;
   border: 1px solid #ccc;
   display: inline-block;
@@ -115,7 +118,7 @@
 }
 
 .song-form-content select {
-  width: 50%
+  width: 50%;
 }
 
 .song-form-content textarea {
@@ -142,7 +145,7 @@
 .submit {
   margin-right: 15px;
   margin-left: 10px;
-  background-color: #FD5600;
+  background-color: #fd5600;
   color: white;
   border: none;
   overflow: auto;
