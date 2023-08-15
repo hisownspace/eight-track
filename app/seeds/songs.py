@@ -377,7 +377,7 @@ def seed_songs():
 
 def undo_songs():
     if production:
-        db.session.execute(f"TRUNCATE table {SCHEMA}.users RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.songs RESTART IDENTITY CASCADE;")
     else:
         db.session.execute("DELETE FROM songs;")
         db.session.commit()

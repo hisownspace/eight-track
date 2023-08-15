@@ -1,11 +1,13 @@
 import sys
 import io
+from sqlalchemy import exc
 from flask import Blueprint, flash, get_flashed_messages, jsonify, request
 from flask_login import login_required
-from app.models import db, Song, User, Genre
+from app.models import db, Song, User, Genre, Peak
 from app.forms import SongEditForm
 from datetime import datetime
 from colorthief import ColorThief
+import json
 
 if sys.version_info < (3, 0):
     from urllib2 import urlopen
@@ -29,12 +31,8 @@ def get_all_songs():
     # pork = get_flashed_messages()
     # print(pork)
     # songs = Song.query.join(User).join(Genre).all()
-    print("\N{angry face}" * 8)
     songs = Song.query.all()
     test = Song.query.filter(Song.title == "X")
-    print("\N{angry face}" * 22, test)
-    for song in songs:
-        print(song.title)
     if songs:
         return {"songs": [song.to_dict() for song in songs]}
     else:
@@ -100,19 +98,35 @@ def add_songs():
     # flask_login allows us to get the current user from the request
     if imageUrl == "":
         imageUrl = "https://eta-photobucket.s3.amazonaws.com/play-button.svg"
-    new_song = Song(
-        genre_id=columns["genreId"],
-        user_id=columns["userId"],
-        url=url,
-        image_url=imageUrl,
-        title=columns["title"],
-        artist=columns["artist"],
-        length=columns["length"],
-        description=columns["description"],
-        created_at=datetime.now(),
-        updated_at=datetime.now(),
-        public=(True if columns["publicSong"] == "true" else False),
-    )
+    # print(columns)
+
+    try:
+        peaks = [
+            Peak(index=idx, value=val if val else 0.0)
+            for idx, val in enumerate(
+                json.loads(request.form.to_dict()["waveformJson"])
+            )
+        ]
+        [db.session.add(peak) for peak in peaks]
+        db.session.commit()
+        new_song = Song(
+            genre_id=columns["genreId"],
+            user_id=columns["userId"],
+            url=url,
+            image_url=imageUrl,
+            title=columns["title"],
+            artist=columns["artist"],
+            length=columns["length"],
+            description=columns["description"],
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
+            public=(True if columns["publicSong"] == "true" else False),
+            peaks=peaks,
+        )
+        # [new_song.peaks.append(peak) for peak in peaks]
+    except Exception as e:
+        remove_file_from_s3(url.rsplit("/")[-1])
+        return {"errors": e}, 400
     try:
         db.session.add(new_song)
         db.session.commit()

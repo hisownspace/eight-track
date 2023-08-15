@@ -3,6 +3,7 @@ from .users import seed_users, undo_users
 from .genres import seed_genres, undo_genres
 from .songs import seed_songs, undo_songs
 from .comments import seed_comments, undo_comments
+from .peaks import seed_peaks, undo_peaks
 
 from app.models.db import production, SCHEMA
 
@@ -22,6 +23,7 @@ def seed():
     genres = seed_genres()
     songs = seed_songs()
     comments = seed_comments(users, songs)
+    seed_peaks(songs)
     # Add other seed functions here
 
 
@@ -32,4 +34,5 @@ def undo():
     undo_genres()
     undo_songs()
     undo_comments()
+    undo_peaks()
     # Add other undo functions here

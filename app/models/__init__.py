@@ -5,3 +5,4 @@ from .comment import Comment
 from .genre import Genre
 from .playlist import Playlist
 from .playlist import PlayListSong
+from .peak import Peak
