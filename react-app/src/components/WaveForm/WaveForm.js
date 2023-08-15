@@ -36,7 +36,7 @@ export default function WaveForm({ songId }) {
   const wavesurfer = useRef(null);
   const commentBarRef = useRef(null);
   const userId = useSelector((state) => state.session.user?.id);
-  const playerSong = useSelector((state) => state.player.currentSong);
+  const playerSongUrl = useSelector((state) => state.player.currentSong?.url);
   const playTime = useSelector((state) => state.player.time);
   const song = useSelector((state) => Object.values(state.songs.song));
   const peaks = useSelector((state) => state.songs.songs[songId]?.peaks);
@@ -68,10 +68,12 @@ export default function WaveForm({ songId }) {
         });
       }
       wavesurfer.current.on("ready", async function () {
+        const peaks = wavesurfer.current.backend.getPeaks(300, 0, 300);
+        console.log(peaks);
         setLoaded(true);
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
-        if (playerSong?.url === songUrl && loaded) {
+        if (playerSongUrl === songUrl) {
           const currentTime = player.current?.audio.current.currentTime;
           const songLength = Object.values(song)[0].length;
           const seek = currentTime / songLength;
@@ -82,9 +84,8 @@ export default function WaveForm({ songId }) {
           if (playState) {
             wavesurfer.current.play();
           }
-        } else {
-          wavesurfer.current.seekTo(0);
         }
+        wavesurfer.current.seekTo(0);
         dispatch(setWaveformState(true));
       });
 
@@ -97,10 +98,30 @@ export default function WaveForm({ songId }) {
         console.log("cleanup function");
         dispatch(setWaveformState(false));
         // dispatch(clearSong());
+        setLoaded(false);
         wavesurfer.current.destroy();
       };
     }
   }, [songUrl]);
+
+  // useEffect(() => {
+  //   if (loaded && ) {
+  //     wavesurfer.current?.play();
+  //     const surfTime = wavesurfer.current.getCurrentTime();
+  //
+  //     const playerTime = player.current?.audio.current.currentTime;
+  //     // loopSeparator prevents infinite loop between
+  //     // the two player control interfaces
+  //     const loopSeparator = Math.abs(playerTime - surfTime);
+  //     const currentTime = player.current?.audio.current.currentTime;
+  //     const songLength = Object.values(song)[0]?.length;
+  //     const seek = currentTime / songLength;
+  //     console.log(loopSeparator);
+  //     if (seek > 0 && seek < 1) {
+  //       wavesurfer.current.seekTo(currentTime / songLength);
+  //     }
+  //   }
+  // }, [loaded]);
 
   // useEffect(() => {
   //   return () => {
@@ -139,7 +160,7 @@ export default function WaveForm({ songId }) {
 
   useEffect(() => {
     const commentElements = commentBarRef.current.children;
-    if (playerSong?.url === songUrl) {
+    if (playerSongUrl === songUrl) {
       const displayComments = () => {
         for (let i = 0; i < commentElements.length; i++) {
           const comment = comments[i];
@@ -170,15 +191,20 @@ export default function WaveForm({ songId }) {
         clearInterval(playtime);
       };
     }
-  }, [comments, songUrl, playerSong]);
+  }, [comments, songUrl, playerSongUrl]);
 
   useEffect(() => {
-    if (playState && songUrl === playerSong?.url && wavesurfer.current) {
+    if (
+      playState &&
+      songUrl === playerSongUrl &&
+      wavesurfer.current &&
+      loaded
+    ) {
       wavesurfer.current?.play();
-    } else {
+    } else if (Object.keys(song).length) {
       wavesurfer?.current?.pause();
     }
-  }, [songUrl, playerSong?.url, wavesurfer.current]);
+  }, [songUrl, playerSongUrl, loaded]);
 
   // allows the waveform to control the position of the
   // footer player
@@ -189,20 +215,20 @@ export default function WaveForm({ songId }) {
       // loopSeparator prevents infinite loop between
       // the two player control interfaces
       const loopSeparator = Math.abs(playerTime - surfTime);
-      if (playerSong?.url === songUrl && surfTime !== 0 && loopSeparator > 1) {
+      if (playerSongUrl === songUrl && surfTime !== 0 && loopSeparator > 1) {
         player.current.audio.current.currentTime = surfTime;
       }
     });
     // this event listener can be used to toggle the
     // traveling comments
     wavesurfer.current?.on("audioprocess", function (e) {});
-  }, [songUrl, playerSong, player]);
+  }, [songUrl, playerSongUrl, player]);
 
   // causes the waveform to seek to the appropriate position
   // once it loads
   // if the player is playing and the songs are the same
   useEffect(() => {
-    if (playerSong?.url === songUrl) {
+    if (playerSongUrl === songUrl) {
       const currentTime = player?.current?.audio.current.currentTime;
       const songLength = Object.values(song)[0]?.length;
       const seek = currentTime / songLength;
@@ -210,18 +236,23 @@ export default function WaveForm({ songId }) {
         wavesurfer.current?.seekTo(currentTime / songLength);
       }
     }
-  }, [playTime, player, song, songUrl, playerSong?.url]);
+  }, [playTime, player, song, songUrl, playerSongUrl]);
 
   // seeks the waveform appropriately when the song changes
   useEffect(() => {
-    if (songUrl !== playerSong?.url && wavesurfer && waveformLoaded) {
+    if (
+      songUrl !== playerSongUrl &&
+      wavesurfer &&
+      waveformLoaded &&
+      Object.keys(song).length
+    ) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.pause();
-    } else if (songUrl === playerSong?.url) {
+    } else if (songUrl === playerSongUrl) {
       wavesurfer.current?.seekTo(0);
       wavesurfer.current?.play();
     }
-  }, [songUrl, playerSong?.url]);
+  }, [songUrl, playerSongUrl]);
 
   const handleDelete = async () => {
     const confirm = window.confirm(
@@ -235,7 +266,7 @@ export default function WaveForm({ songId }) {
 
   // handles the waveform play/pause buttons
   const handlePlayPause = async () => {
-    if (playerSong?.url !== songUrl && songId) {
+    if (playerSongUrl !== songUrl && songId) {
       dispatch(clearPlaylist());
       dispatch(addSongToPlaylist(songId));
       dispatch(addSongToPlayer(songId));
@@ -289,7 +320,7 @@ export default function WaveForm({ songId }) {
       <div className="song-info-headline">
         <div className="song-info-text">
           <div className="controls-and-title">
-            {!playState || playerSong?.url !== songUrl ? (
+            {!playState || playerSongUrl !== songUrl ? (
               <div className="controls">
                 <button className="waveform-play" onClick={handlePlayPause}>
                   <FontAwesomeIcon icon={faPlay} />

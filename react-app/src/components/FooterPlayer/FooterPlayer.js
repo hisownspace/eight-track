@@ -163,7 +163,6 @@ function Footer() {
           layout="horizontal-reverse"
           showSkipControls={true}
           showJumpControls={false}
-          autoPlay={false}
           customAdditionalControls={[]}
           src={signedSong}
           ref={player}
