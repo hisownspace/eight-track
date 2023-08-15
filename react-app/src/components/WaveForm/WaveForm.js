@@ -69,7 +69,7 @@ export default function WaveForm({ songId }) {
       }
       wavesurfer.current.on("ready", async function () {
         const peaks = wavesurfer.current.backend.getPeaks(300, 0, 300);
-        console.log(peaks);
+        console.log(song.title, peaks);
         setLoaded(true);
         wavesurfer.current.setMute(true);
         // syncs waveform with song playing if they match
