@@ -45,9 +45,9 @@ function SongDetail() {
   useEffect(() => {
     dispatch(getOneSong(songId));
     dispatch(getAllSongComments(songId));
-    return () => {
-      dispatch(clearSong());
-    };
+    // return () => {
+    //   dispatch(clearSong());
+    // };
   }, [songId, dispatch]);
 
   useEffect(() => {

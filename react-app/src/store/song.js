@@ -1,35 +1,35 @@
 // constants
-const GET_SONGS = "songs/GET_SONGS";
-const GET_SONG = "songs/GET_SONG";
-const ADD_SONG = "songs/ADD_SONG";
-const DELETE_SONG = "songs/DELETE_SONG";
+const ALL_SONGS_REQUESTED = "songs/ALL_SONGS_REQUESTED";
+const SINGLE_SONG_REQUESTED = "songs/SINGLE_SONG_REQUESTED";
+const SONG_ADDED = "songs/SONG_ADDED";
+const SONG_DELETED = "songs/SONG_DELETED";
 const SONG_CLEARED = "songs/SONG_CLEARED";
 
 //action creators
 const getSongs = (songs) => {
   return {
-    type: GET_SONGS,
+    type: ALL_SONGS_REQUESTED,
     songs,
   };
 };
 
 const getSong = (song) => {
   return {
-    type: GET_SONG,
+    type: SINGLE_SONG_REQUESTED,
     song,
   };
 };
 
 const addSong = (song) => {
   return {
-    type: ADD_SONG,
+    type: SONG_ADDED,
     song,
   };
 };
 
 const deleteSong = (id) => {
   return {
-    type: DELETE_SONG,
+    type: SONG_DELETED,
     id,
   };
 };
@@ -68,7 +68,6 @@ export const clearSong = () => (dispatch) => {
 export const addOneSong = (songDetails) => async (dispatch) => {
   const res = await fetch("/api/songs", {
     method: "POST",
-    // headers: { 'Content-Type': 'application/json' },
     body: songDetails,
   });
 
@@ -117,23 +116,23 @@ export const deleteOneSong = (songId) => async (dispatch) => {
 };
 
 //reducer
-const initialState = { songs: {}, song: {} };
+const initialState = { byId: {}, songView: null };
 export default function songReducer(state = initialState, action) {
   let newState;
   switch (action.type) {
-    case GET_SONGS:
+    case ALL_SONGS_REQUESTED:
       newState = { ...state };
       newState.songs = action.songs.songs?.reduce((songs, song) => {
         songs[song.id] = song;
         return songs;
       }, {});
       return newState;
-    case GET_SONG:
+    case SINGLE_SONG_REQUESTED:
       newState = { ...state };
       newState.song = {};
       newState.song[action.song.id] = action.song;
       return newState;
-    case DELETE_SONG:
+    case SONG_DELETED:
       newState = { ...state };
       const id = +action.id;
       delete newState.songs[id];
