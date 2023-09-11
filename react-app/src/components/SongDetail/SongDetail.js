@@ -102,6 +102,9 @@ function SongDetail() {
   };
 
   const startAtTimestamp = async (timestamp, songUrl, songId) => {
+    if (!waveformLoaded) {
+      return;
+    }
     const newTime =
       parseInt(timestamp.split(":")[0]) * 60 +
       parseInt(timestamp.split(":")[1]);
@@ -140,7 +143,6 @@ function SongDetail() {
           {userId ? <AddComment songId={songId} audioRef={audioRef} /> : null}
           <ul className="comment-list">
             {isLoaded &&
-              waveformLoaded &&
               comments?.comments &&
               Object.values(comments?.comments)
                 .reverse()
@@ -158,7 +160,9 @@ function SongDetail() {
                             </Link>
                             <span className="comment-at">at</span>{" "}
                             <span
-                              className="comment-timestamp"
+                              className={
+                                waveformLoaded ? "comment-timestamp" : null
+                              }
                               onClick={() =>
                                 startAtTimestamp(
                                   comment.timestamp,
