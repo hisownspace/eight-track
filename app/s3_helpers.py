@@ -64,7 +64,7 @@ def upload_music_file_to_s3(file, acl="public-read"):
     return { "url": f"{S3_MUSIC_LOCATION}{file.filename}" }
 
 def upload_image_file_to_s3(file, acl="public-read"):
-    try:
+    # try:
         s3.upload_fileobj(
             file,
             PHOTO_BUCKET,
@@ -74,11 +74,11 @@ def upload_image_file_to_s3(file, acl="public-read"):
                 "ContentType": file.content_type
             }
         )
-    except Exception as e:
-        # in the case that our s3 upload fails
-        return { "errors": str(e) }
+    # except Exception as e:
+    #     # in the case that our s3 upload fails
+    #     return { "errors": str(e) }
 
-    return { "url": f"{S3_PHOTO_LOCATION}{file.filename}" }
+        return { "url": f"{S3_PHOTO_LOCATION}{file.filename}" }
 
 def remove_file_from_s3(key):
     try:
